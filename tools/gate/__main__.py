@@ -12,6 +12,9 @@ Commands:
     gate phase entry <NN>     run entry verification checks for phase NN (§8.2)
     gate phase exit <NN>      run exit verification checks for phase NN (§9.1)
     gate phase end <NN>       run the phase-end sequence for phase NN (§10)
+    gate phase recovery <NN>  run the recovery check for phase NN (§7.5)
+    gate phase quarantine-tree <NN>  quarantine the dirty tree (§7.5a)
+    gate stopreport check <file>  validate a STOP report (§12.4)
 
 Exit codes: 0 all passed, 1 a gate/check failed, 2 misconfiguration or tool error.
 """
@@ -78,7 +81,8 @@ _USAGE = (
     "gate report | gate hash <path> | gate protect [--update] | "
     "gate baseline [--update] | gate directive [--cross-check] | "
     "gate scope <NN> | gate chain verify | gate selftest | "
-    "gate phase entry|exit|end <NN>"
+    "gate stopreport check <file> | "
+    "gate phase entry|exit|end|recovery|quarantine-tree <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -329,6 +333,22 @@ def _cmd_phase_end(phase_id: str, repo_root: Path, state_path: Path) -> int:
     return 0
 
 
+def _cmd_phase_recovery(phase_id: str, repo_root: Path, interruption: bool) -> int:
+    """Run the recovery check for *phase_id* (Part 1 §7.5, §7.5a)."""
+    from tools.gate.phase.recovery import check_recovery, check_recovery_interruption
+
+    if interruption:
+        return check_recovery_interruption(repo_root, phase_id)
+    return check_recovery(repo_root, phase_id)
+
+
+def _cmd_phase_quarantine(phase_id: str, repo_root: Path) -> int:
+    """Run the quarantine-tree command for *phase_id* (Part 1 §7.5a(b))."""
+    from tools.gate.phase.quarantine import quarantine_tree
+
+    return quarantine_tree(repo_root, phase_id)
+
+
 def main() -> int:
     """Parse argv and dispatch to the matching subcommand."""
     args = sys.argv[1:]
@@ -397,6 +417,13 @@ def main() -> int:
                 return 1
             print("chain: verified")
             return 0
+        if command == "stopreport":
+            from tools.gate.phase.stopreport import check_stopreport_file
+
+            if len(rest) < 2 or rest[0] != "check":
+                print("usage: gate stopreport check <file>", file=sys.stderr)
+                return 2
+            return check_stopreport_file(Path(rest[1]))
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":
@@ -417,12 +444,30 @@ def main() -> int:
             return _cmd_selftest(catalogue, current_phase, repo_root, env)
         if command == "phase":
             if not rest:
-                print("usage: gate phase entry|exit|end <NN>", file=sys.stderr)
+                print(
+                    "usage: gate phase entry|exit|end|recovery|quarantine-tree <NN>",
+                    file=sys.stderr,
+                )
                 return 2
             sub = rest[0]
+            if sub == "recovery":
+                if len(rest) < 2:
+                    print(
+                        "usage: gate phase recovery <NN> [--interruption]",
+                        file=sys.stderr,
+                    )
+                    return 2
+                interruption = "--interruption" in rest[2:]
+                return _cmd_phase_recovery(rest[1], repo_root, interruption)
+            if sub == "quarantine-tree":
+                if len(rest) != 2:
+                    print("usage: gate phase quarantine-tree <NN>", file=sys.stderr)
+                    return 2
+                return _cmd_phase_quarantine(rest[1], repo_root)
             if sub not in ("entry", "exit", "end"):
                 print(
-                    f"unknown phase subcommand: {sub!r} (expected entry, exit, end)",
+                    f"unknown phase subcommand: {sub!r} "
+                    "(expected entry, exit, end, recovery, quarantine-tree)",
                     file=sys.stderr,
                 )
                 return 2

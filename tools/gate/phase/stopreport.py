@@ -1,4 +1,4 @@
-"""STOP report validation for the AminCustoms phase machinery (P00-T05).
+"""STOP report validation for the AminCustoms phase machinery (P00-T05, P00-T13).
 
 Validates a STOP report (Part 1 §12.4) against the required fields:
 phase, task, condition, what happened, attempts, evidence, decision needed,
@@ -9,9 +9,15 @@ Spec: Part 1 §12.4, §7.5 (recovery).
 
 from __future__ import annotations
 
+import json
+import sys
+from pathlib import Path
+
 __all__ = [
     "STOP_REPORT_FIELDS",
     "validate_stopreport",
+    "check_stopreport_file",
+    "main",
 ]
 
 # Required fields for a STOP report (Part 1 §12.4).
@@ -38,8 +44,6 @@ def validate_stopreport(text: str) -> list[str]:
     fields: dict[str, str] = {}
 
     # Try JSON first.
-    import json
-
     stripped = text.strip()
     if stripped.startswith("{"):
         try:
@@ -76,3 +80,31 @@ def validate_stopreport(text: str) -> list[str]:
             errors.append(f"extra field {field_name!r} not in STOP report schema")
 
     return errors
+
+
+def check_stopreport_file(path: Path) -> int:
+    """Read and validate a STOP report file.
+
+    Returns 0 if valid, 1 if missing fields, 2 if file not found.
+    """
+    if not path.is_file():
+        print(f"stopreport: file not found: {path}", file=sys.stderr)
+        return 2
+    text = path.read_text(encoding="utf-8")
+    errors = validate_stopreport(text)
+    if errors:
+        for err in errors:
+            print(f"stopreport: {err}", file=sys.stderr)
+        return 1
+    return 0
+
+
+def main(args: list[str]) -> int:
+    """CLI entry for ``gate stopreport check <file>``."""
+    if not args or args[0] != "check":
+        print("usage: gate stopreport check <file>", file=sys.stderr)
+        return 2
+    if len(args) < 2:
+        print("usage: gate stopreport check <file>", file=sys.stderr)
+        return 2
+    return check_stopreport_file(Path(args[1]))

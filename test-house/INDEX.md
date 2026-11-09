@@ -104,6 +104,14 @@
 | T-PHASE-0030 | Self-review with 10 findings and no overflow passes | fast | gate/test_phase.py | test_selfreview_10_findings_passes |
 | T-PHASE-0031 | Known-answer vector for the entry hash | fast | gate/test_chain.py | test_entry_hash_known_answer |
 | T-PHASE-0032 | Chain verification detects altered, deleted, reordered, re-linked | fast | gate/test_chain.py | test_verify_clean_chain |
+| T-PHASE-0033 | STOP at each boundary of a ten-task fixture phase resumes to identical tree hash | slow | gate/test_recovery.py | test_stop_at_each_boundary_resumes |
+| T-PHASE-0034 | STOP report with missing field fails the check | fast | gate/test_recovery.py | test_stop_report_missing_field_fails |
+| T-PHASE-0035 | Dirty tree without an explaining STOP report fails recovery | fast | gate/test_recovery.py | test_dirty_without_stop_report_fails |
+| T-PHASE-0036 | Task re-run on a finished tree changes nothing (idempotency) | slow | gate/test_recovery.py | test_task_rerun_changes_nothing |
+| T-PHASE-0037 | STOP report with all required fields passes the check | fast | gate/test_recovery.py | test_stop_report_valid_passes |
+| T-PHASE-0038 | Dirty tree with an explaining STOP report passes recovery | fast | gate/test_recovery.py | test_dirty_with_stop_report_passes |
+| T-PHASE-0039 | Clean tree passes the recovery check | fast | gate/test_recovery.py | test_clean_tree_passes_recovery |
+| T-PHASE-0040 | STOP at boundary 0 (no tasks run) resumes to identical tree hash | slow | gate/test_recovery.py | test_stop_at_boundary_0_resumes |
 | T-PHASE-0041 | Valid stub commit passes stub mode check | fast | gate/test_directive.py | test_valid_stub_passes |
 | T-PHASE-0042 | Stub commit that changes another path fails | fast | gate/test_directive.py | test_stub_changes_other_path_fails |
 | T-PHASE-0043 | Stub text differing from stub.txt fails | fast | gate/test_directive.py | test_stub_text_differs_fails |
@@ -124,6 +132,14 @@
 | T-PHASE-0058 | Changed key-fact value fails cross-check | fast | gate/test_directive.py | test_cross_changed_keyfact_value_fails |
 | T-PHASE-0059 | Key-fact expression matching nowhere fails cross-check | fast | gate/test_directive.py | test_cross_keyfact_nowhere_fails |
 | T-PHASE-0060 | Clean cross-check passes and table block excluded | fast | gate/test_directive.py | test_cross_clean_passes |
+| T-PHASE-0061 | Interruption inside every task recovers to identical tree hash | slow | gate/test_recovery.py | test_interruption_every_task_recovers |
+| T-PHASE-0062 | Bundle reproduces dirty tree on temp copy; tree restored only after verification | slow | gate/test_recovery.py | test_bundle_verification_and_restore |
+| T-PHASE-0063 | Changed path outside Files of interrupted task is a STOP | fast | gate/test_recovery.py | test_outside_path_stops |
+| T-PHASE-0064 | Interruption between task commit and DONE line resumes without second commit | slow | gate/test_recovery.py | test_interruption_between_commit_and_done |
+| T-PHASE-0065 | Interruption in each phase-end step resumes at that step | slow | gate/test_recovery.py | test_interruption_phase_end_steps |
+| T-PHASE-0066 | Stale index.lock removed only when no git process runs | slow | gate/test_recovery.py | test_stale_lock_removed |
+| T-PHASE-0067 | Interruption record validates with all required fields | fast | gate/test_recovery.py | test_interruption_record_validates |
+| T-PHASE-0068 | Dirty tree without the --interruption command is still a STOP | fast | gate/test_recovery.py | test_dirty_without_interruption_stops |
 | T-PHASE-0069 | Telemetry without overhead/task split fails | fast | gate/test_chain.py | test_telemetry_missing_overhead_split_fails |
 | T-PHASE-0070 | Overhead exceeding its limit triggers a violation naming overhead | fast | gate/test_chain.py | test_overhead_exceeds_limit_stops |
 | T-PHASE-0071 | No part limits — only total enforced | fast | gate/test_chain.py | test_no_part_limits_total_within_passes |
