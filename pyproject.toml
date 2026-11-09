@@ -32,17 +32,20 @@ only-include = ["tools", "test-house"]
 [tool.ruff]
 line-length = 100
 target-version = "py314"
+extend-exclude = ["tools/gate/fixtures"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "S", "UP", "B", "A", "C4", "PIE", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
-"test-house/**" = ["S101"]
+"test-house/**" = ["S101", "S602", "S603", "S607"]
+"tools/gate/**" = ["S602", "S603", "S607"]
 
 [tool.mypy]
 strict = true
 disallow_any_explicit = true
 python_version = "3.14"
+exclude = ["tools/gate/fixtures/", "\\.venv/", "build/"]
 
 [tool.pytest.ini_options]
 markers = [
@@ -50,5 +53,7 @@ markers = [
     "slow: slow tests (at most 30 seconds per test)",
     "e2e: end-to-end tests (at most 120 seconds per test)",
 ]
+testpaths = ["test-house"]
+pythonpath = ["."]
 addopts = "--cov --cov-branch --cov-report=term-missing -n auto"
 timeout = 30

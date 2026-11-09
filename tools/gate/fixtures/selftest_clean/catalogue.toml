@@ -1,0 +1,11 @@
+# Good catalogue: the "demo" gate fails its violation fixture (the `bad` file
+# is present so `test ! -f bad` exits 1) and passes its clean fixture (no `bad`
+# file so `test ! -f bad` exits 0).
+
+[gate.demo]
+cadence = "QP"
+command = "test ! -f bad"
+timeout = 10
+activates_in = "P00"
+violation_fixture = "bad"
+clean_fixture = "good"
