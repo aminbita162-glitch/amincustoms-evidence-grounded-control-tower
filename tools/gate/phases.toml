@@ -1,0 +1,204 @@
+# AminCustoms phase table (Part 6 §6.2). 33 phases in final order.
+#
+# Each [phase.PNN] entry has: name, class (S/M/L), capabilities (list), depends_on (list).
+# The depends_on field lists phases that must be DONE and merged before this
+# phase can enter (Part 1 §8.2d).  Phases run in order; each depends on its
+# predecessor.
+
+[phase.P00]
+name = "Repository bootstrap"
+class = "L"
+capabilities = []
+depends_on = []
+
+[phase.P01]
+name = "Risk management system"
+class = "M"
+capabilities = []
+depends_on = ["P00"]
+
+[phase.P02]
+name = "Source Registry and data governance"
+class = "M"
+capabilities = []
+depends_on = ["P01"]
+
+[phase.P03]
+name = "Kernel contracts"
+class = "L"
+capabilities = []
+depends_on = ["P02"]
+
+[phase.P04]
+name = "Persistence and tenancy baseline"
+class = "L"
+capabilities = []
+depends_on = ["P03"]
+
+[phase.P05]
+name = "Evidence Ledger"
+class = "L"
+capabilities = []
+depends_on = ["P04"]
+
+[phase.P06]
+name = "Rule Engine"
+class = "L"
+capabilities = []
+depends_on = ["P05"]
+
+[phase.P07]
+name = "Orchestration and containment"
+class = "L"
+capabilities = []
+depends_on = ["P06"]
+
+[phase.P08]
+name = "Model Gateway and Extract stage"
+class = "L"
+capabilities = []
+depends_on = ["P07"]
+
+[phase.P09]
+name = "Synthetic data and bench"
+class = "L"
+capabilities = []
+depends_on = ["P08"]
+
+[phase.P10]
+name = "API foundation, observability and Budget Governor"
+class = "L"
+capabilities = []
+depends_on = ["P09"]
+
+[phase.P11]
+name = "Security and tenancy completion"
+class = "L"
+capabilities = []
+depends_on = ["P10"]
+
+[phase.P12]
+name = "Packaging and operations"
+class = "M"
+capabilities = []
+depends_on = ["P11"]
+
+[phase.P13]
+name = "Capability support library"
+class = "L"
+capabilities = []
+depends_on = ["P12"]
+
+[phase.P14]
+name = "Intake"
+class = "L"
+capabilities = ["K14", "F01", "K09"]
+depends_on = ["P13"]
+
+[phase.P15]
+name = "Valuation and classification"
+class = "M"
+capabilities = ["K05", "F02"]
+depends_on = ["P14"]
+
+[phase.P16]
+name = "Clock, freight cost and charge control"
+class = "L"
+capabilities = ["F03", "L01", "L02", "F07"]
+depends_on = ["P15"]
+
+[phase.P17]
+name = "Screening, credentials and transit"
+class = "M"
+capabilities = ["K01", "K02", "K13"]
+depends_on = ["P16"]
+
+[phase.P18]
+name = "Rule change and simulation"
+class = "M"
+capabilities = ["K10", "F04"]
+depends_on = ["P17"]
+
+[phase.P19]
+name = "Evidence reports"
+class = "M"
+capabilities = ["F06", "K18", "K17", "K19", "K15"]
+depends_on = ["P18"]
+
+[phase.P20]
+name = "Reconciliation and readiness"
+class = "M"
+capabilities = ["K03", "K04", "K22"]
+depends_on = ["P19"]
+
+[phase.P21]
+name = "Release planning"
+class = "L"
+capabilities = ["K06", "K11", "K07"]
+depends_on = ["P20"]
+
+[phase.P22]
+name = "Disruption planning"
+class = "M"
+capabilities = ["F05", "K20"]
+depends_on = ["P21"]
+
+[phase.P23]
+name = "Yard and priority"
+class = "M"
+capabilities = ["K08", "L08", "K12"]
+depends_on = ["P22"]
+
+[phase.P24]
+name = "Cost and cover analysis"
+class = "M"
+capabilities = ["L03", "L04", "L07", "L09"]
+depends_on = ["P23"]
+
+[phase.P25]
+name = "Risk, cash and cost ledger"
+class = "M"
+capabilities = ["L05", "L06", "L10"]
+depends_on = ["P24"]
+
+[phase.P26]
+name = "Red-flags, confidence and adversarial review"
+class = "M"
+capabilities = ["K21", "K16", "F08"]
+depends_on = ["P25"]
+
+[phase.P27]
+name = "Views and demonstration"
+class = "L"
+capabilities = []
+depends_on = ["P26"]
+
+[phase.P28]
+name = "Full-system verification"
+class = "L"
+capabilities = []
+depends_on = ["P27"]
+
+[phase.P29]
+name = "Security and supply-chain audit"
+class = "M"
+capabilities = []
+depends_on = ["P28"]
+
+[phase.P30]
+name = "Architecture-conformance and claims audit"
+class = "M"
+capabilities = []
+depends_on = ["P29"]
+
+[phase.P31]
+name = "Documentation"
+class = "M"
+capabilities = []
+depends_on = ["P30"]
+
+[phase.P32]
+name = "Release"
+class = "S"
+capabilities = []
+depends_on = ["P31"]

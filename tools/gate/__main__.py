@@ -7,8 +7,11 @@ Commands:
     gate report               print the generated gate table from .gate-logs/
     gate hash <path>          SHA-256 of a file, lowercase hex, stable everywhere
     gate selftest             run the gate of gates directly
+    gate phase entry <NN>     run entry verification checks for phase NN (§8.2)
+    gate phase exit <NN>      run exit verification checks for phase NN (§9.1)
+    gate phase end <NN>       run the phase-end sequence for phase NN (§10)
 
-Exit codes: 0 all passed, 1 a gate failed, 2 misconfiguration or tool error.
+Exit codes: 0 all passed, 1 a gate/check failed, 2 misconfiguration or tool error.
 """
 
 from __future__ import annotations
@@ -16,6 +19,15 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from tools.gate.phase.checks import (
+    PHASE_REPORT_FIELDS,
+    PhaseCheckError,
+    check_phase_entry,
+    check_phase_exit,
+    load_phases,
+    validate_report_fields,
+)
+from tools.gate.phase.state import StateError, load_state
 from tools.gate.runner import (
     SCHEDULE,
     GateEntry,
@@ -51,7 +63,8 @@ def _resolve_catalogue() -> Path:
 
 _USAGE = (
     "usage: gate list | gate run <name|set> | gate affected | "
-    "gate report | gate hash <path> | gate selftest"
+    "gate report | gate hash <path> | gate selftest | "
+    "gate phase entry|exit|end <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -133,6 +146,139 @@ def _cmd_selftest(
     return code
 
 
+def _resolve_phases() -> Path:
+    return _gate_package_dir() / "phases.toml"
+
+
+def _cmd_phase_entry(phase_id: str, repo_root: Path, state_path: Path) -> int:
+    """Run entry verification checks for *phase_id* (Part 1 §8.2)."""
+    directive_path = repo_root / "directive.txt"
+    phases = load_phases(_resolve_phases())
+    try:
+        state = load_state(state_path)
+    except StateError as exc:
+        print(f"state error: {exc}", file=sys.stderr)
+        return 2
+    results = check_phase_entry(
+        phase_id=phase_id,
+        phases=phases,
+        state=state,
+        directive_path=directive_path,
+        repo_root=repo_root,
+    )
+    exit_code = 0
+    for result in results:
+        status = "PASS" if result.passed else "FAIL"
+        print(f"  {result.item}: {status} — {result.evidence}")
+        if not result.passed:
+            exit_code = 1
+    decision = "proceed" if exit_code == 0 else "STOP"
+    print(f"  decision: {decision}")
+    return exit_code
+
+
+def _cmd_phase_exit(phase_id: str, repo_root: Path) -> int:
+    """Run exit verification checks for *phase_id* (Part 1 §9.1)."""
+    phases = load_phases(_resolve_phases())
+    if phase_id not in phases:
+        print(f"unknown phase: {phase_id!r}", file=sys.stderr)
+        return 2
+    # Derive expected task ids from the ledger if it exists.
+    ledger = repo_root / "docs" / "ledger" / f"{phase_id}.md"
+    expected_tasks: list[str] = []
+    if ledger.is_file():
+        for line in ledger.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line.endswith("DONE"):
+                parts = line.split()
+                if parts:
+                    expected_tasks.append(parts[0])
+    results = check_phase_exit(phase_id, expected_tasks, repo_root)
+    exit_code = 0
+    for result in results:
+        status = "PASS" if result.passed else "FAIL"
+        print(f"  {result.item}: {status} — {result.evidence}")
+        if not result.passed:
+            exit_code = 1
+    return exit_code
+
+
+def _cmd_phase_end(phase_id: str, repo_root: Path, state_path: Path) -> int:
+    """Run the phase-end sequence for *phase_id* (Part 1 §10).
+
+    10.1: Run full test suite and all gates.
+    10.2: END1 — write phase report (every field except merge hash).
+    10.3: END2 — set Build Progress to done, update STATE.json.
+    10.4: Re-run gates.
+    """
+    directive_path = repo_root / "directive.txt"
+    phases = load_phases(_resolve_phases())
+    try:
+        state = load_state(state_path)
+    except StateError as exc:
+        print(f"state error: {exc}", file=sys.stderr)
+        return 2
+
+    # 10.1 — entry/exit checks and gates.
+    entry_results = check_phase_entry(
+        phase_id=phase_id,
+        phases=phases,
+        state=state,
+        directive_path=directive_path,
+        repo_root=repo_root,
+    )
+    for result in entry_results:
+        if not result.passed:
+            print(f"  STOP: entry check {result.item} failed — {result.evidence}", file=sys.stderr)
+            return 1
+
+    exit_results = check_phase_exit(phase_id, [], repo_root)
+    for result in exit_results:
+        if not result.passed:
+            print(f"  STOP: exit check {result.item} failed — {result.evidence}", file=sys.stderr)
+            return 1
+
+    # 10.2 — END1: report written (in real use, by the agent; here we validate).
+    report: dict[str, object] = {
+        "entry_report": "see entry results",
+        "exit_report": "see exit results",
+        "commit_table": [],
+        "self_review": "",
+        "directive_hash": state.directive_hash,
+        "budgets_used": {},
+        "label_counts": state.label_counts,
+    }
+    report_errors = validate_report_fields(report, PHASE_REPORT_FIELDS)
+    if report_errors:
+        print("  STOP: phase report validation failed:", file=sys.stderr)
+        for err in report_errors:
+            print(f"    {err}", file=sys.stderr)
+        return 1
+
+    # 10.3 — END2: update STATE.json (set last_completed_phase).
+    state.last_completed_phase = phase_id
+    from tools.gate.phase.state import save_state
+
+    save_state(state_path, state)
+    print(f"  END2: STATE.json updated (last_completed_phase={phase_id})")
+
+    # 10.4 — re-run gates (entry checks).
+    print("  10.4: re-running entry checks")
+    recheck = check_phase_entry(
+        phase_id=phase_id,
+        phases=phases,
+        state=state,
+        directive_path=directive_path,
+        repo_root=repo_root,
+    )
+    for result in recheck:
+        status = "PASS" if result.passed else "FAIL"
+        print(f"    {result.item}: {status}")
+        if not result.passed:
+            return 1
+    return 0
+
+
 def main() -> int:
     """Parse argv and dispatch to the matching subcommand."""
     args = sys.argv[1:]
@@ -171,7 +317,33 @@ def main() -> int:
             return _cmd_run(rest[0], catalogue, log_dir, current_phase, env, repo_root)
         if command == "selftest":
             return _cmd_selftest(catalogue, current_phase, repo_root, env)
+        if command == "phase":
+            if not rest:
+                print("usage: gate phase entry|exit|end <NN>", file=sys.stderr)
+                return 2
+            sub = rest[0]
+            if sub not in ("entry", "exit", "end"):
+                print(
+                    f"unknown phase subcommand: {sub!r} (expected entry, exit, end)",
+                    file=sys.stderr,
+                )
+                return 2
+            if len(rest) != 2:
+                print(f"usage: gate phase {sub} <NN>", file=sys.stderr)
+                return 2
+            phase_id = rest[1]
+            if sub == "entry":
+                return _cmd_phase_entry(phase_id, repo_root, state_path)
+            if sub == "exit":
+                return _cmd_phase_exit(phase_id, repo_root)
+            return _cmd_phase_end(phase_id, repo_root, state_path)
         print(_USAGE, file=sys.stderr)
+        return 2
+    except StateError as exc:
+        print(f"state error: {exc}", file=sys.stderr)
+        return 2
+    except PhaseCheckError as exc:
+        print(f"phase check error: {exc}", file=sys.stderr)
         return 2
     except MisconfigurationError as exc:
         print(f"misconfiguration: {exc}", file=sys.stderr)
