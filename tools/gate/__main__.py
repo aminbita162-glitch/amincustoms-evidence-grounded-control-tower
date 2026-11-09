@@ -22,6 +22,14 @@ import sys
 from pathlib import Path
 
 from tools.gate.commit_check import main as commit_check_main
+from tools.gate.phase.baselines import (
+    BaselineError,
+    check_baseline_decrease,
+    load_baselines,
+    measure_coverage,
+    save_baselines,
+    update_baselines,
+)
 from tools.gate.phase.checks import (
     PHASE_REPORT_FIELDS,
     PhaseCheckError,
@@ -67,7 +75,7 @@ def _resolve_catalogue() -> Path:
 _USAGE = (
     "usage: gate list | gate run <name|set> | gate affected | "
     "gate report | gate hash <path> | gate protect [--update] | "
-    "gate selftest | gate phase entry|exit|end <NN>"
+    "gate baseline [--update] | gate selftest | gate phase entry|exit|end <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -147,6 +155,42 @@ def _cmd_selftest(
     if code != 0:
         print(f"selftest: exit {code}", file=sys.stderr)
     return code
+
+
+def _cmd_baseline(repo_root: Path, update: bool) -> int:
+    """Measure ``tools/gate`` coverage and check or seed ``baselines.json``.
+
+    Without ``--update``: measure coverage, load the baselines and fail
+    (exit 1) if any measured value is below its floor.  With ``--update``:
+    ratchet the measured values into ``baselines.json`` (monotonic — a value
+    is never lowered) and report any decreases that were refused.
+    """
+    baselines_path = repo_root / "docs" / "state" / "baselines.json"
+    component = "tools/gate"
+    try:
+        measured = {component: measure_coverage(repo_root, component)}
+    except BaselineError as exc:
+        print(f"baseline: {exc}", file=sys.stderr)
+        return 2
+    if update:
+        updated, decreases = update_baselines(baselines_path, measured)
+        save_baselines(baselines_path, updated)
+        print(f"baseline: wrote {len(updated)} component(s) to {baselines_path}")
+        for component in sorted(updated):
+            for key in ("branch_coverage", "line_coverage"):
+                if key in updated[component]:
+                    print(f"  {component}.{key}: {updated[component][key]}")
+        for decrease in decreases:
+            print(f"  DECREASE (not written): {decrease}", file=sys.stderr)
+        return 0
+    baselines = load_baselines(baselines_path)
+    decreases = check_baseline_decrease(baselines, measured)
+    if decreases:
+        for decrease in decreases:
+            print(f"  {decrease}", file=sys.stderr)
+        return 1
+    print("baseline: no baseline decreases")
+    return 0
 
 
 def _resolve_phases() -> Path:
@@ -313,6 +357,9 @@ def main() -> int:
             if rest and rest[0] == "--update":
                 return update_hashes(repo_root)
             return check_protected(repo_root)
+        if command == "baseline":
+            update = bool(rest) and rest[0] == "--update"
+            return _cmd_baseline(repo_root, update)
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":
@@ -364,6 +411,9 @@ def main() -> int:
         return 2
     except GateError as exc:
         print(f"gate error: {exc}", file=sys.stderr)
+        return 2
+    except BaselineError as exc:
+        print(f"baseline error: {exc}", file=sys.stderr)
         return 2
 
 

@@ -14,13 +14,18 @@ monotonicity is a phase-exit condition.
 from __future__ import annotations
 
 import json
+import subprocess
+import tempfile
 from pathlib import Path
+from typing import cast
 
 __all__ = [
     "BaselineError",
     "load_baselines",
     "save_baselines",
     "check_baseline_decrease",
+    "measure_coverage",
+    "update_baselines",
 ]
 
 _COVERAGE_KEYS: tuple[str, ...] = ("branch_coverage", "line_coverage")
@@ -86,3 +91,107 @@ def check_baseline_decrease(
             elif actual < floor:
                 decreases.append(f"{component}.{key}: {actual} < baseline {floor} (decrease)")
     return decreases
+
+
+def _as_coverage_number(value: object, name: str) -> float:
+    """Coerce a coverage JSON value to a non-negative ``float``."""
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        raise BaselineError(f"coverage totals.{name} is not a number")
+    return float(value)
+
+
+def measure_coverage(
+    project_root: Path,
+    component: str = "tools/gate",
+) -> dict[str, float]:
+    """Measure line and branch coverage for *component* via pytest-cov.
+
+    Runs the project test suite with ``--cov=<component> --cov-branch`` and a
+    JSON coverage report, then reads the aggregate ``totals`` to derive
+    ``line_coverage`` (``covered_lines / num_statements``) and
+    ``branch_coverage`` (``covered_branches / num_branches``), each in
+    ``[0.0, 1.0]`` and rounded to four decimals.
+
+    Raises :class:`BaselineError` if coverage cannot be measured (pytest
+    missing, the JSON report not produced, or a malformed ``totals`` block).
+    """
+    pytest_bin = project_root / ".venv" / "bin" / "pytest"
+    executable = str(pytest_bin) if pytest_bin.is_file() else "pytest"
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        cov_json = Path(tmp_dir) / "coverage.json"
+        cmd: list[str] = [
+            executable,
+            f"--cov={component}",
+            "--cov-branch",
+            f"--cov-report=json:{cov_json}",
+            "-q",
+            "--no-header",
+            "-p",
+            "no:randomly",
+            "-o",
+            "addopts=",
+        ]
+        proc = subprocess.run(
+            cmd,
+            cwd=str(project_root),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if not cov_json.is_file():
+            raise BaselineError(
+                f"coverage measurement failed (pytest exit {proc.returncode}); "
+                f"stderr: {proc.stderr.strip()[:400]}"
+            )
+        raw_text = cov_json.read_text(encoding="utf-8")
+    raw: object = json.loads(raw_text)
+    if not isinstance(raw, dict):
+        raise BaselineError("coverage JSON is not an object")
+    totals_obj: object = raw.get("totals")
+    if not isinstance(totals_obj, dict):
+        raise BaselineError("coverage JSON has no totals object")
+    totals = cast(dict[str, object], totals_obj)
+    covered_lines = _as_coverage_number(totals.get("covered_lines"), "covered_lines")
+    num_statements = _as_coverage_number(totals.get("num_statements"), "num_statements")
+    covered_branches = _as_coverage_number(totals.get("covered_branches"), "covered_branches")
+    num_branches = _as_coverage_number(totals.get("num_branches"), "num_branches")
+    line_cov = covered_lines / num_statements if num_statements > 0 else 0.0
+    branch_cov = covered_branches / num_branches if num_branches > 0 else 0.0
+    return {
+        "line_coverage": round(line_cov, 4),
+        "branch_coverage": round(branch_cov, 4),
+    }
+
+
+def update_baselines(
+    path: Path,
+    measured: dict[str, dict[str, float]],
+) -> tuple[dict[str, dict[str, float]], list[str]]:
+    """Ratchet *measured* against the baselines in *path* (monotonic).
+
+    For each component and coverage key, the higher of the existing baseline
+    and the measured value is kept; a measured value strictly below the
+    existing baseline is **not** written (the ratchet never lowers a floor).
+    Returns ``(updated, decreases)`` where *decreases* lists every
+    ``component.key`` whose measured value fell below the existing floor.
+    """
+    existing = load_baselines(path)
+    updated: dict[str, dict[str, float]] = {}
+    decreases: list[str] = []
+    for component in sorted(set(existing) | set(measured)):
+        floor_row = existing.get(component, {})
+        measured_row = measured.get(component, {})
+        row: dict[str, float] = {}
+        for key in _COVERAGE_KEYS:
+            floor = floor_row.get(key)
+            value = measured_row.get(key)
+            candidates = [c for c in (floor, value) if c is not None]
+            if not candidates:
+                continue
+            chosen = max(candidates)
+            row[key] = chosen
+            if floor is not None and value is not None and value < floor:
+                decreases.append(f"{component}.{key}: {value} < baseline {floor} (kept {chosen})")
+        if row:
+            updated[component] = row
+    return updated, decreases

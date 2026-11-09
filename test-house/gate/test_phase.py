@@ -22,6 +22,7 @@ import pytest
 from tools.gate.phase.baselines import check_baseline_decrease
 from tools.gate.phase.checks import (
     PHASE_REPORT_FIELDS,
+    PhaseEntry,
     check_awaiting_merge_cleared,
     check_baseline_decrease_result,
     check_clean_tree,
@@ -372,7 +373,7 @@ def test_previous_branch_not_deleted_fails(tmp_path: Path) -> None:
 @pytest.mark.fast
 def test_missing_report_field_fails() -> None:
     """A report missing a required field fails validation."""
-    report = {
+    report: dict[str, object] = {
         "entry_report": "x",
         "exit_report": "x",
         "commit_table": [],
@@ -402,7 +403,7 @@ def test_missing_report_field_fails() -> None:
 @pytest.mark.fast
 def test_extra_report_field_fails() -> None:
     """A report with an extra field fails validation."""
-    report = {
+    report: dict[str, object] = {
         "entry_report": "x",
         "exit_report": "x",
         "commit_table": [],
@@ -1298,9 +1299,7 @@ def _phase_entry(
     budget_class: str = "M",
     capabilities: list[str] | None = None,
     depends_on: list[str] | None = None,
-):
-    from tools.gate.phase.checks import PhaseEntry
-
+) -> PhaseEntry:
     return PhaseEntry(
         id=pid,
         name=name,
