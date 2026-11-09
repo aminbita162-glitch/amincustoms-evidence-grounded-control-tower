@@ -1,0 +1,2 @@
+This file was the build directive of this project; development is complete and the file holds no instructions.
+Product documentation is in README.md and in the docs directory.

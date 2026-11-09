@@ -6,6 +6,8 @@ Commands:
     gate affected             print the complete slow set (P-cadence, non-Q gates)
     gate report               print the generated gate table from .gate-logs/
     gate hash <path>          SHA-256 of a file, lowercase hex, stable everywhere
+    gate protect              check protected file hashes against protected-hashes.json
+    gate protect --update     rewrite protected-hashes.json (only inside a task)
     gate selftest             run the gate of gates directly
     gate phase entry <NN>     run entry verification checks for phase NN (§8.2)
     gate phase exit <NN>      run exit verification checks for phase NN (§9.1)
@@ -64,8 +66,8 @@ def _resolve_catalogue() -> Path:
 
 _USAGE = (
     "usage: gate list | gate run <name|set> | gate affected | "
-    "gate report | gate hash <path> | gate selftest | "
-    "gate phase entry|exit|end <NN>"
+    "gate report | gate hash <path> | gate protect [--update] | "
+    "gate selftest | gate phase entry|exit|end <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -305,6 +307,12 @@ def main() -> int:
                 print("usage: gate commit-check <file>", file=sys.stderr)
                 return 2
             return commit_check_main(Path(rest[0]))
+        if command == "protect":
+            from tools.gate.gates.protect import check_protected, update_hashes
+
+            if rest and rest[0] == "--update":
+                return update_hashes(repo_root)
+            return check_protected(repo_root)
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":
