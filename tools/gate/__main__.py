@@ -30,6 +30,7 @@ from tools.gate.phase.baselines import (
     save_baselines,
     update_baselines,
 )
+from tools.gate.phase.chain import ChainError
 from tools.gate.phase.checks import (
     PHASE_REPORT_FIELDS,
     PhaseCheckError,
@@ -76,7 +77,8 @@ _USAGE = (
     "usage: gate list | gate run <name|set> | gate affected | "
     "gate report | gate hash <path> | gate protect [--update] | "
     "gate baseline [--update] | gate directive [--cross-check] | "
-    "gate scope <NN> | gate selftest | gate phase entry|exit|end <NN>"
+    "gate scope <NN> | gate chain verify | gate selftest | "
+    "gate phase entry|exit|end <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -380,6 +382,21 @@ def main() -> int:
             else:
                 phase_id = "P00"
             return run_scope_gate(repo_root, phase_id)
+        if command == "chain":
+            from tools.gate.phase.chain import verify_chain
+
+            chain_path = repo_root / "docs" / "state" / "CHAIN.jsonl"
+            try:
+                violations = verify_chain(chain_path)
+            except ChainError as exc:
+                print(f"chain: {exc}", file=sys.stderr)
+                return 2
+            if violations:
+                for v in violations:
+                    print(f"chain: {v}", file=sys.stderr)
+                return 1
+            print("chain: verified")
+            return 0
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":
@@ -434,6 +451,9 @@ def main() -> int:
         return 2
     except BaselineError as exc:
         print(f"baseline error: {exc}", file=sys.stderr)
+        return 2
+    except ChainError as exc:
+        print(f"chain error: {exc}", file=sys.stderr)
         return 2
 
 

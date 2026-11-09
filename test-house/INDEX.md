@@ -102,6 +102,8 @@
 | T-PHASE-0028 | STOP report with all required fields passes | fast | gate/test_phase.py | test_stop_report_valid |
 | T-PHASE-0029 | State hash is deterministic | fast | gate/test_phase.py | test_state_hash_deterministic |
 | T-PHASE-0030 | Self-review with 10 findings and no overflow passes | fast | gate/test_phase.py | test_selfreview_10_findings_passes |
+| T-PHASE-0031 | Known-answer vector for the entry hash | fast | gate/test_chain.py | test_entry_hash_known_answer |
+| T-PHASE-0032 | Chain verification detects altered, deleted, reordered, re-linked | fast | gate/test_chain.py | test_verify_clean_chain |
 | T-PHASE-0041 | Valid stub commit passes stub mode check | fast | gate/test_directive.py | test_valid_stub_passes |
 | T-PHASE-0042 | Stub commit that changes another path fails | fast | gate/test_directive.py | test_stub_changes_other_path_fails |
 | T-PHASE-0043 | Stub text differing from stub.txt fails | fast | gate/test_directive.py | test_stub_text_differs_fails |
@@ -122,3 +124,8 @@
 | T-PHASE-0058 | Changed key-fact value fails cross-check | fast | gate/test_directive.py | test_cross_changed_keyfact_value_fails |
 | T-PHASE-0059 | Key-fact expression matching nowhere fails cross-check | fast | gate/test_directive.py | test_cross_keyfact_nowhere_fails |
 | T-PHASE-0060 | Clean cross-check passes and table block excluded | fast | gate/test_directive.py | test_cross_clean_passes |
+| T-PHASE-0069 | Telemetry without overhead/task split fails | fast | gate/test_chain.py | test_telemetry_missing_overhead_split_fails |
+| T-PHASE-0070 | Overhead exceeding its limit triggers a violation naming overhead | fast | gate/test_chain.py | test_overhead_exceeds_limit_stops |
+| T-PHASE-0071 | No part limits — only total enforced | fast | gate/test_chain.py | test_no_part_limits_total_within_passes |
+| T-PHASE-0072 | Part limit in telemetry but not in decision record fails | fast | gate/test_chain.py | test_part_limit_not_in_decision_record_fails |
+| T-PHASE-0073 | Telemetry save/load round trip | fast | gate/test_chain.py | test_telemetry_save_load_round_trip |

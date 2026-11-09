@@ -139,8 +139,8 @@ cadence = "P"
 command = "python -m tools.gate.gates.chain"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/chain_violation"
+clean_fixture = "fixtures/chain_clean"
 
 [gate.index]
 cadence = "P"
