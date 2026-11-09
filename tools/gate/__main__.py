@@ -19,6 +19,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from tools.gate.commit_check import main as commit_check_main
 from tools.gate.phase.checks import (
     PHASE_REPORT_FIELDS,
     PhaseCheckError,
@@ -299,6 +300,11 @@ def main() -> int:
                 print("usage: gate hash <path>", file=sys.stderr)
                 return 2
             return _cmd_hash(Path(rest[0]))
+        if command == "commit-check":
+            if len(rest) != 1:
+                print("usage: gate commit-check <file>", file=sys.stderr)
+                return 2
+            return commit_check_main(Path(rest[0]))
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":

@@ -75,40 +75,40 @@ cadence = "P"
 command = "python -m tools.gate.gates.hygiene"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/hygiene_violation"
+clean_fixture = "fixtures/hygiene_clean"
 
 [gate.secrets]
 cadence = "P"
 command = "python -m tools.gate.gates.secrets"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/secrets_violation"
+clean_fixture = "fixtures/secrets_clean"
 
 [gate.security]
 cadence = "P"
 command = "python -m tools.gate.gates.security"
 timeout = 120
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/security_violation.py"
+clean_fixture = "fixtures/security_clean.py"
 
 [gate.deps]
 cadence = "P"
 command = "python -m tools.gate.gates.deps"
 timeout = 120
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/deps_violation"
+clean_fixture = "fixtures/deps_clean"
 
 [gate.license]
 cadence = "P"
 command = "python -m tools.gate.gates.license"
 timeout = 120
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/license_violation"
+clean_fixture = "fixtures/license_clean"
 
 [gate.protect]
 cadence = "P"

@@ -1,0 +1,14 @@
+{
+    "dependencies": [
+        {
+            "name": "vulnerable-pkg",
+            "version": "1.0.0",
+            "vulns": [
+                {
+                    "id": "PYSEC-2021-12345",
+                    "fix_versions": ["1.0.1"]
+                }
+            ]
+        }
+    ]
+}

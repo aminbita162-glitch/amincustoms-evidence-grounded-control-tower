@@ -1,0 +1,11 @@
+# Protected exception file for the deps gate (P00-T06).
+#
+# Schema: each [[exceptions]] entry has:
+#   package           — the package name (SPDX-ish, str)
+#   vulnerability_id   — the CVE or advisory id (str)
+#   reason             — why the exception is granted (str)
+#   owner_decision_id  — the owner decision that authorises it (str)
+#   expiry             — ISO date (YYYY-MM-DD); an expired exception fails
+#
+# For P00 this file is empty — no exceptions are granted.
+# A vulnerability without an unexpired exception fails the deps gate.

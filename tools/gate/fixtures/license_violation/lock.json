@@ -1,0 +1,6 @@
+{
+    "packages": [
+        {"name": "evil-pkg", "version": "1.0.0", "license": "GPL-3.0"},
+        {"name": "safe-pkg", "version": "2.0.0", "license": "MIT"}
+    ]
+}

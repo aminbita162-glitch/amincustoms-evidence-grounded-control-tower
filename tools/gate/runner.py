@@ -150,6 +150,8 @@ def default_env(project_root: Path | None = None) -> dict[str, str]:
         if venv_bin.is_dir():
             existing = env.get("PATH", "")
             env["PATH"] = str(venv_bin) + (os.pathsep + existing if existing else "")
+        existing_pp = env.get("PYTHONPATH", "")
+        env["PYTHONPATH"] = str(project_root) + (os.pathsep + existing_pp if existing_pp else "")
     return env
 
 

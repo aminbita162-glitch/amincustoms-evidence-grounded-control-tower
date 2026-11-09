@@ -1,0 +1,15 @@
+# Bandit configuration for the AminCustoms security gate (P00-T06).
+# All built-in rules are enabled; no external rules are downloaded at run time.
+# Spec: Part 4 §4.12, Part 6 §6.13.
+
+# Exclude tooling and test code that legitimately uses subprocess.
+exclude_dirs:
+  - "tools/gate/fixtures"
+  - "tools/gate/gates"
+  - "tools/gate/phase"
+  - "tools/gate/runner.py"
+  - "tools/gate/__main__.py"
+  - "tools/gate/commit_check.py"
+  - "test-house"
+  - ".venv"
+  - "build"
