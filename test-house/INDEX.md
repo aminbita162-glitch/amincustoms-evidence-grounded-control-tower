@@ -84,31 +84,41 @@
 | T-PHASE-0010 | Extra report field fails validation | fast | gate/test_phase.py | test_extra_report_field_fails |
 | T-PHASE-0011 | Handwritten STATE edit fails (state_hash mismatch) | fast | gate/test_phase.py | test_handwritten_state_edit_fails |
 | T-PHASE-0012 | Baseline decrease fails check | fast | gate/test_phase.py | test_baseline_decrease_fails |
-| T-PHASE-0013 | Mixed golden and non-golden commit fails | fast | gate/test_phase.py | test_golden_mixed_commit_fails |
-| T-PHASE-0014 | Golden commit without proper scope or reason fails | fast | gate/test_phase.py | test_golden_commit_wrong_scope_fails |
-| T-PHASE-0015 | Wrong previous_merge_hash fails check | fast | gate/test_phase.py | test_wrong_previous_merge_hash_fails |
-| T-PHASE-0016 | awaiting_merge not cleared fails | fast | gate/test_phase.py | test_awaiting_merge_not_cleared_fails |
-| T-PHASE-0017 | PARKED predecessor outside depends_on does not block entry | fast | gate/test_phase.py | test_parked_predecessor_enters |
-| T-PHASE-0018 | PARKED dependency stops entry naming the phase | fast | gate/test_phase.py | test_parked_dependency_stops |
-| T-PHASE-0019 | Proper two-parent merge passes merge proof | fast | gate/test_phase.py | test_proper_merge_passes |
-| T-PHASE-0020 | Clean tree passes clean-tree check | fast | gate/test_phase.py | test_clean_tree_passes |
-| T-PHASE-0021 | Correct directive hash passes check | fast | gate/test_phase.py | test_correct_directive_hash_passes |
-| T-PHASE-0022 | Deleted previous branch passes check | fast | gate/test_phase.py | test_deleted_branch_passes |
-| T-PHASE-0023 | Correct previous_merge_hash passes check | fast | gate/test_phase.py | test_correct_previous_merge_hash_passes |
-| T-PHASE-0024 | State save/load round trip preserves all fields | fast | gate/test_phase.py | test_state_save_load_round_trip |
+| T-PHASE-0013 | Non-existent marker in Context Pack fails directive lint | fast | gate/test_directive.py | test_nonexistent_marker_fails |
+| T-PHASE-0014 | Missing phase block field fails directive lint | fast | gate/test_directive.py | test_missing_field_fails |
+| T-PHASE-0015 | Non-sequential task ids fail directive lint | fast | gate/test_directive.py | test_non_sequential_tasks_fails |
+| T-PHASE-0016 | Missing Pnn-RISK before Pnn-END1 fails directive lint | fast | gate/test_directive.py | test_missing_risk_fails |
+| T-PHASE-0017 | Duplicated test id range fails directive lint | fast | gate/test_directive.py | test_dup_test_range_fails |
+| T-PHASE-0018 | Look-ahead referencing non-existent phase fails | fast | gate/test_directive.py | test_bad_lookahead_fails |
+| T-PHASE-0019 | Missing Scope paths line fails directive lint | fast | gate/test_directive.py | test_missing_scope_paths_fails |
+| T-PHASE-0020 | Block count differing from phases.toml fails directive lint | fast | gate/test_directive.py | test_block_count_differs_fails |
+| T-PHASE-0021 | Clean directive passes all checks | fast | gate/test_directive.py | test_clean_directive_passes |
+| T-PHASE-0022 | Path outside scope globs fails scope check | fast | gate/test_directive.py | test_scope_outside_globs_fails |
+| T-PHASE-0023 | Protected path not named by a task fails scope check | fast | gate/test_directive.py | test_scope_protected_path_fails |
+| T-PHASE-0024 | Rename out of scope fails scope check | fast | gate/test_directive.py | test_scope_rename_out_of_scope_fails |
 | T-PHASE-0025 | No baseline decrease passes check | fast | gate/test_phase.py | test_no_baseline_decrease_passes |
 | T-PHASE-0026 | All DONE lines present passes check | fast | gate/test_phase.py | test_all_done_lines_pass |
 | T-PHASE-0027 | phases.toml loads with 33 phase entries | fast | gate/test_phase.py | test_phases_table_loads |
 | T-PHASE-0028 | STOP report with all required fields passes | fast | gate/test_phase.py | test_stop_report_valid |
 | T-PHASE-0029 | State hash is deterministic | fast | gate/test_phase.py | test_state_hash_deterministic |
 | T-PHASE-0030 | Self-review with 10 findings and no overflow passes | fast | gate/test_phase.py | test_selfreview_10_findings_passes |
+| T-PHASE-0041 | Valid stub commit passes stub mode check | fast | gate/test_directive.py | test_valid_stub_passes |
+| T-PHASE-0042 | Stub commit that changes another path fails | fast | gate/test_directive.py | test_stub_changes_other_path_fails |
+| T-PHASE-0043 | Stub text differing from stub.txt fails | fast | gate/test_directive.py | test_stub_text_differs_fails |
+| T-PHASE-0044 | Stub not the last commit fails | fast | gate/test_directive.py | test_stub_not_last_commit_fails |
+| T-PHASE-0045 | Parent not P32-END2 fails | fast | gate/test_directive.py | test_parent_not_end2_fails |
+| T-PHASE-0046 | Parent directive hash differing from STATE.json fails | fast | gate/test_directive.py | test_parent_hash_differs_fails |
+| T-PHASE-0047 | Changed directive.txt outside stub mode fails | fast | gate/test_directive.py | test_changed_directive_outside_stub_fails |
+| T-PHASE-0048 | On main with stub and STATE P32 DONE prints RELEASED | fast | gate/test_directive.py | test_released_prints |
 | T-PHASE-0049 | 11th finding without OVERFLOW line fails | fast | gate/test_phase.py | test_11_findings_without_overflow_fails |
 | T-PHASE-0050 | OVERFLOW line with wrong counts fails | fast | gate/test_phase.py | test_overflow_counts_differ_fails |
 | T-PHASE-0051 | Overflow file without OVERFLOW line fails | fast | gate/test_phase.py | test_overflow_file_without_line_fails |
 | T-PHASE-0052 | Finding over 40 words fails | fast | gate/test_phase.py | test_finding_over_40_words_fails |
-| T-PHASE-0053 | Finding within 40 words passes | fast | gate/test_phase.py | test_finding_within_40_words_passes |
-| T-PHASE-0054 | Finding missing category fails | fast | gate/test_phase.py | test_finding_missing_category_fails |
-| T-PHASE-0055 | Invalid finding category fails | fast | gate/test_phase.py | test_invalid_category_fails |
-| T-PHASE-0056 | Overflow with correct counts passes | fast | gate/test_phase.py | test_overflow_correct_passes |
-| T-PHASE-0057 | Self-review constants match spec | fast | gate/test_phase.py | test_selfreview_constants |
-| T-PHASE-0058 | State consistency with matching ledger passes | fast | gate/test_phase.py | test_state_consistency_passes |
+| T-PHASE-0053 | Undefined reason code fails cross-check | fast | gate/test_directive.py | test_cross_undefined_reason_code_fails |
+| T-PHASE-0054 | Wrong outcome word fails cross-check | fast | gate/test_directive.py | test_cross_wrong_outcome_word_fails |
+| T-PHASE-0055 | Unknown matching mode fails cross-check | fast | gate/test_directive.py | test_cross_unknown_matching_mode_fails |
+| T-PHASE-0056 | Unknown label fails cross-check | fast | gate/test_directive.py | test_cross_unknown_label_fails |
+| T-PHASE-0057 | Unknown status word fails cross-check | fast | gate/test_directive.py | test_cross_unknown_status_word_fails |
+| T-PHASE-0058 | Changed key-fact value fails cross-check | fast | gate/test_directive.py | test_cross_changed_keyfact_value_fails |
+| T-PHASE-0059 | Key-fact expression matching nowhere fails cross-check | fast | gate/test_directive.py | test_cross_keyfact_nowhere_fails |
+| T-PHASE-0060 | Clean cross-check passes and table block excluded | fast | gate/test_directive.py | test_cross_clean_passes |

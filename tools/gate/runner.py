@@ -550,10 +550,11 @@ def run_selftest(
 
 
 def _resolve_fixture(fixture: Path, project_root: Path) -> Path:
-    """Resolve a fixture path relative to the project root when not absolute."""
+    """Resolve a fixture path relative to the gate package directory when not absolute."""
     if fixture.is_absolute():
         return fixture
-    return project_root / fixture
+    gate_dir = Path(__file__).resolve().parent
+    return gate_dir / fixture
 
 
 def hash_file(path: Path) -> str:

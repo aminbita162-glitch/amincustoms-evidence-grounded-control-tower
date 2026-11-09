@@ -75,7 +75,8 @@ def _resolve_catalogue() -> Path:
 _USAGE = (
     "usage: gate list | gate run <name|set> | gate affected | "
     "gate report | gate hash <path> | gate protect [--update] | "
-    "gate baseline [--update] | gate selftest | gate phase entry|exit|end <NN>"
+    "gate baseline [--update] | gate directive [--cross-check] | "
+    "gate scope <NN> | gate selftest | gate phase entry|exit|end <NN>"
 )
 
 _SET_NAMES = ("quick", "phase", "nightly", "release")
@@ -360,6 +361,25 @@ def main() -> int:
         if command == "baseline":
             update = bool(rest) and rest[0] == "--update"
             return _cmd_baseline(repo_root, update)
+        if command == "directive":
+            from tools.gate.phase.directive import run_directive_gate
+
+            cross_check = "--cross-check" in rest
+            return run_directive_gate(repo_root, cross_check=cross_check)
+        if command == "scope":
+            from tools.gate.phase.scope import run_scope_gate
+
+            if rest:
+                phase_id = rest[0]
+                if not phase_id.startswith("P"):
+                    try:
+                        phase_id = f"P{int(phase_id):02d}"
+                    except ValueError:
+                        print("usage: gate scope <NN>", file=sys.stderr)
+                        return 2
+            else:
+                phase_id = "P00"
+            return run_scope_gate(repo_root, phase_id)
         if command == "report":
             return _cmd_report(log_dir)
         if command == "affected":

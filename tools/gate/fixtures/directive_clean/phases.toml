@@ -1,0 +1,17 @@
+[phase.P00]
+name = "Test phase 0"
+class = "M"
+capabilities = []
+depends_on = []
+
+[phase.P01]
+name = "Test phase 1"
+class = "M"
+capabilities = []
+depends_on = ["P00"]
+
+[phase.P02]
+name = "Test phase 2"
+class = "M"
+capabilities = []
+depends_on = ["P01"]

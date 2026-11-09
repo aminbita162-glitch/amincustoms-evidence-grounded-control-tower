@@ -123,16 +123,16 @@ cadence = "P"
 command = "python -m tools.gate.gates.directive"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/directive_violation"
+clean_fixture = "fixtures/directive_clean"
 
 [gate.scope]
 cadence = "P"
 command = "python -m tools.gate.gates.scope"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/scope_violation"
+clean_fixture = "fixtures/scope_clean"
 
 [gate.chain]
 cadence = "P"
