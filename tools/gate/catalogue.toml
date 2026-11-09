@@ -67,8 +67,8 @@ cadence = "P"
 command = "python -m tools.gate.gates.docs"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/docs_violation"
+clean_fixture = "fixtures/docs_clean"
 
 [gate.hygiene]
 cadence = "P"
