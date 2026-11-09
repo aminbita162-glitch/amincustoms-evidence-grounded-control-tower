@@ -1,0 +1,116 @@
+{
+  "p00": [
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "license": "MIT",
+      "purpose": "registers, Source Registry and workflow files; safe_load only",
+      "class": "RUNTIME",
+      "basis": "F"
+    },
+    {
+      "name": "ruff",
+      "version": "0.17.4",
+      "license": "MIT",
+      "purpose": "format and lint",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "mypy",
+      "version": "2.4.1",
+      "license": "MIT",
+      "purpose": "strict typing",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "pytest",
+      "version": "9.2.0",
+      "license": "MIT",
+      "purpose": "test runner",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "pytest-cov",
+      "version": "7.1.0",
+      "license": "MIT",
+      "purpose": "branch coverage",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "pytest-xdist",
+      "version": "3.8.0",
+      "license": "MIT",
+      "purpose": "parallel runs",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "pytest-randomly",
+      "version": "5.0.0",
+      "license": "MIT",
+      "purpose": "random order with recorded seed",
+      "class": "DEV",
+      "basis": "E"
+    },
+    {
+      "name": "pytest-timeout",
+      "version": "2.4.0",
+      "license": "MIT",
+      "purpose": "per-test limits",
+      "class": "DEV",
+      "basis": "F"
+    },
+    {
+      "name": "bandit",
+      "version": "1.9.4",
+      "license": "Apache-2.0",
+      "purpose": "static security analysis",
+      "class": "DEV",
+      "basis": "F"
+    },
+    {
+      "name": "pip-audit",
+      "version": "2.10.1",
+      "license": "Apache-2.0",
+      "purpose": "dependency vulnerability audit",
+      "class": "DEV",
+      "basis": "C"
+    },
+    {
+      "name": "uv",
+      "version": "0.13.7",
+      "license": "MIT OR Apache-2.0",
+      "purpose": "package management, hash-locked lock file",
+      "class": "TOOL",
+      "basis": "E"
+    },
+    {
+      "name": "gitleaks",
+      "version": "8.30.1",
+      "license": "MIT",
+      "purpose": "secret scanning",
+      "class": "TOOL",
+      "basis": "G"
+    },
+    {
+      "name": "actions/checkout",
+      "version": "v7.0.1",
+      "license": "MIT",
+      "purpose": "checkout repository in CI",
+      "class": "ACTION",
+      "basis": "G"
+    },
+    {
+      "name": "actions/upload-artifact",
+      "version": "v7.0.2",
+      "license": "MIT",
+      "purpose": "upload artifacts in CI",
+      "class": "ACTION",
+      "basis": "G"
+    }
+  ]
+}
