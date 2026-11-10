@@ -10,7 +10,8 @@ whose licence expression has any component outside the allowlist fails.
 assets; a stale file fails the gate.
 
 When a ``lock.json`` file exists in the current directory the gate reads the
-package list from it instead of introspecting the installed environment.
+package list from it instead of reading uv.lock, the default source
+(licences are then read from the installed metadata of each locked package).
 This allows the selftest and unit tests to exercise the licence logic without
 network access.
 
@@ -23,6 +24,8 @@ from __future__ import annotations
 
 import json
 import sys
+import tomllib
+from importlib.metadata import PackageMetadata, PackageNotFoundError, distribution
 from pathlib import Path
 
 __all__ = [
@@ -33,6 +36,7 @@ __all__ = [
     "check_licenses",
     "generate_notices",
     "load_lock",
+    "load_locked_packages",
     "main",
 ]
 
@@ -70,7 +74,8 @@ def _split_license_expression(expr: str) -> list[str]:
     import re
 
     tokens = re.split(r"[\s/]+OR[\s/]+|[\s/]+AND[\s/]+", expr)
-    return [t.strip() for t in tokens if t.strip()]
+    cleaned = [t.strip().strip("()").strip() for t in tokens]
+    return [t for t in cleaned if t]
 
 
 def _is_license_allowed(license_expr: str, package: str) -> bool:
@@ -110,6 +115,73 @@ def load_lock(path: Path) -> list[dict[str, str]]:
                     "license": str(pkg.get("license", "")),
                 }
             )
+    return packages
+
+
+_ALIASES: dict[str, str] = {
+    "MIT License": "MIT",
+    "Apache 2.0": "Apache-2.0",
+    "Apache License 2.0": "Apache-2.0",
+    "Apache License, Version 2.0": "Apache-2.0",
+    "Apache Software License": "Apache-2.0",
+    "BSD 3-Clause License": "BSD-3-Clause",
+    "BSD 2-Clause License": "BSD-2-Clause",
+    "ISC License": "ISC",
+    "ISC License (ISCL)": "ISC",
+    "PSFL": "PSF-2.0",
+    "Python Software Foundation License": "PSF-2.0",
+    "Mozilla Public License 2.0 (MPL 2.0)": "MPL-2.0",
+}
+_CLASSIFIER_PREFIX = "License :: OSI Approved :: "
+
+
+def _resolve_license(meta: PackageMetadata) -> str:
+    """Return the licence of a package from its installed metadata.
+
+    Order: the License-Expression field, then a short single-line License field,
+    then exactly one recognised licence classifier.  Anything else is unrecorded.
+    """
+    expr = (meta.get("License-Expression") or "").strip()
+    if expr:
+        return expr
+    text = (meta.get("License") or "").strip()
+    if text and len(text) <= 80 and chr(10) not in text:
+        return _ALIASES.get(text, text)
+    found: set[str] = set()
+    for classifier in meta.get_all("Classifier") or []:
+        if classifier.startswith(_CLASSIFIER_PREFIX):
+            alias = _ALIASES.get(classifier[len(_CLASSIFIER_PREFIX) :])
+            if alias:
+                found.add(alias)
+    if len(found) == 1:
+        return found.pop()
+    return ""
+
+
+def load_locked_packages(lock_path: Path) -> list[dict[str, str]]:
+    """Read every locked package from uv.lock and its licence from installed metadata."""
+    try:
+        data = tomllib.loads(lock_path.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        raise LicenseError(f"cannot load uv.lock: {exc}") from exc
+    entries = data.get("package")
+    if not isinstance(entries, list):
+        raise LicenseError("uv.lock has no package list")
+    packages: list[dict[str, str]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        source = entry.get("source")
+        if isinstance(source, dict) and ("editable" in source or "virtual" in source):
+            continue
+        name = str(entry.get("name", ""))
+        version = str(entry.get("version", ""))
+        try:
+            meta = distribution(name).metadata
+        except PackageNotFoundError:
+            print(f"license: NOTE {name} is locked but not installed on this platform, skipped")
+            continue
+        packages.append({"name": name, "version": version, "license": _resolve_license(meta)})
     return packages
 
 
@@ -154,19 +226,11 @@ def main() -> int:
             print(f"license: ERROR {exc}", file=sys.stderr)
             return 2
     else:
-        # Fallback: introspect installed packages.
         try:
-            import importlib.metadata as ilm
-        except ImportError:
-            print("license: ERROR cannot introspect installed packages", file=sys.stderr)
+            packages = load_locked_packages(cwd / "uv.lock")
+        except LicenseError as exc:
+            print(f"license: ERROR {exc}", file=sys.stderr)
             return 2
-        packages = []
-        for dist in ilm.distributions():
-            name = dist.metadata.get("Name", "")
-            version = dist.version
-            license_expr = dist.metadata.get("License", "")
-            if name:
-                packages.append({"name": name, "version": version, "license": license_expr})
 
     violations = check_licenses(packages)
     if violations:
