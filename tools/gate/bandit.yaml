@@ -1,4 +1,4 @@
-# Bandit configuration for the AminCustoms security gate (P00-T06).
+# Bandit configuration for the Control Tower security gate (P00-T06).
 # All built-in rules are enabled; no external rules are downloaded at run time.
 # Spec: Part 4 §4.12, Part 6 §6.13.
 

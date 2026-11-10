@@ -1,4 +1,4 @@
-# AminCustoms phase table (Part 6 §6.2). 33 phases in final order.
+# Control Tower phase table (Part 6 §6.2). 33 phases in final order.
 #
 # Each [phase.PNN] entry has: name, class (S/M/L), capabilities (list), depends_on (list).
 # The depends_on field lists phases that must be DONE and merged before this

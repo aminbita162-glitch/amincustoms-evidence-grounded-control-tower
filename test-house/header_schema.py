@@ -1,4 +1,4 @@
-"""Mandatory test header schema for the AminCustoms test house (P00-T04).
+"""Mandatory test header schema for the Control Tower test house (P00-T04).
 
 Every test function must carry a header with these fields:
     id, title, purpose, level, requirement, input, expected, risk, capability.

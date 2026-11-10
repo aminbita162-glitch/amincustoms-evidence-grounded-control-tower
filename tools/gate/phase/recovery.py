@@ -1,4 +1,4 @@
-"""Recovery check for the AminCustoms phase machinery (P00-T13).
+"""Recovery check for the Control Tower phase machinery (P00-T13).
 
 Implements the Recovery Check of Part 1 §7.5 and the interruption recovery of
 §7.5a(a).  ``gate phase recovery <NN>`` verifies the branch, the ledger DONE

@@ -1,4 +1,4 @@
-"""Shared pytest configuration for the AminCustoms test house (P00-T04)."""
+"""Shared pytest configuration for the Control Tower test house (P00-T04)."""
 
 from __future__ import annotations
 

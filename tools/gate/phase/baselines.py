@@ -1,4 +1,4 @@
-"""Coverage baselines read/write/check for the AminCustoms phase machinery (P00-T05).
+"""Coverage baselines read/write/check for the Control Tower phase machinery (P00-T05).
 
 ``docs/state/baselines.json`` records the floor coverage values per component.
 A phase that decreases coverage below its baseline is a STOP.

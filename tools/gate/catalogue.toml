@@ -1,4 +1,4 @@
-# AminCustoms gate catalogue (Part 6 §6.13, P00-T03).
+# Control Tower gate catalogue (Part 6 §6.13, P00-T03).
 #
 # Every [gate.NAME] entry MUST declare: cadence, command, timeout, activates_in,
 # violation_fixture and clean_fixture. An entry without both fixture keys is a

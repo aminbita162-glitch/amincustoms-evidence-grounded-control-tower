@@ -1,4 +1,4 @@
-"""Self-review validation for the AminCustoms phase machinery (P00-T05).
+"""Self-review validation for the Control Tower phase machinery (P00-T05).
 
 Validates the phase self-review (Part 1 §9.3):
   - at most 10 findings in the main text

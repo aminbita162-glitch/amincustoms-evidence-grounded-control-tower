@@ -1,4 +1,4 @@
-"""Tests for the AminCustoms gate runner (P00-T03).
+"""Tests for the Control Tower gate runner (P00-T03).
 
 Every test carries a header (id, title, purpose, level, requirement ids, input,
 expected result, risk covered, owning capability) per Part 4 §4.5.

@@ -1,4 +1,4 @@
-"""STOP report validation for the AminCustoms phase machinery (P00-T05, P00-T13).
+"""STOP report validation for the Control Tower phase machinery (P00-T05, P00-T13).
 
 Validates a STOP report (Part 1 §12.4) against the required fields:
 phase, task, condition, what happened, attempts, evidence, decision needed,

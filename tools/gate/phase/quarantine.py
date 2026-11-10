@@ -1,4 +1,4 @@
-"""Quarantine-tree for the AminCustoms phase machinery (P00-T13).
+"""Quarantine-tree for the Control Tower phase machinery (P00-T13).
 
 Implements the quarantine-tree command of Part 1 §7.5a(b): stores the dirty
 state as a patch bundle with a manifest under the ignored path

@@ -1,4 +1,4 @@
-"""STATE.json read/write/validate for the AminCustoms phase machinery (P00-T05).
+"""STATE.json read/write/validate for the Control Tower phase machinery (P00-T05).
 
 The state file is the single source of truth for the phase runner: which phase
 was last completed, the merge commit hash of the previous phase, the directive

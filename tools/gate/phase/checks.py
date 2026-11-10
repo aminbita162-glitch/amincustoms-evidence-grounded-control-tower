@@ -1,4 +1,4 @@
-"""Phase entry/exit checks for the AminCustoms phase machinery (P00-T05).
+"""Phase entry/exit checks for the Control Tower phase machinery (P00-T05).
 
 Implements the entry verification checks of Part 1 §8.2 and the exit
 verification checks of Part 1 §9.1, plus the golden-commit rule of §4.8 and

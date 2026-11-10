@@ -1,4 +1,4 @@
-"""Tests for the AminCustoms phase machinery (P00-T05).
+"""Tests for the Control Tower phase machinery (P00-T05).
 
 Every test carries a header (id, title, purpose, level, requirement, input,
 expected result, risk, capability) per Part 4 §4.5.

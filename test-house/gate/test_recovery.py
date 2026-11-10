@@ -15,6 +15,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+
 from gate.replay_fixture import (
     add_done_line,
     commit_task_file_only,
@@ -28,7 +29,6 @@ from gate.replay_fixture import (
     run_tasks,
     tree_hash,
 )
-
 from tools.gate.phase.quarantine import (
     INTERRUPTION_RECORD_FIELDS,
     create_bundle,

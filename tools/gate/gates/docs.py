@@ -52,7 +52,7 @@ REQUIRED_HONESTY_LINES: tuple[str, ...] = (
     "This holds regardless of position, title or role.",
 )
 
-PROJECT_NAME = "AminCustoms Evidence-Grounded Control Tower"
+PROJECT_NAME = "Evidence-Grounded Control Tower"
 PROJECT_TAGLINE = "Evidence-grounded advisory pre-checks for customs and transit cases."
 
 FORBIDDEN_PATTERNS: tuple[str, ...] = (

@@ -1,7 +1,7 @@
 A person's worth lies in their honesty.
 This holds regardless of position, title or role.
 
-# AminCustoms Evidence-Grounded Control Tower
+# Evidence-Grounded Control Tower
 
 Evidence-grounded advisory pre-checks for customs and transit cases.
 
@@ -21,7 +21,7 @@ Level labels describe an engineering target, not a present claim.
 
 AI Architect Amin Azimi - End to End System Development & Business Challenge
 Azimi Innovation Lab
-Project: AminCustoms Evidence-Grounded Control Tower
+Project: Evidence-Grounded Control Tower
 Version 1, November 2026
 
 ## 4 What it is and is not

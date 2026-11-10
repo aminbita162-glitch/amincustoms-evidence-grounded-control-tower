@@ -1,4 +1,4 @@
-"""Command-line entry point for the AminCustoms gate runner.
+"""Command-line entry point for the Control Tower gate runner.
 
 Commands:
     gate list                 list every gate with cadence, activates_in, status
