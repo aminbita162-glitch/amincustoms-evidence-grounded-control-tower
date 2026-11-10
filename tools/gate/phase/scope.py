@@ -262,6 +262,10 @@ def _load_protected_paths(path: Path) -> list[str]:
 
 
 def _repo_root() -> Path:
+    """Resolve the repository root, respecting GATE_ROOT if set."""
+    gate_root = os.environ.get("GATE_ROOT")
+    if gate_root:
+        return Path(gate_root).resolve()
     return Path(__file__).resolve().parents[3]
 
 

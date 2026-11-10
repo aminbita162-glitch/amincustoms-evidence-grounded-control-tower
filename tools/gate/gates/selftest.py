@@ -30,7 +30,8 @@ def _repo_root() -> Path:
 
 def _gate_package_dir() -> Path:
     """The ``tools/gate`` package directory (parent of this module's package)."""
-    return Path(__file__).resolve().parents[2]
+    # tools/gate/gates/selftest.py -> parents[1] is tools/gate/.
+    return Path(__file__).resolve().parents[1]
 
 
 def main() -> int:

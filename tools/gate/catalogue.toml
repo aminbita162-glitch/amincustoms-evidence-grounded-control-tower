@@ -59,8 +59,8 @@ cadence = "P"
 command = "python -m tools.gate.gates.state"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/state_violation"
+clean_fixture = "fixtures/state_clean"
 
 [gate.docs]
 cadence = "P"
@@ -115,8 +115,8 @@ cadence = "P"
 command = "python -m tools.gate.gates.protect"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/protect_violation"
+clean_fixture = "fixtures/protect_clean"
 
 [gate.directive]
 cadence = "P"
@@ -147,8 +147,8 @@ cadence = "P"
 command = "python -m tools.gate.gates.index"
 timeout = 60
 activates_in = "P00"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "fixtures/index_violation"
+clean_fixture = "fixtures/index_clean"
 
 # ---- Later-phase gates (NOT_ACTIVE at P00; echo stubs, no fixtures) -------
 # Activated per the schedule in Part 6 §6.13.

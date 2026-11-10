@@ -61,7 +61,11 @@ def run_gitleaks(cwd: Path) -> tuple[int, list[dict[str, object]], str | None]:
 
     Returns ``(exit_code, findings, error_message)``.
     """
-    gitleaks = _gate_dir() / ".venv" / "bin" / "gitleaks"
+    # Check tools/ci/gitleaks first (P00 download location).
+    repo_root = Path(__file__).resolve().parents[3]
+    gitleaks = repo_root / "tools" / "ci" / "gitleaks"
+    if not gitleaks.is_file():
+        gitleaks = _gate_dir() / ".venv" / "bin" / "gitleaks"
     if not gitleaks.is_file():
         gitleaks = Path("gitleaks")
     cmd: list[str] = [

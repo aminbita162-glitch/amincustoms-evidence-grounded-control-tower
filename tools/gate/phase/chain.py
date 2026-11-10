@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -158,7 +159,10 @@ def verify_chain(path: Path) -> list[str]:
 
 
 def _repo_root() -> Path:
-    """Resolve the repository root from this module's location."""
+    """Resolve the repository root, respecting GATE_ROOT if set."""
+    gate_root = os.environ.get("GATE_ROOT")
+    if gate_root:
+        return Path(gate_root).resolve()
     return Path(__file__).resolve().parents[3]
 
 

@@ -205,8 +205,28 @@ def get_tracked_files(root: Path) -> list[Path]:
 
 
 def get_commit_messages(root: Path) -> list[str]:
-    """Return commit message bodies from the branch, or a ``COMMIT_MSG`` file."""
+    """Return commit message bodies from the branch, or a ``COMMIT_MSG`` file.
+
+    In a git repo, returns messages from commits on the current branch that
+    are not on ``main`` (the pull-request range).  This excludes the owner's
+    pre-flight commits (initial commit, directive, run-parameters) which do
+    not follow the task-commit format.  If ``main`` does not exist, falls back
+    to all commits from ``HEAD``.
+    """
     if _is_git_repo(root):
+        # Try the PR range: commits on this branch not on main.
+        result = subprocess.run(
+            ["git", "log", "--format=%B", "main..HEAD"],
+            capture_output=True,
+            text=True,
+            cwd=str(root),
+            env=_git_env(),
+            check=False,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            messages = _split_git_log(result.stdout)
+            return [m for m in messages if m.strip()]
+        # Fallback: all commits from HEAD.
         result = subprocess.run(
             ["git", "log", "--format=%B", "HEAD"],
             capture_output=True,
@@ -216,12 +236,7 @@ def get_commit_messages(root: Path) -> list[str]:
             check=False,
         )
         if result.returncode == 0:
-            messages = result.stdout.split("\n\x00") if "\x00" in result.stdout else []
-            if not messages:
-                # Split on commit boundaries (git log --format=%B separates
-                # commits with a blank line that starts with the hash).
-                # Use a simpler approach: split on double-newline boundaries.
-                messages = _split_git_log(result.stdout)
+            messages = _split_git_log(result.stdout)
             return [m for m in messages if m.strip()]
         return []
     # Fallback for non-git directories (selftest temp dirs).
@@ -346,7 +361,10 @@ def _structural_checks(
     commit_messages: list[str],
     pr_text: str | None,
 ) -> list[str]:
-    """Run commit-check structural checks on commit messages and PR text."""
+    """Run commit-check structural checks on commit messages and PR text.
+
+    Every commit message and the pull-request text must pass the structural checks.
+    """
     violations: list[str] = []
     for i, msg in enumerate(commit_messages):
         issues = check_commit_message(msg)

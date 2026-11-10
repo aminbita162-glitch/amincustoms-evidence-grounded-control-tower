@@ -33,7 +33,8 @@ def _repo_root() -> Path:
 
 
 def _gate_dir() -> Path:
-    return Path(__file__).resolve().parents[2]
+    # tools/gate/gates/security.py -> parents[1] is tools/gate/.
+    return Path(__file__).resolve().parents[1]
 
 
 def run_bandit(cwd: Path) -> tuple[int, list[dict[str, object]], str | None]:
@@ -43,7 +44,7 @@ def run_bandit(cwd: Path) -> tuple[int, list[dict[str, object]], str | None]:
     *exit_code* is 0 (clean), 1 (issues found) or 2 (tool error).
     """
     config = _gate_dir() / "bandit.yaml"
-    cmd: list[str] = [sys.executable, "-m", "bandit", "-r", str(cwd), "-f", "json"]
+    cmd: list[str] = [sys.executable, "-m", "bandit", "-r", str(cwd), "-f", "json", "-q"]
     if config.is_file():
         cmd.extend(["-c", str(config)])
     try:

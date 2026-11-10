@@ -17,6 +17,7 @@ Invokable as ``python -m tools.gate.gates.index``.
 from __future__ import annotations
 
 import ast
+import os
 import re
 import sys
 from dataclasses import dataclass
@@ -377,9 +378,17 @@ def check_index(directory: Path) -> list[Violation]:
 # ---------------------------------------------------------------------------
 
 
+def _repo_root() -> Path:
+    """Resolve the repository root, respecting GATE_ROOT if set."""
+    gate_root = os.environ.get("GATE_ROOT")
+    if gate_root:
+        return Path(gate_root).resolve()
+    return Path(__file__).resolve().parents[3]
+
+
 def main() -> int:
     """Entry point: check the test index, write if clean, exit 0 or 1."""
-    root = Path(__file__).resolve().parents[3]
+    root = _repo_root()
     test_house = root / "test-house"
     violations = check_index(test_house)
     # Always write the current index so it stays up to date.

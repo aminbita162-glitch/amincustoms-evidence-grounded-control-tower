@@ -19,6 +19,7 @@ Spec: Part 6 §6.2, Part 8 §8.3, P00-T09.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import tomllib
@@ -85,7 +86,10 @@ FORBIDDEN_PATTERNS: tuple[str, ...] = (
 
 
 def _repo_root() -> Path:
-    """Resolve the repository root from this module's location."""
+    """Resolve the repository root, respecting GATE_ROOT if set."""
+    gate_root = os.environ.get("GATE_ROOT")
+    if gate_root:
+        return Path(gate_root).resolve()
     return Path(__file__).resolve().parents[3]
 
 
