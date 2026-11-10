@@ -59,7 +59,7 @@ A person decides before any irreversible action. The system does not take an irr
 
 | Phase | Name | Status |
 |---|---|---|
-| P00 | Repository bootstrap | ☐ |
+| P00 | Repository bootstrap | ✓ November 2026 |
 | P01 | Risk management system | ☐ |
 | P02 | Source Registry and data governance | ☐ |
 | P03 | Kernel contracts | ☐ |
