@@ -1,7 +1,8 @@
 <<<DIRECTIVE>>>
-BUILD DIRECTIVE — v1.0
+BUILD DIRECTIVE — v1.1
 Status: Active Development.
 Parts 1 to 8 follow in order. Part 1 outranks every other part.
+Revision v1.1 (owner revision, applied after phase P00 was merged): adds Part 1 sections 13 and 14, Part 2 section 2.18, Part 6 sections 6.20 to 6.22 and the matching changes to tasks P01-T08, P08-END1, the Context Packs of P01, P08 and P09, the scope of P31, the display names of decision D-38, the project name and the decisions D-45 to D-47. No phase, no capability and no earlier task id changed.
 
 <<<PART-1>>>
 PART 1 — AGENT OPERATING RULES (IMMUTABLE)
@@ -120,6 +121,24 @@ Agent: the executing agent (you). Owner: the repository owner who issues command
 12.4 STOP report: phase and task; condition (rule number); what happened; attempts made, each with diagnosis and failure signature (when 7.3 applies); evidence; the exact decision needed; options with consequences; what is untouched.
 12.5 Phase report: Entry report, Exit report, commit table, self-review (9.3), directive hash, budgets used, label counts.
 12.6 Interruption record (`docs/phase-reports/Pxx-INT-k.md`): phase; interrupted task or phase-end step; last task with a DONE line; hash of the patch bundle; list of paths in the bundle; what was untouched.
+13. RUN DISCIPLINE (locked by the owner; applies to every phase)
+13.1 One command, one phase. A command runs exactly the phase it names, from the first task to the end line of 10.8, and then stops (10.9). The agent starts no other phase, prepares no later phase and proposes no next step.
+13.2 Alone. The agent does all work itself, one task at a time, in the order of the phase block. It does not create, start, delegate to or wait for any other agent, subagent, worker, background run or parallel session, whatever the platform offers. A platform setting that would do so is not used; if it cannot be switched off and it is triggered, STOP.
+13.3 Task cycle. For each task in order: do only that task (3.5); run its own tests and the gates it names; fix failures within 7.3; commit as Section 4 requires, with the task id; write its DONE line; then take the next task. A task is never combined with another, never left uncommitted and never skipped.
+13.4 No questions, no waiting. The agent never asks the owner a question, never asks for confirmation or permission, never waits for a reply, and never idles, polls or sleeps while it waits for anything. Whatever needs the owner is a STOP with the report of 12.4, after which the run ends. A question in the conversation in place of a STOP report is a violation of this rule.
+13.5 Limits. The agent tracks its tool calls and tokens against the budget of the phase and against any platform limit it can see. Before each task it checks that the remaining allowance covers that task and the phase-end sequence; if it does not, it STOPs with the budget condition of 7.1 while it still can. A run that ends at a limit without a STOP report is an interruption (7.5a) and never a normal end.
+13.6 Phase end. After the last task the agent runs the full test suite and every gate of the phase set (10.1), the directive cross-check, and the leftover check: the working tree is clean, nothing is staged, no file is untracked except ignored paths, no temporary file or branch remains. It then follows Sections 9 and 10 in order, prints the end line of 10.8 and stops (10.9). The owner merges only after that end line and never during a phase (10.7).
+13.7 Memory. The agent keeps no persistent notes, memory, skills or learned preferences about this project outside the repository (2.4). Self-review features of a platform that write such notes are not used. The notes of the project are the ledger, the reports and the registers that this directive defines.
+13.8 Honest report. The phase report lists every known debt, risk, contradiction, gap and owner-approved exception that the phase met (9.3), including history rewrites, interruptions, changes made after a gate failure and any bypass or weakening a fix left open. "No findings" is allowed only when none exists. Findings of the previous phase report that are DEBT or RISK are read at Entry Verification and are listed in the next report as carried, closed or still open; none is dropped silently. A report that leaves out a known item breaks 11.9.
+13.9 Owner changes. The owner can change or waive any rule of this directive. A change or waiver counts only as a command or as a file in docs/decisions/; the agent records it in the phase report and, where the wording leaves doubt, follows the stricter reading.
+
+14. OWNER REVISION OF THIS DIRECTIVE
+14.1 The owner replaces `directive.txt` only after the pull request of a phase is merged and before the next command, never during a phase. The agent never edits the file, except for the stub of 10.4a.
+14.2 After a replacement the owner (a) records the new hash in `docs/state/STATE.json` through the gate state module and never by hand; (b) updates the protected hash baseline with the gate; (c) sets the first line of `docs/decisions/run-parameters.md` to `directive: <hash8>` of the new file; (d) commits and pushes these changes to main; (e) issues the next command with the clause "; directive: <hash8>" (1.5). Entry Verification then proves that the file, STATE.json and the command agree; any difference is a STOP.
+14.3 A revision changes no merged phase. Work that touches earlier phases is done by tasks of a later phase that list it.
+14.4 The command "Resume Phase N, interruption" is valid only when the directive has not changed since the interrupted run, because that form carries no hash clause.
+14.5 The first line of this file names the revision and the note below it states in one sentence what the revision changed.
+
 <<<END-PART-1>>>
 
 <<<PART-2>>>
@@ -299,6 +318,15 @@ Advisory pre-check: an assessment before filing, not a filing. Case: one shipmen
 <<<P2-S17>>>
 2.17 ACCEPTANCE OF THE WHOLE PRODUCT
 Accepted when: all 40 capabilities meet their Definition of Done; PR-01..PR-17 each pass their verifying gate; the release gate set passes; replay, ledger verification and the restore drill pass; the leakage and containment suites pass; documentation and claims audits pass; and the README matches repository facts.
+<<<P2-S18>>>
+2.18 DATA MATURITY PATH
+The product passes through four stages of data. A stage is entered only by an owner decision recorded in docs/decisions/, never by a phase.
+- Stage 0, synthetic: all data, packs, scenarios and evaluations are generated and carry the label SYNTHETIC. Every phase of this directive works here. Claims at this stage concern the engineering (determinism, evidence, containment), not accuracy on real cases.
+- Stage 1, public sample: public documents and official lists whose licence and redistribution are verified (V-04 to V-07). Labels are never stronger than their sources. No tenant data.
+- Stage 2, tenant pilot: real tenant data under a written agreement, with the legal review of D-11 in hand, the region profile of D-42 set and calibration artifacts of class VALIDATED_TENANT (D-43). Observed results carry the label REVIEWER_OUTCOMES until a statistic exists.
+- Stage 3, operation: continuous use with the monitoring, restore and exit drills of Part 4 passing.
+Each stage lists the V-items that must be closed and the decisions that must be recorded. No stage changes two rules: a Decision never depends on a model, and ALLOW needs verified evidence. The README names the current stage in one line.
+
 <<<END-PART-2>>>
 
 <<<PART-3>>>
@@ -407,7 +435,7 @@ Tests: known-answer vectors for every hash and proof; property tests for inclusi
 
 <<<P3-S9>>>
 3.9 AGENTS, ORCHESTRATION AND HUMAN GATE
-- Roles: Manager (deterministic orchestrator, no model) and five workers: Intake and Extraction, Compliance, Logistics and Cost, Planner, Risk and Red-Team. Workers are components with typed ports, not free-form conversation participants. Display names chosen by the owner (D-38), used in the reviewer interface, reports and documentation next to the role name: Amin (Manager), Ahmad (Intake and Extraction), Aylin (Compliance), Alina (Logistics and Cost), Amilos (Planner), Kian (Risk and Red-Team). The role name stays the identifier in code, schemas and contracts; a display name never appears in an identifier. Each role also has a stable role id from a closed list (ROLE-MANAGER, ROLE-INTAKE, ROLE-COMPLIANCE, ROLE-LOGISTICS, ROLE-PLANNER, ROLE-RISK), which is the only form that the ledger, the Passport, logs, schemas and fixtures use for a role. The mapping from role id to display name lives in one place, the text catalogue of the views and the generated documentation; the views and documents resolve it at display time, so renaming a role changes no stored record and no signature, and a printed or exported document states the role id beside the display name. Per-role contracts are in 3.25; containment is in 3.30.
+- Roles: Manager (deterministic orchestrator, no model) and five workers: Intake and Extraction, Compliance, Logistics and Cost, Planner, Risk and Red-Team. Workers are components with typed ports, not free-form conversation participants. Display names chosen by the owner (D-38), used in the reviewer interface, reports and documentation next to the role name: Conductor (Manager), Reader (Intake and Extraction), Verifier (Compliance), Estimator (Logistics and Cost), Planner (Planner), Sentinel (Risk and Red-Team). The role name stays the identifier in code, schemas and contracts; a display name never appears in an identifier. Each role also has a stable role id from a closed list (ROLE-MANAGER, ROLE-INTAKE, ROLE-COMPLIANCE, ROLE-LOGISTICS, ROLE-PLANNER, ROLE-RISK), which is the only form that the ledger, the Passport, logs, schemas and fixtures use for a role. The mapping from role id to display name lives in one place, the text catalogue of the views and the generated documentation; the views and documents resolve it at display time, so renaming a role changes no stored record and no signature, and a printed or exported document states the role id beside the display name. Per-role contracts are in 3.25; containment is in 3.30.
 - Messages are typed and schema-validated; free text appears only inside designated explanation fields and is never parsed for commands.
 - Manager: executes a DAG of capability invocations from a declarative workflow; enforces per-case budget, timeouts, retry limits and idempotency; records every step; chooses the deterministic path whenever one exists.
 - Red-Team role: attempts to falsify a Decision using adversarial scenarios and the same verifiers; its findings are Evidence, and an unresolved finding forces ESCALATE.
@@ -760,7 +788,7 @@ README checks: a gate verifies the order of sections, the presence of the requir
 - Every dependency is recorded with name, version, license identifier (SPDX) and purpose; unused dependencies fail the gate.
 - The allowlist controls inputs only. The licence of the work itself is proprietary, all rights reserved, and no dependency licence on the allowlist restricts selling, assigning, gifting or sublicensing the work or any of its modules.
 - The check covers every package in the lock, direct and transitive. A package whose licence expression has any component outside the allowlist fails the gate. A new version of any package triggers a new licence check before the lock changes.
-- `docs/THIRD_PARTY_NOTICES.txt` lists every package and vendored asset with name, version, licence identifier and the licence text or attribution the licence requires. It is generated by the licence gate from the lock and the vendored assets, never edited by hand; a stale file fails the gate.
+- `docs/THIRD_PARTY_NOTICES.txt` lists every package and vendored asset with name, version, licence identifier and the licence text or attribution the licence requires. It is generated by the licence gate from the lock and the vendored assets, never edited by hand; a stale file fails the gate. Before P31 the file is generated into the working tree but ignored by git and not committed; task P31-T05 commits it and removes the ignore entry.
 - Third-party copyrighted tables and texts are not stored (Part 3 §3.12).
 - Hygiene gate: forbidden patterns are held outside the repository (CI secret store) in two lists. `HYGIENE_PATTERNS` (always forbidden) holds the names of development agents and editors and process words, and matches in every tracked file, commit message and pull request text without exception. `HYGIENE_PATTERNS_VENDOR` (forbidden except in declared paths) holds model-provider names, which the product legitimately needs in its provider adapters; it is skipped only for files whose path matches an entry of the protected file `tools/gate/hygiene_scope.toml` (entry: path glob, reason, owner decision id; allowed only under the adapter, provider-configuration, provider-test and provider-documentation paths), and never for commit messages, pull request text, the README or this directive. The gate fails closed: a missing or empty list, or a list under the minimum entry count, is a failure, not a pass. The gate reports only pass or fail and the file path. The project is agent-neutral: the patterns include the names of development agents, editors and their vendors, so no repository file, commit message or pull request text names the agent that produced it, and any capable agent can continue the work from the repository state alone. Authority and local behaviour: CI is the only place where the lists exist, so the full scan runs there and its pass is a required check of the pull request. Where the lists are not present (every local run by the agent) the gate does not fail and does not stop the run: it reports the status NOT_RUN_LOCAL, which is listed in the gate table as pending in CI, is never counted as passed and never read as a pass by `gate phase`. The agent is never given the lists, a path to them or an environment that holds them; if it finds them, that is a STOP (Part 1 §7.1). The structural checks that need no list (below, `gate commit-check`) run locally and in CI.
 
@@ -3874,6 +3902,18 @@ CP8 Definition of Done evidence. The twelve items of Part 5 §5.1.5 are shown pe
 CP9 Reading discipline. A capability phase reads its capability sections only through the markers of its Context Pack (for example `<<<P5-F01>>>`); `<<<P5-S1>>>` (conventions) is always in the pack.
 CP10 Source and V-item discipline. A capability whose T3 lists an unverified source (V-item) ships with the dependent rule disabled and reported as unavailable, exactly as its T6 states; the phase never enables a rule from an unverified source.
 
+<<<P6-S20>>>
+6.20 PROCESS HEALTH
+The owner sees at every hard stop whether the build is healthy, from numbers that the gate script computes and not from the agent's opinion. Measures per phase, from the ledger, the phase report, the commit log, `docs/state/telemetry.json` and the STOP and interruption records: (1) attempts per task: attempts used (7.3) divided by the number of tasks; (2) repair share: commits of type fix made after the first commit of a task, divided by the task commits; (3) STOP and interruption count; (4) budget use: tokens used divided by the token budget of the run parameters, when both exist; (5) overhead share: fixed overhead divided by all tokens; (6) open findings: self-review findings of category RISK, GAP, CONTRADICTION or DEBT that are not closed. Ratings are GREEN, AMBER and RED with limits that are design parameters (ASSUMPTION, replaced by measured values under 6.22): attempts per task GREEN up to 1.5, AMBER up to 2.0, RED above; repair share GREEN up to 0.25, AMBER up to 0.5, RED above; STOP and interruption count GREEN 0, AMBER 1, RED 2 or more; budget use GREEN up to 0.8, AMBER up to 1.0, RED above; overhead share GREEN up to 0.3, AMBER up to 0.5, RED above; open findings GREEN up to 3, AMBER up to 6, RED above. A measure with no data is rated NOT_MEASURED and never GREEN. `risk report` (P01-T08) writes the table to `risk-management/report/HEALTH.md`, which is generated, byte-identical on regeneration and never edited by hand; figures that the agent reported carry the label SELF-REPORTED. From P01 on, each phase report points to that file. Every RED rating becomes an entry in the project risk register at the next risk review and is named in the STOP report that asks the owner. The measure changes no gate and blocks no phase by itself; the owner reads it and decides.
+
+<<<P6-S21>>>
+6.21 CORE VIABILITY REVIEW (after P08)
+After the first nine phases the owner decides, on measured evidence, whether the core can carry the rest. It is a review and not a phase or a gate: it blocks nothing by itself, and the owner's next command is the decision to continue; a decision file in docs/decisions/ narrows, changes or stops the work. At P08-END1 the agent also writes `docs/phase-reports/P08-viability.md`. It is a separate file, not a field of the phase report, like the overflow file of Part 1 section 9.3. It is filled only from gate outputs and recorded files, each value with its command and exit code (11.8): (a) the evaluation of the Extract stage on the SYNTHETIC set against the thresholds of Part 4 section 4.5, per document type; (b) the model cost and the tokens per case from the model-call records and `docs/state/telemetry.json`, against the per-case budget of Part 3 section 3.14; (c) the walking-skeleton run with recorded responses: determinism and replay; (d) the coverage and mutation baselines against their floors; (e) the process-health table of 6.20 for P00 to P08; (f) the open verifications V-23 to V-26 and the data stage of 2.18; (g) every measure that is still NOT_MEASURED. The file ends with one line per question, answered YES, NO or NOT_MEASURED and never with a recommendation: all model thresholds of Part 4 section 4.5 met; cost per case inside the budget; replay reproduces every skeleton decision; any health measure rated RED; all unverified items listed. P09 entry reports the owner's answer when a decision file exists and otherwise treats the owner's command as the decision to continue; a missing answer is never a STOP.
+
+<<<P6-S22>>>
+6.22 MEASUREMENT BASELINE
+A number set before any measurement (a budget, threshold, limit, rate or count marked design parameter or ASSUMPTION) is a plan, not a fact. Rules. (1) The P00 run is the first measurement: its attempts, tool calls and tokens in its phase report and in `docs/state/telemetry.json` are the baseline of class L; after a hard stop the owner may add measured lines such as `P00 measured_tokens: <n>` to `docs/decisions/run-parameters.md`, which the agent reads and never edits. (2) From each phase end on, the gate stores the measured figures next to the planned ones, and `HEALTH.md` (6.20) shows planned against measured. (3) A planned number is replaced only by an owner decision in docs/decisions/ that cites the measured value; the agent never changes a threshold or a budget, and a measured value worse than its plan is reported and never hidden (Part 1 section 5.6). (4) Quality thresholds follow the ratchet of Part 4: the first measured baseline becomes the floor and never decreases. (5) While a number is unmeasured, every sentence in the README, the reports and the guide that uses it says planned or design parameter and never presents it as an achieved result. Measured baseline from the P00 phase report (SELF-REPORTED): 13 tasks, 19 attempts, 1.46 attempts per task; tool calls and tokens were not recorded as measured numbers, so budget use and overhead share are NOT_MEASURED for P00.
+
 <<<PHASE-00>>>
 PHASE 00 — REPOSITORY BOOTSTRAP
 
@@ -3987,7 +4027,7 @@ PHASE 01 — RISK MANAGEMENT SYSTEM
 4. Scope fence. May create: everything under `risk-management/`, `test-house/risk/`, `docs/ledger/P01.md`, and edit `tools/gate/catalogue.toml` (activation entries only, named in T08), `README.md` Build Progress (through the gate), `CHANGELOG.md`. Commands: those of P00 plus the new `risk-management/tools` commands. No new dependencies unless listed in the P01 set of `<<<P8-DEPS>>>`.
 Scope paths: risk-management/**, test-house/risk/**, docs/ledger/P01.md, docs/phase-reports/**, docs/state/**, docs/decisions/**, tools/gate/catalogue.toml, tools/gate/protected.toml, CHANGELOG.md, README.md
 
-5. Context Pack: `<<<P3-S1>>>` `<<<P3-S8>>>` `<<<P3-S9>>>` `<<<P3-S11>>>` `<<<P3-S15>>>` `<<<P3-S16>>>` `<<<P3-S23>>>` `<<<P3-S24>>>` `<<<P3-S30>>>` `<<<P2-S12>>>` `<<<P2-S14>>>` `<<<P4-S1>>>` `<<<P4-S5>>>` `<<<P6-S5>>>` `<<<P6-S12>>>` `<<<D06-S3>>>` `<<<D32-S2.3>>>` `<<<D32-S2.5>>>` `<<<P7-RISK>>>` (Part 7 Risk Management section: scales, threshold, seeded risk lists, runbook list).
+5. Context Pack: `<<<P3-S1>>>` `<<<P3-S8>>>` `<<<P3-S9>>>` `<<<P3-S11>>>` `<<<P3-S15>>>` `<<<P3-S16>>>` `<<<P3-S23>>>` `<<<P3-S24>>>` `<<<P3-S30>>>` `<<<P2-S12>>>` `<<<P2-S14>>>` `<<<P4-S1>>>` `<<<P4-S5>>>` `<<<P6-S5>>>` `<<<P6-S12>>>` `<<<D06-S3>>>` `<<<D32-S2.3>>>` `<<<D32-S2.5>>>` `<<<P7-RISK>>>` (Part 7 Risk Management section: scales, threshold, seeded risk lists, runbook list) `<<<P6-S20>>>` `<<<P6-S22>>>`.
 
 6. Tasks.
 
@@ -4027,19 +4067,19 @@ P01-T07 Acceptance, incident and continuity records
 - Accept: `risk validate all` exit 0; an acceptance record without a matching decision file fails (T-RISK-0022); an expired acceptance fails (T-RISK-0023).
 
 P01-T08 Report generator, review command and gate activation
-- Files: `risk-management/tools/` (report, review), `risk-management/report/RESIDUAL.md` (generated), `risk-management/INDEX.md` (generated), edit `tools/gate/catalogue.toml` (activate `risk`), edit `tools/gate/protected.toml` (add the acceptance directory and the thresholds file), update `docs/state/protected-hashes.json` through `gate protect --update`.
-- Steps: `risk report` generates `RESIDUAL.md` (counts by area and score, every residual risk above the threshold with its acceptance status, controls by lifecycle status) and `INDEX.md`; both are byte-identical on regeneration and never edited by hand. `risk review --phase NN` creates `reviews/PNN.md` from the phase ledger and the diff of the registers, runs the validator, and prints residual risks above the threshold as a STOP-report draft. Activate the `risk` gate in the catalogue.
-- Accept: tests T-RISK-0024 to T-RISK-0030: regeneration is byte-identical; a handwritten edit of `RESIDUAL.md` fails the gate; the review command lists a seeded above-threshold risk and exits 1 until an acceptance exists; `gate run risk` exit 0 on the branch.
+- Files: `risk-management/tools/` (report, review, health), `risk-management/report/RESIDUAL.md` (generated), `risk-management/report/HEALTH.md` (generated), `risk-management/INDEX.md` (generated), edit `tools/gate/catalogue.toml` (activate `risk`), edit `tools/gate/protected.toml` (add the acceptance directory and the thresholds file), update `docs/state/protected-hashes.json` through `gate protect --update`.
+- Steps: `risk report` generates `RESIDUAL.md` (counts by area and score, every residual risk above the threshold with its acceptance status, controls by lifecycle status), `HEALTH.md` (the process-health table of Part 6 section 6.20 for every merged phase and planned against measured figures of section 6.22; the P00 baseline is read from the P00 phase report) and `INDEX.md`; all are byte-identical on regeneration and never edited by hand. `risk review --phase NN` creates `reviews/PNN.md` from the phase ledger and the diff of the registers, runs the validator, and prints residual risks above the threshold as a STOP-report draft. Activate the `risk` gate in the catalogue.
+- Accept: tests T-RISK-0024 to T-RISK-0036: `HEALTH.md` is byte-identical on regeneration; a measure with no data is rated NOT_MEASURED and never GREEN; a seeded RED rating becomes a risk-register entry in the review draft; the P00 baseline row shows 13 tasks and 19 attempts; regeneration is byte-identical; a handwritten edit of `RESIDUAL.md` fails the gate; the review command lists a seeded above-threshold risk and exits 1 until an acceptance exists; `gate run risk` exit 0 on the branch.
 
 P01-RISK Risk review: run `risk review --phase 01`; update registers for what P01 created (the validator, the report generator and the `risk` gate become controls with status VERIFIED); write `reviews/P01.md`; list residual risks above the threshold as a STOP report asking the owner; never accept a risk (Part 6 §6.5).
 
 P01-END1, P01-END2: per Part 1 §10.
 
-7. Test plan. No capability. New gate: `risk` (P). Tier A runs in full; Tier B none. Test ids T-RISK-0001 to T-RISK-0030.
+7. Test plan. No capability. New gate: `risk` (P). Tier A runs in full; Tier B none. Test ids T-RISK-0001 to T-RISK-0036.
 
 8. Risk review: task P01-RISK above.
 
-9. Exit conditions beyond Part 1 §9: `risk validate all` and `gate run risk` exit 0; `reviews/P00.md` and `reviews/P01.md` exist and validate; `RESIDUAL.md` and `INDEX.md` are current; no open acceptance request; the changelog lists the folder.
+9. Exit conditions beyond Part 1 §9: `risk validate all` and `gate run risk` exit 0; `reviews/P00.md` and `reviews/P01.md` exist and validate; `RESIDUAL.md`, `HEALTH.md` and `INDEX.md` are current; no open acceptance request; the changelog lists the folder.
 
 10. Look-ahead.
 - P02 files its review with `risk review --phase 02` and adds data and legal controls (data and license gates) to the catalogue.
@@ -4485,7 +4525,7 @@ PHASE 08 — MODEL GATEWAY AND EXTRACT STAGE
 4. Scope fence. May create: `adapters/model/` (Gateway interface, provider adapters behind it, recorded-response adapter, fallback and circuit breaker), `kernel/extract/` (stage, schema-bound extraction, locator checks, grounding verifier), `kernel/proposals/` (Propose–Verify–Gate), `evals/` (SYNTHETIC evaluation sets and baselines, per document type and language, fixtures for recorded responses), `tools/gate/gates/eval.py`, `test-house/gateway/`, `test-house/extract/`, `docs/ledger/P08.md`, risk-management records. No live key is used or stored; CI runs on recordings. Everything else is forbidden.
 Scope paths: adapters/model/**, kernel/extract/**, kernel/proposals/**, evals/**, schemas/**, contracts.lock, broker/**, policies/**, tools/faultlab/**, tools/threat-matrix/**, tools/gate/gates/**, tools/gate/catalogue.toml, test-house/gateway/**, test-house/extract/**, docs/ledger/P08.md, docs/phase-reports/**, docs/state/**, docs/decisions/**, risk-management/**, CHANGELOG.md, README.md
 
-5. Context Pack: `<<<P3-S2>>>` `<<<P3-S7>>>` `<<<P3-S8>>>` `<<<P3-S11>>>` `<<<P3-S14>>>` `<<<P3-S15>>>` `<<<P3-S16>>>` `<<<P3-S26>>>` `<<<P3-S31>>>` `<<<P4-S5>>>` `<<<D06-S1>>>` `<<<D06-S2>>>` `<<<D06-S3>>>` `<<<D06-S4>>>` `<<<D32-S2.2>>>` `<<<P6-S10>>>` `<<<P6-S12>>>`.
+5. Context Pack: `<<<P3-S2>>>` `<<<P3-S7>>>` `<<<P3-S8>>>` `<<<P3-S11>>>` `<<<P3-S14>>>` `<<<P3-S15>>>` `<<<P3-S16>>>` `<<<P3-S26>>>` `<<<P3-S31>>>` `<<<P4-S5>>>` `<<<D06-S1>>>` `<<<D06-S2>>>` `<<<D06-S3>>>` `<<<D06-S4>>>` `<<<D32-S2.2>>>` `<<<P6-S10>>>` `<<<P6-S12>>>` `<<<P6-S20>>>` `<<<P6-S21>>>`.
 
 6. Tasks.
 
@@ -4531,13 +4571,13 @@ P08-T08 Region profile and residency policy
 
 P08-RISK Risk review per Part 6 §6.5: controls for prompt injection, provider outage, silent model change, ungrounded values, cost runaway, data sent to a provider without policy; update the registers; `reviews/P08.md`.
 
-P08-END1, P08-END2: per Part 1 §10.
+P08-END1 also writes `docs/phase-reports/P08-viability.md` as defined in Part 6 section 6.21 (the Core Viability Review). P08-END1 and P08-END2 otherwise follow Part 1 §10.
 
 7. Test plan. No capability. New gate: `eval`. Tier A: unit and contract tests; Tier B: eval, fault injection and adapter suites. Test ids T-GWY-0001 to T-GWY-0096.
 
 8. Risk review: task P08-RISK.
 
-9. Exit conditions beyond Part 1 §9: `eval` and all earlier gates exit 0; no model call exists outside the Gateway; all thresholds met on recordings; `contracts.lock` includes the Gateway interface and the model-call record; the phase report lists V-23 to V-26 as open real-data gates; risk review filed; README ticked by the gate.
+9. Exit conditions beyond Part 1 §9: `eval` and all earlier gates exit 0; no model call exists outside the Gateway; all thresholds met on recordings; `contracts.lock` includes the Gateway interface and the model-call record; the phase report lists V-23 to V-26 as open real-data gates; risk review filed; `docs/phase-reports/P08-viability.md` exists and holds only values taken from gate outputs; README ticked by the gate.
 
 10. Look-ahead.
 - P09 supplies the Synthetic Data Factory and Scenario Bench that generate the evaluation documents; the sets of this phase are small fixtures and are replaced by factory output through a change task there.
@@ -4558,7 +4598,7 @@ PHASE 09 — SYNTHETIC DATA, BENCH AND WALKING SKELETON
 4. Scope fence. May create: `data/synthetic/` (factory, generators, seeds, labels), `data/scenarios/` (scenario format and bench runner), `tools/bench/`, `tools/demo/` (demo harness, two-tenant scenario), `kernel/skeleton/` (the stub capability and the end-to-end driver using kernel contracts only), `tools/trace/` (traceability matrix tool), `tools/review/` (review packets and status), `test-house/review/`, `test-house/e2e/`, `test-house/synthetic/`, `docs/ledger/P09.md`, risk-management records. Everything else is forbidden.
 Scope paths: data/synthetic/**, data/scenarios/**, tools/bench/**, tools/demo/**, tools/trace/**, tools/review/**, test-house/review/**, tools/threat-matrix/**, kernel/skeleton/**, evals/**, contracts.lock, tools/gate/gates/**, tools/gate/catalogue.toml, test-house/e2e/**, test-house/synthetic/**, docs/ledger/P09.md, docs/phase-reports/**, docs/state/**, docs/decisions/**, risk-management/**, CHANGELOG.md, README.md
 
-5. Context Pack: `<<<P3-S2>>>` `<<<P3-S8>>>` `<<<P3-S10>>>` `<<<P3-S12>>>` `<<<P3-S13>>>` `<<<P3-S24>>>` `<<<P3-S26>>>` `<<<P3-S28>>>` `<<<P4-S5>>>` `<<<P4-S10>>>` `<<<P6-S6>>>` `<<<P6-S11>>>` `<<<P6-S12>>>` `<<<P2-S11>>>`.
+5. Context Pack: `<<<P3-S2>>>` `<<<P3-S8>>>` `<<<P3-S10>>>` `<<<P3-S12>>>` `<<<P3-S13>>>` `<<<P3-S24>>>` `<<<P3-S26>>>` `<<<P3-S28>>>` `<<<P4-S5>>>` `<<<P4-S10>>>` `<<<P6-S6>>>` `<<<P6-S11>>>` `<<<P6-S12>>>` `<<<P2-S11>>>` `<<<P6-S21>>>`.
 
 6. Tasks.
 
@@ -6217,7 +6257,7 @@ PHASE 31 — DOCUMENTATION
 3. Entry conditions beyond Part 1 §8: P30 gates exit 0 including `claims`; the production directories are unchanged since the merge of P30 (`git diff` against that merge is empty for them); the stack starts from the demo harness; the browser test tool is in the dependency list. Evidence: the commands.
 
 4. Scope fence. May create: `README.md`, `docs/` (architecture, operations, runbook, security summary, data and licence summary, usage guide in source and printed form, generated references), `tools/docs/` (generators, diagram script), `tools/media/` (capture script and seed), `docs/media/`, `NOTICE`, `test-house/docs/`, `test-house/media/`, `risk-management/reports/` (generated), `docs/ledger/P31.md`, risk-management records. Code is frozen: no path under `kernel/`, `capabilities/`, `api/`, `views/`, `adapters/`, `broker/`, `agents/`, `policies/`, `packs/`, `schemas/` or `deploy/` may change; a defect found there is a STOP. Everything else is forbidden.
-Scope paths: README.md, NOTICE, CHANGELOG.md, docs/**, tools/docs/**, tools/media/**, tools/gate/gates/**, tools/gate/catalogue.toml, test-house/docs/**, test-house/media/**, risk-management/**, docs/ledger/P31.md, docs/phase-reports/**, docs/state/**, docs/decisions/**
+Scope paths: README.md, NOTICE, CHANGELOG.md, .gitignore, docs/**, tools/docs/**, tools/media/**, tools/gate/gates/**, tools/gate/catalogue.toml, test-house/docs/**, test-house/media/**, risk-management/**, docs/ledger/P31.md, docs/phase-reports/**, docs/state/**, docs/decisions/**
 
 5. Context Pack: `<<<P4-S8>>>` `<<<P4-S9>>>` `<<<P4-S10>>>` `<<<P4-S12>>>` `<<<P3-S17>>>` `<<<P3-S32>>>` `<<<P6-S12>>>` `<<<P7-CLAIMS>>>` `<<<P7-GUIDE>>>` `<<<P7-RISK>>>` `<<<P8-README-FIXED>>>`.
 
@@ -6244,7 +6284,7 @@ P31-T04 Usage guide
 - Accept: tests T-DOCS-0146 to T-DOCS-0160: every example output equals the stated output; the PDF is generated reproducibly from the source; a dead link fails.
 
 P31-T05 Data, security and licence documents; notices
-- Files: `docs/data-and-license.md`, `docs/security.md`, `NOTICE`.
+- Files: `docs/data-and-license.md`, `docs/security.md`, `NOTICE`, `docs/THIRD_PARTY_NOTICES.txt`, `.gitignore` (the ignore entry for the generated notices file only).
 - Steps: summarize data sources, labels and licence terms from the Source Registry and manifest; the security summary is generated from the P29 report and the risk register and states no more than they show; `NOTICE` lists third-party components and licences from the SBOM; the project licence is stated exactly as in `LICENSE` (proprietary, all rights reserved).
 - Accept: tests T-DOCS-0161 to T-DOCS-0170: the notice equals the SBOM and licence manifest; the security summary contains no claim absent from the register.
 
@@ -6678,7 +6718,7 @@ Line 1: A person's worth lies in their honesty.
 Line 2: This holds regardless of position, title or role.
 
 3. Project name and tagline.
-Name: AminCustoms Evidence-Grounded Control Tower
+Name: Evidence-Grounded Control Tower
 Tagline: Evidence-grounded advisory pre-checks for customs and transit cases.
 
 4. Badges (four, generated locally from facts; each equals the fact it states): build status (result of the last phase-end gate run), version, licence ("proprietary, all rights reserved"), level label.
@@ -6688,7 +6728,7 @@ Tagline: Evidence-grounded advisory pre-checks for customs and transit cases.
 6. Author block (four lines).
 AI Architect Amin Azimi - End to End System Development & Business Challenge
 Azimi Innovation Lab
-Project: AminCustoms Evidence-Grounded Control Tower
+Project: Evidence-Grounded Control Tower
 Version 1, <Month YYYY> (the month of the last merged phase; generated)
 
 7. Table "What it is, is not, does, does not" (fixed rows).
@@ -6697,7 +6737,9 @@ Version 1, <Month YYYY> (the month of the last merged phase; generated)
 - Does: reads case documents; records each fact with its source and label; applies rule packs from listed sources; returns one Decision per capability (ALLOW, ABSTAIN, HOLD, ESCALATE) with reason codes and cited facts; records every Decision in a hash-chained ledger.
 - Does not: file anything with an authority; take an irreversible action without a human gate; use real data in tests (sentence A-05).
 
-8. Required sentences placed in the README (verbatim from P7-CLAIMS section 5): A-01, A-02, A-05, A-09, A-11; the residual-risk statement of P7-RISK section 2 in the data, security and licence summary.
+8. Build state and data stage. The capability table in the README shows for every capability the build state DESIGN ONLY until the phase that completes it is merged and BUILT afterwards; the column is generated from the ledgers and the capability status map and never says BUILT earlier. One line names the current data stage of Part 2 section 2.18 and states that the planned numbers of the guide are plans until measured (Part 6 section 6.22).
+
+9. Required sentences placed in the README (verbatim from P7-CLAIMS section 5): A-01, A-02, A-05, A-09, A-11; the residual-risk statement of P7-RISK section 2 in the data, security and licence summary.
 
 9. Section titles, in order, after the lines above (the gate checks order and exact titles): 1 Hero capture; 2 Level label; 3 Author; 4 What it is and is not; 5 Problem and outcome; 6 Architecture at a glance; 7 Capabilities; 8 Trust model; 9 Build Progress; 10 Quality gates; 11 Requirements and standards conformance; 12 Data, security and licence; 13 Usage guide and version.
 
@@ -6746,13 +6788,16 @@ D-34; phase budget classes S, M, L; APPROVED as design, numbers provisional.
 D-35; risk scales and register threshold; APPROVED, values provisional.
 D-36; closing-phase rules (defect repair as the standing tasks P28-T11, P29-T11 and P30-T10; code freeze of P31 lifted only in a maintenance phase, M-1; tag authorization in the owner's P32 command; stub replacement by the owner after P32); APPROVED.
 D-37; extension of the dependency licence allowlist of D-22 by MIT-0, 0BSD, Zlib and CC0-1.0, admitted for two named transitive packages only (cffi under MIT-0, required by cryptography and pynacl; numpy under its compound permissive expression, required by ortools); the licence gate checks the whole transitive closure of the lock, `docs/THIRD_PARTY_NOTICES.txt` is generated and kept current, a changed version triggers a new licence check, and the licence of the work itself stays proprietary and is not affected; APPROVED.
-D-38; display names of the six product roles (Amin, Ahmad, Aylin, Alina, Amilos, Kian) as in 3.9, chosen by the owner; APPROVED.
+D-38; display names of the six product roles (Conductor, Reader, Verifier, Estimator, Planner, Sentinel) as in 3.9, chosen by the owner in revision v1.1 and replacing the first set of names; APPROVED.
 D-39; publisher of the dual-use or strategic-goods control list (source SRC-DUAL-USE); OPEN; blocks no phase; due before goods-control screening is enabled for a tenant; until then such cases end in ABSTAIN with K01.ABSTAIN.LIST_UNAVAILABLE.
 D-40; optional local scan reader (OCR) behind the Document Reader interface, with OCR-sourced facts held at PROPOSED until a reviewer confirms; chosen by the owner; APPROVED.
 D-41; Pack Authoring Kit (commands, label ceiling, no label promotion by tools) added to P06 as task T08 and to the guide of P31; chosen by the owner; APPROVED.
 D-42; per-tenant region profile (allowed storage and model-processing regions) enforced by policy as code, recorded in the model-call record and the Passport, with the first deployment's regions set by the owner in the run parameters; chosen by the owner; APPROVED.
 D-43; validation class of calibration artifacts: on real case data ALLOW needs VALIDATED_TENANT (tenant shadow validation, at least 300 labelled pairs as an ASSUMPTION, second-reviewer activation, lapse on change); extends D-26 without changing it; chosen by the owner; APPROVED.
 D-44; extraction budget: a separate meter per document page with starting values (ASSUMPTION until V-32): 2 model calls per document (primary and cross-check on the high-stakes fields), 4,000 tokens per page for Latin script and 6,000 for Arabic script, at most 40 pages and 200,000 tokens per case; exhaustion gives NEEDS_REVIEW with the unprocessed documents listed; chosen by the owner; APPROVED, values changeable by the owner.
+D-45; run discipline lock (Part 1 sections 13 and 14): one command runs one phase alone, no subagents, no mid-phase questions, no waiting, no iteration-cap stops, leftover check at phase end, owner revision procedure; chosen by the owner; APPROVED.
+D-46; process health (Part 6 section 6.20), Core Viability Review after P08 (section 6.21) and measurement baseline (section 6.22): non-blocking, owner-read, computed from gate outputs; chosen by the owner; APPROVED.
+D-47; data maturity path (Part 2 section 2.18), README build-state labels (DESIGN ONLY until built) and the project name Evidence-Grounded Control Tower; chosen by the owner; APPROVED.
 
 3. Verification register (id; item; status; closed before).
 V-01; external terms that apply to the intended use (owner item); UNVERIFIED; owner.
