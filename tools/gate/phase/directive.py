@@ -68,10 +68,65 @@ class DirectiveError(Exception):
 MATCHING_MODES: frozenset[str] = frozenset({"PROTECTIVE", "NORMALIZED", "EXACT"})
 
 STATUS_WORDS: frozenset[str] = frozenset(
-    {"DONE", "PARKED", "STOP", "SKIP", "REVIEWED", "UNREVIEWED", "CHANGED_SINCE_REVIEW"}
+    {
+        # Ledger and review words.
+        "DONE",
+        "PARKED",
+        "STOP",
+        "SKIP",
+        "REVIEWED",
+        "UNREVIEWED",
+        "CHANGED_SINCE_REVIEW",
+        # Decision values and fact statuses of Part 5 section 5.1.4.
+        "ALLOW",
+        "ABSTAIN",
+        "HOLD",
+        "ESCALATE",
+        "VERIFIED",
+        "CONFLICTED",
+        "UNKNOWN",
+        "PROPOSED",
+        # Output statuses of ADV and REP capabilities, Part 5 section 5.1.4.
+        "PROVIDED",
+        "NEEDS_REVIEW",
+        "ABSTAINED",
+        "REFUSED",
+        # Other closed status words that the directive itself defines.
+        "NOT_RUN_LOCAL",
+        "NOT_AUDITED",
+        "SUPPORTED",
+        "OPEN",
+        "UNVERIFIED",
+    }
 )
 
-LABELS: frozenset[str] = frozenset({"DEC", "ADV", "REP"})
+LABELS: frozenset[str] = frozenset(
+    {
+        # Data labels of Part 3 section 3.8.
+        "OFFICIAL",
+        "DERIVED",
+        "SECONDARY",
+        "SIMULATED_RULE",
+        "SYNTHETIC",
+        "ASSUMPTION",
+        "UNVERIFIED",
+        # Statistic labels that the directive defines; they are never data labels.
+        "REVIEWER_OUTCOMES",
+        "TENANT_OUTCOMES",
+        "SELF-REPORTED",
+    }
+)
+
+# The key-fact table is delimited by marker lines, not by prose mentions of the marker.
+_KF_START_RE = re.compile(r"^<<<P8-KEYFACTS>>>" + chr(36), re.MULTILINE)
+_KF_END_RE = re.compile(r"^<<<END-P8-KEYFACTS>>>" + chr(36), re.MULTILINE)
+
+
+def _find_marker(rx: re.Pattern[str], text: str) -> int:
+    """Return the offset of the first line-anchored marker, or -1."""
+    m = rx.search(text)
+    return m.start() if m else -1
+
 
 # The eleven fields of §6.4 (numbered 1 through 11).
 PHASE_BLOCK_FIELDS: tuple[int, ...] = tuple(range(1, 12))
@@ -365,8 +420,8 @@ _KF_LINE_RE = re.compile(r"^(KF-\d+)\s*\|\s*(\S+)\s*\|.*?\|(.+)$")
 
 def load_keyfacts(text: str) -> list[KeyFact]:
     """Parse the ``<<<P8-KEYFACTS>>>`` table from *text*."""
-    start = text.find("<<<P8-KEYFACTS>>>")
-    end = text.find("<<<END-P8-KEYFACTS>>>")
+    start = _find_marker(_KF_START_RE, text)
+    end = _find_marker(_KF_END_RE, text)
     if start == -1 or end == -1:
         return []
     table = text[start:end]
@@ -388,8 +443,8 @@ def check_keyfacts(text: str, facts: list[KeyFact]) -> list[str]:
     """
     if not facts:
         return []
-    start = text.find("<<<P8-KEYFACTS>>>")
-    end = text.find("<<<END-P8-KEYFACTS>>>")
+    start = _find_marker(_KF_START_RE, text)
+    end = _find_marker(_KF_END_RE, text)
     if start == -1 or end == -1:
         return ["key-fact table not found"]
     end_marker_len = len("<<<END-P8-KEYFACTS>>>")
@@ -415,10 +470,11 @@ def check_keyfacts(text: str, facts: list[KeyFact]) -> list[str]:
     return violations
 
 
-_MODE_RE = re.compile(r"matching mode\s+([A-Z]+)", re.IGNORECASE)
-_STATUS_RE = re.compile(r"status\s+([A-Z]+)", re.IGNORECASE)
-_LABEL_RE = re.compile(r"\blabel\s+([A-Z]+)", re.IGNORECASE)
-_OUTCOME_RE = re.compile(r"\boutcome\s+([A-Z]+)", re.IGNORECASE)
+_WORD = r"([A-Z][A-Z0-9_-]*[A-Z0-9])"
+_MODE_RE = re.compile(r"\bmatching mode\s+" + _WORD)
+_STATUS_RE = re.compile(r"\bstatus\s+" + _WORD)
+_LABEL_RE = re.compile(r"\blabel\s+" + _WORD)
+_OUTCOME_RE = re.compile(r"\boutcome\s+" + _WORD)
 _REASON_CODE_REF_RE = re.compile(r"reason code[:\s]+([A-Z]+\d*)\.", re.IGNORECASE)
 _REGISTER_DEF_RE = re.compile(r"<<<([A-Z]+\d*)-")
 
@@ -426,8 +482,8 @@ _REGISTER_DEF_RE = re.compile(r"<<<([A-Z]+\d*)-")
 def check_closed_vocabularies(text: str) -> list[str]:
     """Check closed vocabularies: matching modes, labels, status words (§6.15b b)."""
     # Exclude the key-fact table from the scan.
-    start = text.find("<<<P8-KEYFACTS>>>")
-    end = text.find("<<<END-P8-KEYFACTS>>>")
+    start = _find_marker(_KF_START_RE, text)
+    end = _find_marker(_KF_END_RE, text)
     if start != -1 and end != -1:
         end_marker_len = len("<<<END-P8-KEYFACTS>>>")
         scan_text = text[:start] + text[end + end_marker_len :]
@@ -460,8 +516,8 @@ def check_identifier_closure(text: str) -> list[str]:
     must have a matching ``<<<D06-`` marker definition.
     """
     # Exclude the key-fact table from the scan.
-    start = text.find("<<<P8-KEYFACTS>>>")
-    end = text.find("<<<END-P8-KEYFACTS>>>")
+    start = _find_marker(_KF_START_RE, text)
+    end = _find_marker(_KF_END_RE, text)
     if start != -1 and end != -1:
         end_marker_len = len("<<<END-P8-KEYFACTS>>>")
         scan_text = text[:start] + text[end + end_marker_len :]
