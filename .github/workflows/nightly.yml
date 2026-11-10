@@ -24,3 +24,4 @@ jobs:
         with:
           name: gate-logs
           path: .gate-logs
+          include-hidden-files: true
