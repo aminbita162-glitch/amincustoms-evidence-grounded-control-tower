@@ -3,7 +3,7 @@
 Every test carries a header (id, title, purpose, level, requirement, input,
 expected result, risk, capability) per Part 4 §4.5.
 
-Tests T-PHASE-0001 through T-PHASE-0018 run against temporary git repositories
+Tests T-PHASE-0001 through T-PHASE-0106 run against temporary git repositories
 exercising entry/exit verification, state consistency, golden-commit, and
 dependency checks.  Tests T-PHASE-0049 through T-PHASE-0052 cover self-review
 validation.
@@ -486,9 +486,9 @@ def test_baseline_decrease_fails() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0013 — Commit that changes a golden path together with another path fails
+# T-PHASE-0101 — Commit that changes a golden path together with another path fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0013
+# id: T-PHASE-0101
 # title: Mixed golden and non-golden commit fails
 # purpose: Verify that a commit changing a golden file together with a
 #          non-golden file fails the golden-commit check.
@@ -515,9 +515,9 @@ def test_golden_mixed_commit_fails(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0014 — Golden commit without scope golden or without a reason fails
+# T-PHASE-0102 — Golden commit without scope golden or without a reason fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0014
+# id: T-PHASE-0102
 # title: Golden commit without proper scope or reason fails
 # purpose: Verify that a commit changing only golden files but without the
 #          'test(golden):' scope or a reason fails the golden-commit check.
@@ -566,9 +566,9 @@ def test_golden_commit_valid_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0015 — STATE previous_merge_hash not the merge commit fails
+# T-PHASE-0103 — STATE previous_merge_hash not the merge commit fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0015
+# id: T-PHASE-0103
 # title: Wrong previous_merge_hash fails check
 # purpose: Verify that a state whose previous_merge_hash doesn't match the
 #          actual merge commit fails the check.
@@ -592,9 +592,9 @@ def test_wrong_previous_merge_hash_fails(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0016 — awaiting_merge not cleared after merge proven fails
+# T-PHASE-0104 — awaiting_merge not cleared after merge proven fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0016
+# id: T-PHASE-0104
 # title: awaiting_merge not cleared fails
 # purpose: Verify that a state with awaiting_merge_phase set after the merge
 #          is proven fails the check.
@@ -625,9 +625,9 @@ def test_awaiting_merge_cleared_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0017 — Phase whose independent predecessor is PARKED enters
+# T-PHASE-0105 — Phase whose independent predecessor is PARKED enters
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0017
+# id: T-PHASE-0105
 # title: PARKED predecessor outside depends_on does not block entry
 # purpose: Verify that a phase whose previous (but not depended-on) phase is
 #          PARKED can still enter (8.2e).
@@ -655,9 +655,9 @@ def test_parked_predecessor_enters() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0018 — Phase whose dependency is PARKED or not merged stops naming it
+# T-PHASE-0106 — Phase whose dependency is PARKED or not merged stops naming it
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0018
+# id: T-PHASE-0106
 # title: PARKED dependency stops entry naming the phase
 # purpose: Verify that a phase whose depends_on contains a PARKED phase is a
 #          STOP that names the PARKed phase.
@@ -701,9 +701,9 @@ def test_not_merged_dependency_stops() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0019 — Proper merge passes merge proof
+# T-PHASE-0107 — Proper merge passes merge proof
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0019
+# id: T-PHASE-0107
 # title: Proper two-parent merge passes merge proof
 # purpose: Verify that a proper merge commit with two parents passes the
 #          merge-proof check.
@@ -725,9 +725,9 @@ def test_proper_merge_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0020 — Clean tree passes
+# T-PHASE-0108 — Clean tree passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0020
+# id: T-PHASE-0108
 # title: Clean tree passes clean-tree check
 # purpose: Verify that a clean working tree passes the clean-tree check.
 # level: fast
@@ -747,9 +747,9 @@ def test_clean_tree_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0021 — Correct directive hash passes
+# T-PHASE-0109 — Correct directive hash passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0021
+# id: T-PHASE-0109
 # title: Correct directive hash passes check
 # purpose: Verify that a state with the correct directive_hash passes.
 # level: fast
@@ -773,9 +773,9 @@ def test_correct_directive_hash_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0022 — Deleted branch passes
+# T-PHASE-0110 — Deleted branch passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0022
+# id: T-PHASE-0110
 # title: Deleted previous branch passes check
 # purpose: Verify that a deleted previous branch passes the check.
 # level: fast
@@ -798,9 +798,9 @@ def test_deleted_branch_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0023 — Correct previous_merge_hash passes
+# T-PHASE-0111 — Correct previous_merge_hash passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0023
+# id: T-PHASE-0111
 # title: Correct previous_merge_hash passes check
 # purpose: Verify that a state whose previous_merge_hash matches the actual
 #          merge commit passes.
@@ -824,9 +824,9 @@ def test_correct_previous_merge_hash_passes(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0024 — State save/load round trip
+# T-PHASE-0112 — State save/load round trip
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0024
+# id: T-PHASE-0112
 # title: State save/load round trip preserves all fields
 # purpose: Verify that save_state then load_state returns the same state.
 # level: fast
@@ -1139,9 +1139,9 @@ def test_finding_over_40_words_fails() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0053 — Finding within 40 words passes
+# T-PHASE-0113 — Finding within 40 words passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0053
+# id: T-PHASE-0113
 # title: Finding within 40 words passes
 # purpose: Verify that a finding with at most 40 words passes validation.
 # level: fast
@@ -1161,9 +1161,9 @@ def test_finding_within_40_words_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0054 — Missing finding category fails
+# T-PHASE-0114 — Missing finding category fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0054
+# id: T-PHASE-0114
 # title: Finding missing category fails
 # purpose: Verify that a finding missing its category fails validation.
 # level: fast
@@ -1184,9 +1184,9 @@ def test_finding_missing_category_fails() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0055 — Invalid category fails
+# T-PHASE-0115 — Invalid category fails
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0055
+# id: T-PHASE-0115
 # title: Invalid finding category fails
 # purpose: Verify that a finding with an invalid category fails validation.
 # level: fast
@@ -1207,9 +1207,9 @@ def test_invalid_category_fails() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0056 — Overflow with correct counts passes
+# T-PHASE-0116 — Overflow with correct counts passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0056
+# id: T-PHASE-0116
 # title: Overflow with correct counts passes
 # purpose: Verify that a self-review with 10 findings + correct OVERFLOW line
 #          and matching overflow file passes validation.
@@ -1240,9 +1240,9 @@ def test_overflow_correct_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0057 — Max findings and word limit constants
+# T-PHASE-0117 — Max findings and word limit constants
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0057
+# id: T-PHASE-0117
 # title: Self-review constants match spec
 # purpose: Verify that MAX_FINDINGS=10, MAX_WORDS=40, and CATEGORIES has 5.
 # level: fast
@@ -1264,9 +1264,9 @@ def test_selfreview_constants() -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0058 — State consistency with matching ledger passes
+# T-PHASE-0118 — State consistency with matching ledger passes
 # ---------------------------------------------------------------------------
-# id: T-PHASE-0058
+# id: T-PHASE-0118
 # title: State consistency with matching ledger passes
 # purpose: Verify that a state whose last_completed_phase matches the ledger
 #          passes the state-consistency check.

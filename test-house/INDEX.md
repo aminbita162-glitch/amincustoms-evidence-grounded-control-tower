@@ -145,3 +145,21 @@
 | T-PHASE-0071 | No part limits — only total enforced | fast | gate/test_chain.py | test_no_part_limits_total_within_passes |
 | T-PHASE-0072 | Part limit in telemetry but not in decision record fails | fast | gate/test_chain.py | test_part_limit_not_in_decision_record_fails |
 | T-PHASE-0073 | Telemetry save/load round trip | fast | gate/test_chain.py | test_telemetry_save_load_round_trip |
+| T-PHASE-0101 | Mixed golden and non-golden commit fails | fast | gate/test_phase.py | test_golden_mixed_commit_fails |
+| T-PHASE-0102 | Golden commit without proper scope or reason fails | fast | gate/test_phase.py | test_golden_commit_wrong_scope_fails |
+| T-PHASE-0103 | Wrong previous_merge_hash fails check | fast | gate/test_phase.py | test_wrong_previous_merge_hash_fails |
+| T-PHASE-0104 | awaiting_merge not cleared fails | fast | gate/test_phase.py | test_awaiting_merge_not_cleared_fails |
+| T-PHASE-0105 | PARKED predecessor outside depends_on does not block entry | fast | gate/test_phase.py | test_parked_predecessor_enters |
+| T-PHASE-0106 | PARKED dependency stops entry naming the phase | fast | gate/test_phase.py | test_parked_dependency_stops |
+| T-PHASE-0107 | Proper two-parent merge passes merge proof | fast | gate/test_phase.py | test_proper_merge_passes |
+| T-PHASE-0108 | Clean tree passes clean-tree check | fast | gate/test_phase.py | test_clean_tree_passes |
+| T-PHASE-0109 | Correct directive hash passes check | fast | gate/test_phase.py | test_correct_directive_hash_passes |
+| T-PHASE-0110 | Deleted previous branch passes check | fast | gate/test_phase.py | test_deleted_branch_passes |
+| T-PHASE-0111 | Correct previous_merge_hash passes check | fast | gate/test_phase.py | test_correct_previous_merge_hash_passes |
+| T-PHASE-0112 | State save/load round trip preserves all fields | fast | gate/test_phase.py | test_state_save_load_round_trip |
+| T-PHASE-0113 | Finding within 40 words passes | fast | gate/test_phase.py | test_finding_within_40_words_passes |
+| T-PHASE-0114 | Finding missing category fails | fast | gate/test_phase.py | test_finding_missing_category_fails |
+| T-PHASE-0115 | Invalid finding category fails | fast | gate/test_phase.py | test_invalid_category_fails |
+| T-PHASE-0116 | Overflow with correct counts passes | fast | gate/test_phase.py | test_overflow_correct_passes |
+| T-PHASE-0117 | Self-review constants match spec | fast | gate/test_phase.py | test_selfreview_constants |
+| T-PHASE-0118 | State consistency with matching ledger passes | fast | gate/test_phase.py | test_state_consistency_passes |
