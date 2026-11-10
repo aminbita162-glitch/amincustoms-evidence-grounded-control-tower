@@ -601,7 +601,10 @@ def check_phase_entry(
     results: list[CheckResult] = []
     results.append(check_directive_hash(state, directive_path))
     results.append(check_state_consistency(state, repo_root))
-    results.append(check_merge_proof(repo_root))
+    if state.previous_merge_hash is not None:
+        results.append(check_merge_proof(repo_root))
+    else:
+        results.append(CheckResult("merge_proof", True, "no previous phase (first phase)"))
     results.append(check_clean_tree(repo_root))
     if branch_name is not None:
         results.append(check_previous_branch_deleted(repo_root, branch_name))
