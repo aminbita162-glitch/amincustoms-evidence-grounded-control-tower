@@ -19,7 +19,44 @@ jobs:
       - run: pip install uv
       - run: uv python install 3.14
       - run: uv sync --frozen --extra dev
-      - run: uv run mypy .
+      - name: diag selftest
+        run: uv run python -m tools.gate.gates.selftest
+        continue-on-error: true
+      - name: diag state
+        run: uv run python -m tools.gate.gates.state
+        continue-on-error: true
+      - name: diag docs
+        run: uv run python -m tools.gate.gates.docs
+        continue-on-error: true
+      - name: diag hygiene
+        run: uv run python -m tools.gate.gates.hygiene
+        continue-on-error: true
+      - name: diag secrets
+        run: uv run python -m tools.gate.gates.secrets
+        continue-on-error: true
+      - name: diag security
+        run: uv run python -m tools.gate.gates.security
+        continue-on-error: true
+      - name: diag deps
+        run: uv run python -m tools.gate.gates.deps
+        continue-on-error: true
+      - name: diag license
+        run: uv run python -m tools.gate.gates.license
+        continue-on-error: true
+      - name: diag protect
+        run: uv run python -m tools.gate.gates.protect
+        continue-on-error: true
+      - name: diag directive
+        run: uv run python -m tools.gate.gates.directive
+        continue-on-error: true
+      - name: diag scope
+        run: uv run python -m tools.gate.gates.scope
+        continue-on-error: true
+      - name: diag chain
+        run: uv run python -m tools.gate.gates.chain
+        continue-on-error: true
+      - name: diag index
+        run: uv run python -m tools.gate.gates.index
         continue-on-error: true
       - run: uv run python -m tools.gate run phase
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
