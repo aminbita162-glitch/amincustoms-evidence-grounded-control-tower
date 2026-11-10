@@ -1,0 +1,354 @@
+# AminCustoms gate catalogue (Part 6 §6.13, P00-T03).
+#
+# Every [gate.NAME] entry MUST declare: cadence, command, timeout, activates_in,
+# violation_fixture and clean_fixture. An entry without both fixture keys is a
+# misconfiguration (exit 2). A fixture value of "" means "not yet implemented";
+# selftest treats that as None and fails the gate until the fixture is provided
+# (P00-T04 through P00-T12 fill these in).
+#
+# Fixture paths are relative to this file (tools/gate/catalogue.toml).
+#
+# Cadence codes: Q quick; P phase-end / pull-request; N nightly; R release.
+
+# ---- P00 active gates with fixtures (P00-T03) -----------------------------
+
+[gate.format]
+cadence = "QP"
+command = "ruff format --check"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/format_violation.py"
+clean_fixture = "fixtures/format_clean.py"
+
+[gate.lint]
+cadence = "QP"
+command = "ruff check"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/lint_violation.py"
+clean_fixture = "fixtures/lint_clean.py"
+
+[gate.types]
+cadence = "QP"
+command = "mypy ."
+timeout = 120
+activates_in = "P00"
+violation_fixture = "fixtures/types_violation.py"
+clean_fixture = "fixtures/types_clean.py"
+
+[gate.unit]
+cadence = "QP"
+command = "pytest -m fast"
+timeout = 300
+activates_in = "P00"
+violation_fixture = "fixtures/test_unit_violation.py"
+clean_fixture = "fixtures/test_unit_clean.py"
+
+[gate.selftest]
+cadence = "P"
+command = "python -m tools.gate.gates.selftest"
+timeout = 300
+activates_in = "P00"
+violation_fixture = "fixtures/selftest_violation"
+clean_fixture = "fixtures/selftest_clean"
+
+# ---- P00 active gates without fixtures yet (P00-T04 through P00-T12) ------
+
+[gate.state]
+cadence = "P"
+command = "python -m tools.gate.gates.state"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/state_violation"
+clean_fixture = "fixtures/state_clean"
+
+[gate.docs]
+cadence = "P"
+command = "python -m tools.gate.gates.docs"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/docs_violation"
+clean_fixture = "fixtures/docs_clean"
+
+[gate.hygiene]
+cadence = "P"
+command = "python -m tools.gate.gates.hygiene"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/hygiene_violation"
+clean_fixture = "fixtures/hygiene_clean"
+
+[gate.secrets]
+cadence = "P"
+command = "python -m tools.gate.gates.secrets"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/secrets_violation"
+clean_fixture = "fixtures/secrets_clean"
+
+[gate.security]
+cadence = "P"
+command = "python -m tools.gate.gates.security"
+timeout = 120
+activates_in = "P00"
+violation_fixture = "fixtures/security_violation.py"
+clean_fixture = "fixtures/security_clean.py"
+
+[gate.deps]
+cadence = "P"
+command = "python -m tools.gate.gates.deps"
+timeout = 120
+activates_in = "P00"
+violation_fixture = "fixtures/deps_violation"
+clean_fixture = "fixtures/deps_clean"
+
+[gate.license]
+cadence = "P"
+command = "python -m tools.gate.gates.license"
+timeout = 120
+activates_in = "P00"
+violation_fixture = "fixtures/license_violation"
+clean_fixture = "fixtures/license_clean"
+
+[gate.protect]
+cadence = "P"
+command = "python -m tools.gate.gates.protect"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/protect_violation"
+clean_fixture = "fixtures/protect_clean"
+
+[gate.directive]
+cadence = "P"
+command = "python -m tools.gate.gates.directive"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/directive_violation"
+clean_fixture = "fixtures/directive_clean"
+
+[gate.scope]
+cadence = "P"
+command = "python -m tools.gate.gates.scope"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/scope_violation"
+clean_fixture = "fixtures/scope_clean"
+
+[gate.chain]
+cadence = "P"
+command = "python -m tools.gate.gates.chain"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/chain_violation"
+clean_fixture = "fixtures/chain_clean"
+
+[gate.index]
+cadence = "P"
+command = "python -m tools.gate.gates.index"
+timeout = 60
+activates_in = "P00"
+violation_fixture = "fixtures/index_violation"
+clean_fixture = "fixtures/index_clean"
+
+# ---- Later-phase gates (NOT_ACTIVE at P00; echo stubs, no fixtures) -------
+# Activated per the schedule in Part 6 §6.13.
+
+[gate.risk]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 60
+activates_in = "P01"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.data]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P02"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.labels]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P02"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.arch]
+cadence = "QP"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P03"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.generated-files]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P03"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.contract]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P03"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.property]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P03"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.mutation]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P03"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.integration]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P04"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.migration]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P04"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.replay]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P05"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.differential]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P06"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.metamorphic]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P06"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.perf]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P06"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.containment]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P07"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.fuzz]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P07"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.eval]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P08"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.e2e]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P09"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.trace]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P09"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.chaos]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P10"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.leakage]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P11"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.restore]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P12"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.image]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 120
+activates_in = "P12"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.a11y]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P27"
+violation_fixture = ""
+clean_fixture = ""
+
+[gate.soak]
+cadence = "P"
+command = "echo NOT_ACTIVE"
+timeout = 300
+activates_in = "P28"
+violation_fixture = ""
+clean_fixture = ""

@@ -1,0 +1,32 @@
+<<<PHASE-00>>>
+PHASE 00 — TEST
+
+1. Header: P00 · Test.
+
+2. Purpose: test.
+
+3. Entry conditions: none.
+
+4. Scope fence. May create: `src/`.
+Scope paths: src/**, test-house/**
+
+5. Context Pack: none.
+
+6. Tasks.
+
+P00-T01 First task
+- Steps: do something.
+- Accept: tests pass.
+
+P00-END1, P00-END2: per Part 1 §10.
+
+7. Test plan: T-PHASE-0001 to T-PHASE-0010.
+
+8. Risk review: not applicable.
+
+9. Exit conditions: tests pass.
+
+10. Look-ahead: none.
+
+11. Budget: class M; retries 3; tool calls 400.
+<<<END-PHASE-00>>>

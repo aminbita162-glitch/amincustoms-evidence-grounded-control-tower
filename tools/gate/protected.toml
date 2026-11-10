@@ -1,0 +1,26 @@
+# Protected paths (Part 1 §5.5, P00-T07).
+#
+# These paths can only be changed when a task lists the exact path.
+# The protect gate compares the content hash (SHA-256) of each protected
+# file with docs/state/protected-hashes.json; the hashes file is written
+# only by `gate protect --update`, which refuses to run outside a task
+# that names the path.
+
+[paths]
+"directive.txt" = true
+"tools/gate/" = true
+".github/workflows/" = true
+"LICENSE" = true
+"tools/gate/hygiene_scope.toml" = true
+"tools/gate/bandit.yaml" = true
+"tools/gate/golden-paths.toml" = true
+"tools/gate/stub.txt" = true
+"docs/state/seeds.toml" = true
+"docs/state/STATE.json" = true
+"docs/state/protected-hashes.json" = true
+"docs/decisions/run-parameters.md" = true
+"docs/decisions/scenario-reviews.md" = true
+"tools/gate/exceptions.toml" = true
+"tools/gate/catalogue.toml" = true
+"docs/state/baselines.json" = true
+"docs/state/CHAIN.jsonl" = true

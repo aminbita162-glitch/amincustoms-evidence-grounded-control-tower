@@ -1,0 +1,10 @@
+# Bad catalogue: the "demo" gate passes its violation fixture (command `true`
+# always exits 0), so selftest must fail naming it.
+
+[gate.demo]
+cadence = "QP"
+command = "true"
+timeout = 10
+activates_in = "P00"
+violation_fixture = "bad"
+clean_fixture = "good"

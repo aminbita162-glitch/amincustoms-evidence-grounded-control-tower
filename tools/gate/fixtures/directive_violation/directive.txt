@@ -1,0 +1,106 @@
+<<<P6-S1>>>
+6.1 Test section.
+<<<END-P6-S1>>>
+
+<<<PHASE-00>>>
+PHASE 00 — TEST
+
+1. Header: P00 · Test · branch `phase/00-test` · class M · capabilities: none.
+
+2. Purpose: test phase zero.
+
+3. Entry conditions: none.
+
+4. Scope fence. May create: `src/`.
+Scope paths: src/**, test-house/**
+
+5. Context Pack: `<<<P6-S1>>>`.
+
+6. Tasks.
+
+P00-T01 First task
+- Steps: do something.
+- Accept: tests pass.
+
+P00-END1, P00-END2: per Part 1 §10.
+
+7. Test plan: T-PHASE-0001 to T-PHASE-0010.
+
+8. Risk review: not applicable.
+
+9. Exit conditions: tests pass.
+
+10. Look-ahead: P01 adds something; P02 adds more.
+
+11. Budget: class M; retries 3; tool calls 400.
+<<<END-PHASE-00>>>
+
+<<<PHASE-01>>>
+PHASE 01 — TEST
+
+1. Header: P01 · Test · branch `phase/01-test` · class M · capabilities: none.
+
+2. Purpose: test phase one.
+
+3. Entry conditions: none.
+
+4. Scope fence. May create: `src/`.
+Scope paths: src/**, test-house/**
+
+5. Context Pack: `<<<P6-S1>>>`.
+
+6. Tasks.
+
+P01-T01 First task
+- Steps: do something.
+- Accept: tests pass.
+
+P01-END1, P01-END2: per Part 1 §10.
+
+7. Test plan: T-PHASE-0101 to T-PHASE-0110.
+
+9. Risk review: not applicable.
+
+9. Exit conditions: tests pass.
+
+10. Look-ahead: P02 adds something.
+
+11. Budget: class M; retries 3; tool calls 400.
+<<<END-PHASE-01>>>
+
+<<<PHASE-02>>>
+PHASE 02 — TEST
+
+1. Header: P02 · Test · branch `phase/02-test` · class M · capabilities: none.
+
+2. Purpose: test phase two.
+
+3. Entry conditions: none.
+
+4. Scope fence. May create: `src/`.
+Scope paths: src/**, test-house/**
+
+5. Context Pack: `<<<P6-S1>>>`.
+
+6. Tasks.
+
+P02-T01 First task
+- Steps: do something.
+- Accept: tests pass.
+
+P02-RISK Risk review
+- Steps: review risks.
+- Accept: risk validation passes.
+
+P02-END1, P02-END2: per Part 1 §10.
+
+7. Test plan: T-PHASE-0201 to T-PHASE-0210.
+
+8. Risk review: task P02-RISK.
+
+9. Exit conditions: tests pass.
+
+10. Look-ahead: none.
+
+11. Budget: class M; retries 3; tool calls 400.
+<<<END-PHASE-02>>>

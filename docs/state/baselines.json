@@ -1,0 +1,6 @@
+{
+  "tools/gate": {
+    "branch_coverage": 0.3891,
+    "line_coverage": 0.4752
+  }
+}

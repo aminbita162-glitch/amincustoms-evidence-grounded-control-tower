@@ -1,0 +1,14 @@
+# Hygiene scope — vendor-pattern exceptions (Part 4 §4.12, P00-T06).
+#
+# Each [[entry]] has:
+#   path               — a glob pattern for files where vendor patterns are
+#                        allowed (checked with fnmatch)
+#   reason             — why the exception is granted
+#   owner_decision_id  — the owner decision that authorises it
+#
+# Entries are allowed ONLY under these path families:
+#   adapter/**, provider-configuration/**, provider-test/**,
+#   provider-documentation/**
+# An entry whose path falls outside these families fails the hygiene gate.
+#
+# For P00 this file is empty — no vendor exceptions are declared.
