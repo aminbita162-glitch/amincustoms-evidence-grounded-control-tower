@@ -170,3 +170,5 @@
 | T-PHASE-0116 | Overflow with correct counts passes | fast | gate/test_phase.py | test_overflow_correct_passes |
 | T-PHASE-0117 | Self-review constants match spec | fast | gate/test_phase.py | test_selfreview_constants |
 | T-PHASE-0118 | State consistency with matching ledger passes | fast | gate/test_phase.py | test_state_consistency_passes |
+| T-RISK-0001 | risk validate scales exits 0 on valid SCALES.yaml | fast | risk/test_scales.py | test_validate_scales_passes |
+| T-RISK-0002 | RISK-POLICY.md contains no compliance-claim phrases | fast | risk/test_policy.py | test_policy_has_no_forbidden_phrases |
