@@ -72,7 +72,7 @@
   "tools/gate/gates/license.py": "65689e3d4f6222a8ed463b890472dfb2fcf3efdb3a1834ae63a854ef443c8a89",
   "tools/gate/gates/protect.py": "8aaae71f9127c5b1722879731a3b87cae3fa0c0d5c35642dc05a9dbb7ba714a9",
   "tools/gate/gates/scope.py": "38fd453bbc751d77d40a0ee7a5dffd90fcb3837088c774300abf876d5a132770",
-  "tools/gate/gates/secrets.py": "1a37a8f4ae96b3ab6029e762db6eb384eb0903a13b778381f3380333312bc03a",
+  "tools/gate/gates/secrets.py": "e53b51da949ffb3c4a6af7419d5aafd6d97e6381f7bca94129b447c76abcf776",
   "tools/gate/gates/security.py": "1f1797e8e8fc39ffc6e89968f2fb9cb0feaeea4055ec1ed279bb793101a8ea8e",
   "tools/gate/gates/seeds.py": "4d32969b343e950685b77756adb37bb88f9f81a4b33e0db606d530e381460246",
   "tools/gate/gates/selftest.py": "d498ed61083f9e3a09f3efac6a4f021bbe4a576d01d7646094e6b30053b090e5",

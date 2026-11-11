@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 __all__ = [
@@ -56,48 +57,64 @@ def parse_findings(raw: object) -> list[dict[str, object]]:
     return []
 
 
-def run_gitleaks(cwd: Path) -> tuple[int, list[dict[str, object]], str | None]:
+def run_gitleaks(
+    cwd: Path, binary: Path | None = None
+) -> tuple[int, list[dict[str, object]], str | None]:
     """Run ``gitleaks detect`` in *cwd*.
+
+    The report is written to a temporary file, never to a standard stream.
+    A run that left no report and did not say it was clean is a tool error,
+    never a pass.
 
     Returns ``(exit_code, findings, error_message)``.
     """
-    # Check tools/ci/gitleaks first (P00 download location).
-    repo_root = Path(__file__).resolve().parents[3]
-    gitleaks = repo_root / "tools" / "ci" / "gitleaks"
-    if not gitleaks.is_file():
-        gitleaks = _gate_dir() / ".venv" / "bin" / "gitleaks"
-    if not gitleaks.is_file():
-        gitleaks = Path("gitleaks")
-    cmd: list[str] = [
-        str(gitleaks),
-        "detect",
-        "--source",
-        str(cwd),
-        "--no-git",
-        "--report-format",
-        "json",
-        "--report-path",
-        "/dev/stdout",
-        "--no-banner",
-        "--exit-code",
-        "0",
-    ]
+    if binary is not None:
+        gitleaks = binary
+    else:
+        # Check tools/ci/gitleaks first (P00 download location).
+        repo_root = Path(__file__).resolve().parents[3]
+        gitleaks = repo_root / "tools" / "ci" / "gitleaks"
+        if not gitleaks.is_file():
+            gitleaks = _gate_dir() / ".venv" / "bin" / "gitleaks"
+        if not gitleaks.is_file():
+            gitleaks = Path("gitleaks")
+    with tempfile.TemporaryDirectory() as tmp:
+        report = Path(tmp) / "report.json"
+        cmd: list[str] = [
+            str(gitleaks),
+            "detect",
+            "--source",
+            str(cwd),
+            "--no-git",
+            "--report-format",
+            "json",
+            "--report-path",
+            str(report),
+            "--no-banner",
+            "--exit-code",
+            "0",
+        ]
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=60,
+                cwd=str(cwd),
+            )
+        except FileNotFoundError:
+            return 2, [], "gitleaks not found"
+        except subprocess.TimeoutExpired:
+            return 2, [], "gitleaks timed out"
+        if proc.returncode not in (0, 1):
+            return 2, [], proc.stderr.strip() or "gitleaks error"
+        text = report.read_text(encoding="utf-8") if report.is_file() else ""
+    if not text.strip():
+        if "no leaks found" in proc.stderr:
+            return 0, [], None
+        return 2, [], "gitleaks wrote no report and did not report a clean run"
     try:
-        proc = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=60,
-            cwd=str(cwd),
-        )
-    except FileNotFoundError:
-        return 2, [], "gitleaks not found"
-    except subprocess.TimeoutExpired:
-        return 2, [], "gitleaks timed out"
-    if proc.returncode not in (0, 1):
-        return 2, [], proc.stderr.strip() or "gitleaks error"
-    try:
-        raw = json.loads(proc.stdout) if proc.stdout.strip() else []
+        raw = json.loads(text)
     except json.JSONDecodeError:
         return 2, [], "invalid gitleaks JSON output"
     findings = parse_findings(raw)

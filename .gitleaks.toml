@@ -1,0 +1,11 @@
+# Secret scanner configuration (read automatically by the secrets gate).
+# The only exception is the protected-hash manifest: it holds file names and
+# SHA-256 digests only, and the scanner mistakes digests next to the word
+# "secret" in a file name for keys. Every other file is scanned in full.
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "protected-hash manifest holds only file names and digests"
+paths = ['''docs/state/protected-hashes\.json''']
