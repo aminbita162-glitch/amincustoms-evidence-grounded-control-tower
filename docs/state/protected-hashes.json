@@ -14,7 +14,7 @@
   "tools/gate/__init__.py": "86dda0e82d48ec5956157441ed83e8af31197a9b35d925326e8c4cae8cf8db39",
   "tools/gate/__main__.py": "2b568cd1ee56e56f8722684cd08b36e302e506ab0a0c03e1a2244acf9446c512",
   "tools/gate/bandit.yaml": "5847b5dd55ce4e841c61c72e583d01aa237cf268355aa1e25b7de4e4cb34248d",
-  "tools/gate/catalogue.toml": "d73c322c0724803b7cf2351b1e898a4b4900f89006b207db77d3e53fbbf6170e",
+  "tools/gate/catalogue.toml": "ba9ca39e3e0a6901b6fbbdf849c3cee88a2ccc067dd2208d303afa138f739041",
   "tools/gate/commit_check.py": "58f9e1c8edfb9a58e64f616ecfc4bc56a87dc6518198852851fd534d5033bf28",
   "tools/gate/exceptions.toml": "f138b2bf0ac24ff6f14f98d015170aa0467eb502743207b806f776cea31758e6",
   "tools/gate/fixtures/chain_clean/CHAIN.jsonl": "b6dc2ed3e2ccfe116159608ca0eed1a145623183931f27eed10979b86636a170",
