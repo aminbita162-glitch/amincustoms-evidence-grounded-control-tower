@@ -1,7 +1,7 @@
 {
-  ".github/workflows/main.yml": "adc92b59252fe09362087258d7de39d8e4d72ff06fe8f9600ec8336488133352",
-  ".github/workflows/nightly.yml": "fb94757a4950bfce59f2a91f86ec450f664c2f09ddee7045390d5671e55a9122",
-  ".github/workflows/pr.yml": "9786fa615fdb1e0231e33105207697c55d829d77810e39577df1e3afb632d5b6",
+  ".github/workflows/main.yml": "c096138a3819b4507edcabda648d47b7d54d0993474d74b3cdb88592eef37a12",
+  ".github/workflows/nightly.yml": "2709023dd733f7317196182d1f54d13c71b489bed498faa1357f70d7a1f88b94",
+  ".github/workflows/pr.yml": "4add1be7739cba05500c1b23257abf2b02f689e5340f44eda5cad9d5a39abd47",
   "LICENSE": "69f14eae5489835ae2c3d7e682cde12bc1bf178c5dc2e64377533a8e3636447c",
   "directive.txt": "1aa9fece1fc83407fee2724cf7ed7c228533edb2283d919e3fe5cf5bf93c8970",
   "docs/decisions/run-parameters.md": "8adea46aeb3566d74fef9216524c854d58cd0dc6eec5bd97832378313419ef0d",
@@ -79,6 +79,7 @@
   "tools/gate/gates/state.py": "525a6274aa49f9bf4d9cff0386549dd33c21875b6f1e8570d42a6315dcabff84",
   "tools/gate/golden-paths.toml": "131639a233feb422c17a4f5df57c3409c07b6b2ede7d93d80f53171b2867c09b",
   "tools/gate/hygiene_scope.toml": "ba1f742b7347dbad80216212b33baa29c8eaefabd23603bfd0a1eda4cc04b19c",
+  "tools/gate/install_gitleaks.py": "23087f498bc22791e308473348631157b5b193ed0381ffdb9fe78f303a0f53b8",
   "tools/gate/phase/__init__.py": "9992000f2cceac88f9ad0d176cdc7cc823fdcbb53777fe27d3bbe0c47ace3257",
   "tools/gate/phase/baselines.py": "ec915a389d4fe8c9791d19ed9c490f7ca0131457dde9382379edf9f0e145addf",
   "tools/gate/phase/chain.py": "b90e95937ea4b4ecf883b796edb48a35dc3a512552b214a4143e5b8601643019",

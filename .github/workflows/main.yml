@@ -22,6 +22,7 @@ jobs:
       - run: pip install uv
       - run: uv python install 3.14
       - run: uv sync --frozen --extra dev
+      - run: uv run python -m tools.gate.install_gitleaks
       - name: diag selftest
         run: uv run python -m tools.gate.gates.selftest
         continue-on-error: true

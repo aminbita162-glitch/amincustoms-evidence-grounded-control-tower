@@ -62,6 +62,9 @@
 | T-GATE-0043 | a transitive package with a licence outside the allowlist fails | fast | gate/test_gates.py | test_license_transitive_bad_license |
 | T-GATE-0044 | a stale THIRD_PARTY_NOTICES.txt fails the license gate | fast | gate/test_gates.py | test_license_stale_notices |
 | T-GATE-0045 | merge commit messages are dropped before the commit checks | fast | gate/test_gates.py | test_drop_merge_messages |
+| T-GATE-0046 | the installer accepts only data with the pinned SHA-256 | fast | gate/test_install_gitleaks.py | test_verify_digest |
+| T-GATE-0047 | the installer writes the gitleaks member as an executable file | fast | gate/test_install_gitleaks.py | test_extract_binary |
+| T-GATE-0048 | the installer fails when the archive has no gitleaks member | fast | gate/test_install_gitleaks.py | test_extract_binary_missing_member |
 | T-GATE-GOLDEN-001 | Golden regenerate refuses a path outside the golden list | fast | gate/test_index.py | test_golden_refuses_outside |
 | T-GATE-GOLDEN-002 | Golden regenerate refuses a dirty tree | fast | gate/test_index.py | test_golden_refuses_dirty |
 | T-GATE-GOLDEN-003 | Golden regenerate commits golden files alone | fast | gate/test_index.py | test_golden_commits_alone |
