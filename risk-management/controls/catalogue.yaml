@@ -1,0 +1,171 @@
+# Control catalogue (seed) — P01-T03.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 11 (seed control targets).
+# Each control is PLANNED with a target phase; the lifecycle status moves to
+# IMPLEMENTED and then VERIFIED as the target phase completes and the
+# verifying test ids are recorded. T06 completes the catalogue with controls
+# for project risks, hazards, threats, model risks and data-legal risks.
+
+records:
+  - id: CTL-PROD-01
+    title: Label and lattice validation gate
+    type: preventive
+    mechanism: >-
+      Gate-enforced label and lattice checks (P03, P06); reference combiner and
+      fail-closed matrix (P28); honesty sweep (P28); ARC-03 to ARC-05 (P30);
+      scenario basis and review status (P09).
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-02
+    title: Propose-Verify-Gate and model cross-check
+    type: preventive
+    mechanism: >-
+      Propose-Verify-Gate and model cross-check (P08, P14); extraction quality
+      re-run (P28).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-03
+    title: Containment and corpus quarantine
+    type: preventive
+    mechanism: >-
+      Containment and corpus (P07, P08); hostile model stub (P29); SEC-22 to
+      SEC-26.
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-04
+    title: Pack validity windows
+    type: preventive
+    mechanism: >-
+      Pack validity windows (P02, P06); freshness check (P30, P32);
+      maintenance rule M-4.
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-05
+    title: Classification pack tests and scenarios
+    type: detective
+    mechanism: >-
+      Classification pack tests and scenarios (P17 and the owning capability
+      phases); claim wording scan.
+    lifecycle_status: PLANNED
+    target_phase: P17
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-06
+    title: Re-screening on list change
+    type: detective
+    mechanism: >-
+      K01 scenarios and protective matching (P17); re-screening on list change.
+    lifecycle_status: PLANNED
+    target_phase: P17
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-07
+    title: Row-level security and leakage gate
+    type: preventive
+    mechanism: >-
+      Row-level security and leakage gate (P04, P11); canary audit (P29).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-08
+    title: Append-only guard and ledger verifiers
+    type: preventive
+    mechanism: >-
+      Append-only guard (P04); ledger and verifiers (P05); whole-ledger replay
+      (P28); restore drill (P28).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-09
+    title: Budgets and kill switches
+    type: preventive
+    mechanism: >-
+      Budgets and kill switches (P07, P10); soak (P28).
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-10
+    title: Budget Governor and cost telemetry
+    type: preventive
+    mechanism: >-
+      Budget Governor (P10); cost telemetry (Part 6 section 6.18).
+    lifecycle_status: PLANNED
+    target_phase: P10
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-11
+    title: Model Gateway with local model fallback
+    type: corrective
+    mechanism: >-
+      Model Gateway with local model and fallbacks (P08); chaos (P28);
+      V-25 cadence.
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-12
+    title: Solver harness and independent checker
+    type: detective
+    mechanism: >-
+      Solver harness and independent checker (P13); plan scenarios (P21, P22).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-13
+    title: Redaction and log tests
+    type: preventive
+    mechanism: >-
+      Redaction and log tests (P10, P11); SEC-44.
+    lifecycle_status: PLANNED
+    target_phase: P10
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-14
+    title: Data origin stamp
+    type: preventive
+    mechanism: >-
+      Data_origin stamp (P03, P27); honesty sweep.
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-15
+    title: Advisory footer and fixed explanation templates
+    type: preventive
+    mechanism: >-
+      Advisory footer and fixed explanation templates (P27); claims scan.
+    lifecycle_status: PLANNED
+    target_phase: P27
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-16
+    title: Signer isolation and rotation
+    type: preventive
+    mechanism: >-
+      Signer isolation and rotation (P05, P11); key rotation drill (P28);
+      SEC-17 to SEC-19.
+    lifecycle_status: PLANNED
+    target_phase: P05
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-17
+    title: Freshness check for reference data
+    type: detective
+    mechanism: >-
+      Freshness check (P30, P32); pack validity windows (P02, P06);
+      maintenance rule M-4.
+    lifecycle_status: PLANNED
+    target_phase: P30
+    source: P7-RISK section 11

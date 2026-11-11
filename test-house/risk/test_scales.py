@@ -11,10 +11,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 _RISK_SCRIPT = REPO_ROOT / "risk-management" / "tools" / "risk.py"
 
 
+@pytest.mark.fast
 def test_validate_scales_passes() -> None:
     """id: T-RISK-0001
     title: risk validate scales exits 0 on valid SCALES.yaml
@@ -35,8 +38,9 @@ def test_validate_scales_passes() -> None:
     assert result.returncode == 0, f"expected exit 0, got {result.returncode}: {result.stderr}"
 
 
+@pytest.mark.fast
 def test_validate_scales_fails_on_bad_scales(tmp_path: Path) -> None:
-    """id: T-RISK-0001
+    """id: T-RISK-0018
     title: risk validate scales fails on invalid scales
     purpose: Verify that a malformed scales file is rejected.
     level: fast

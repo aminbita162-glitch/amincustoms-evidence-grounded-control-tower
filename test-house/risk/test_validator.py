@@ -9,6 +9,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 _TOOLS_DIR = REPO_ROOT / "risk-management" / "tools"
 if str(_TOOLS_DIR) not in sys.path:
@@ -19,6 +21,7 @@ import loader  # noqa: E402
 import validator  # noqa: E402
 
 
+@pytest.mark.fast
 def test_risk_schema_valid() -> None:
     """id: T-RISK-0003
     title: risk record validates against risk schema
@@ -52,8 +55,9 @@ def test_risk_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_risk_schema_invalid() -> None:
-    """id: T-RISK-0003
+    """id: T-RISK-0020
     title: invalid risk record fails schema validation
     purpose: Verify that an invalid risk record is rejected.
     level: fast
@@ -72,6 +76,7 @@ def test_risk_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for missing required fields"
 
 
+@pytest.mark.fast
 def test_control_schema_valid() -> None:
     """id: T-RISK-0004
     title: control record validates against control schema
@@ -97,8 +102,9 @@ def test_control_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_control_schema_invalid() -> None:
-    """id: T-RISK-0004
+    """id: T-RISK-0021
     title: invalid control record fails schema validation
     purpose: Verify that an invalid control record is rejected.
     level: fast
@@ -121,6 +127,7 @@ def test_control_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for invalid type"
 
 
+@pytest.mark.fast
 def test_hazard_schema_valid() -> None:
     """id: T-RISK-0005
     title: hazard record validates against hazard schema
@@ -147,8 +154,9 @@ def test_hazard_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_hazard_schema_invalid() -> None:
-    """id: T-RISK-0005
+    """id: T-RISK-0022
     title: invalid hazard record fails schema validation
     purpose: Verify that an invalid hazard record is rejected.
     level: fast
@@ -164,6 +172,7 @@ def test_hazard_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for missing required fields"
 
 
+@pytest.mark.fast
 def test_threat_schema_valid() -> None:
     """id: T-RISK-0006
     title: threat record validates against threat schema
@@ -189,8 +198,9 @@ def test_threat_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_threat_schema_invalid() -> None:
-    """id: T-RISK-0006
+    """id: T-RISK-0023
     title: invalid threat record fails schema validation
     purpose: Verify that an invalid threat record is rejected.
     level: fast
@@ -206,6 +216,7 @@ def test_threat_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for missing required fields"
 
 
+@pytest.mark.fast
 def test_acceptance_schema_valid() -> None:
     """id: T-RISK-0007
     title: acceptance record validates against acceptance schema
@@ -232,8 +243,9 @@ def test_acceptance_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_acceptance_schema_invalid() -> None:
-    """id: T-RISK-0007
+    """id: T-RISK-0024
     title: invalid acceptance record fails schema validation
     purpose: Verify that an acceptance with wrong accountable is rejected.
     level: fast
@@ -258,6 +270,7 @@ def test_acceptance_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for accountable != OWNER"
 
 
+@pytest.mark.fast
 def test_review_schema_valid() -> None:
     """id: T-RISK-0008
     title: review record validates against review schema
@@ -281,8 +294,9 @@ def test_review_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_review_schema_invalid() -> None:
-    """id: T-RISK-0008
+    """id: T-RISK-0025
     title: invalid review record fails schema validation
     purpose: Verify that an invalid review record is rejected.
     level: fast
@@ -298,6 +312,7 @@ def test_review_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for missing required fields"
 
 
+@pytest.mark.fast
 def test_incident_schema_valid() -> None:
     """id: T-RISK-0009
     title: incident record validates against incident schema
@@ -322,8 +337,9 @@ def test_incident_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_incident_schema_invalid() -> None:
-    """id: T-RISK-0009
+    """id: T-RISK-0026
     title: invalid incident record fails schema validation
     purpose: Verify that an invalid incident record is rejected.
     level: fast
@@ -346,6 +362,7 @@ def test_incident_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for invalid status"
 
 
+@pytest.mark.fast
 def test_drill_schema_valid() -> None:
     """id: T-RISK-0010
     title: drill record validates against drill schema
@@ -369,8 +386,9 @@ def test_drill_schema_valid() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_drill_schema_invalid() -> None:
-    """id: T-RISK-0010
+    """id: T-RISK-0027
     title: invalid drill record fails schema validation
     purpose: Verify that an invalid drill record is rejected.
     level: fast
@@ -392,6 +410,7 @@ def test_drill_schema_invalid() -> None:
     assert len(errors) > 0, "expected errors for invalid type"
 
 
+@pytest.mark.fast
 def test_unique_ids_pass() -> None:
     """id: T-RISK-0011
     title: unique ids pass validation
@@ -411,8 +430,9 @@ def test_unique_ids_pass() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_unique_ids_fail() -> None:
-    """id: T-RISK-0011
+    """id: T-RISK-0028
     title: duplicate ids fail validation
     purpose: Verify that records with duplicate ids are rejected.
     level: fast
@@ -430,6 +450,7 @@ def test_unique_ids_fail() -> None:
     assert len(errors) > 0, "expected errors for duplicate ids"
 
 
+@pytest.mark.fast
 def test_references_pass() -> None:
     """id: T-RISK-0012
     title: valid control references pass
@@ -449,8 +470,9 @@ def test_references_pass() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_references_fail() -> None:
-    """id: T-RISK-0012
+    """id: T-RISK-0029
     title: broken control references fail
     purpose: Verify that references to non-existent controls are rejected.
     level: fast
@@ -468,6 +490,7 @@ def test_references_fail() -> None:
     assert len(errors) > 0, "expected errors for missing control reference"
 
 
+@pytest.mark.fast
 def test_lifecycle_planned_with_target() -> None:
     """id: T-RISK-0013
     title: PLANNED control with target_phase passes
@@ -486,8 +509,9 @@ def test_lifecycle_planned_with_target() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_lifecycle_planned_without_target() -> None:
-    """id: T-RISK-0013
+    """id: T-RISK-0030
     title: PLANNED control without target_phase fails
     purpose: Verify that a PLANNED control without a target_phase is rejected.
     level: fast
@@ -504,6 +528,7 @@ def test_lifecycle_planned_without_target() -> None:
     assert len(errors) > 0, "expected errors for PLANNED without target_phase"
 
 
+@pytest.mark.fast
 def test_control_overdue_pass() -> None:
     """id: T-RISK-0014
     title: PLANNED control with unreached target_phase passes
@@ -523,8 +548,9 @@ def test_control_overdue_pass() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_control_overdue_fail() -> None:
-    """id: T-RISK-0014
+    """id: T-RISK-0031
     title: PLANNED control with reached target_phase fails as overdue
     purpose: Verify that a PLANNED control whose target_phase has been
     reached is flagged as overdue.
@@ -543,6 +569,7 @@ def test_control_overdue_fail() -> None:
     assert "overdue" in errors[0], f"expected 'overdue' in error, got {errors[0]}"
 
 
+@pytest.mark.fast
 def test_verified_with_known_test_id() -> None:
     """id: T-RISK-0015
     title: VERIFIED control with known test id passes
@@ -566,8 +593,9 @@ def test_verified_with_known_test_id() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_verified_with_unknown_test_id() -> None:
-    """id: T-RISK-0015
+    """id: T-RISK-0032
     title: VERIFIED control with unknown test id fails
     purpose: Verify that a VERIFIED control referencing an unknown test id
     is rejected.
@@ -590,6 +618,7 @@ def test_verified_with_unknown_test_id() -> None:
     assert len(errors) > 0, "expected errors for unknown test id"
 
 
+@pytest.mark.fast
 def test_risk_fields_pass() -> None:
     """id: T-RISK-0016
     title: risk with area and accountable passes
@@ -608,8 +637,9 @@ def test_risk_fields_pass() -> None:
     assert errors == [], f"expected no errors, got {errors}"
 
 
+@pytest.mark.fast
 def test_risk_fields_fail() -> None:
-    """id: T-RISK-0016
+    """id: T-RISK-0033
     title: risk without area or accountable fails
     purpose: Verify that a risk missing area or accountable is rejected.
     level: fast
