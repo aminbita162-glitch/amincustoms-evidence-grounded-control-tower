@@ -1,0 +1,30 @@
+# P00 phase risk review — P01-T04.
+#
+# Lists the controls P00 created with their lifecycle status.
+# P00 built the gate infrastructure: gate runner, protected paths,
+# hygiene, secrets, license, and deps gates. All are VERIFIED with
+# passing tests in the test index.
+
+records:
+  - id: REV-P00
+    phase: P00
+    review_date: "2026-11"
+    controls_added:
+      - gate-runner (VERIFIED)
+      - protected-paths (VERIFIED)
+      - hygiene (VERIFIED)
+      - secrets (VERIFIED)
+      - license (VERIFIED)
+      - deps (VERIFIED)
+    controls_verified:
+      - gate-runner (VERIFIED, T-GATE-0001 to T-GATE-0008)
+      - protected-paths (VERIFIED, T-GATE-0025 to T-GATE-0029)
+      - hygiene (VERIFIED, T-GATE-0015 to T-GATE-0016)
+      - secrets (VERIFIED, T-GATE-0017 to T-GATE-0018)
+      - license (VERIFIED, T-GATE-0023 to T-GATE-0024)
+      - deps (VERIFIED, T-GATE-0021 to T-GATE-0022)
+    residual_risks_above_threshold: []
+    v_items_opened_or_closed: []
+    register_diff: >-
+      P00 created the gate runner, protected paths, and the hygiene, secrets,
+      license, and deps gates. All are VERIFIED with passing tests.
