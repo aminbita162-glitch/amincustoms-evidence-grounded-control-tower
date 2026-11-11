@@ -61,6 +61,7 @@
 | T-GATE-0042 | hygiene gate runs in CI (not NOT_RUN_LOCAL) when lists are present | fast | gate/test_gates.py | test_hygiene_pending_in_ci |
 | T-GATE-0043 | a transitive package with a licence outside the allowlist fails | fast | gate/test_gates.py | test_license_transitive_bad_license |
 | T-GATE-0044 | a stale THIRD_PARTY_NOTICES.txt fails the license gate | fast | gate/test_gates.py | test_license_stale_notices |
+| T-GATE-0045 | merge commit messages are dropped before the commit checks | fast | gate/test_gates.py | test_drop_merge_messages |
 | T-GATE-GOLDEN-001 | Golden regenerate refuses a path outside the golden list | fast | gate/test_index.py | test_golden_refuses_outside |
 | T-GATE-GOLDEN-002 | Golden regenerate refuses a dirty tree | fast | gate/test_index.py | test_golden_refuses_dirty |
 | T-GATE-GOLDEN-003 | Golden regenerate commits golden files alone | fast | gate/test_index.py | test_golden_commits_alone |

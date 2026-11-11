@@ -48,6 +48,7 @@ __all__ = [
     "get_tracked_files",
     "get_commit_messages",
     "get_pr_text",
+    "drop_merge_messages",
     "pattern_in_text",
     "is_scope_matched",
     "run_hygiene",
@@ -204,6 +205,15 @@ def get_tracked_files(root: Path) -> list[Path]:
     return [p for p in root.rglob("*") if p.is_file() and p.name not in (".git",)]
 
 
+def drop_merge_messages(messages: list[str]) -> list[str]:
+    """Drop merge-commit messages.
+
+    The commits of a pull request are checked before the merge, so the merge
+    commit itself (its message starts with "Merge ") is not checked again.
+    """
+    return [m for m in messages if not m.lstrip().startswith("Merge ")]
+
+
 def get_commit_messages(root: Path) -> list[str]:
     """Return commit message bodies from the branch, or a ``COMMIT_MSG`` file.
 
@@ -225,10 +235,10 @@ def get_commit_messages(root: Path) -> list[str]:
         )
         if result.returncode == 0 and result.stdout.strip():
             messages = _split_git_log(result.stdout)
-            return [m for m in messages if m.strip()]
-        # Fallback: all commits from HEAD.
+            return drop_merge_messages([m for m in messages if m.strip()])
+        # Fallback (on main, or no main branch): the HEAD commit only.
         result = subprocess.run(
-            ["git", "log", "--format=%B", "HEAD"],
+            ["git", "log", "-n", "1", "--format=%B", "HEAD"],
             capture_output=True,
             text=True,
             cwd=str(root),
@@ -237,7 +247,7 @@ def get_commit_messages(root: Path) -> list[str]:
         )
         if result.returncode == 0:
             messages = _split_git_log(result.stdout)
-            return [m for m in messages if m.strip()]
+            return drop_merge_messages([m for m in messages if m.strip()])
         return []
     # Fallback for non-git directories (selftest temp dirs).
     commit_msg = root / "COMMIT_MSG"

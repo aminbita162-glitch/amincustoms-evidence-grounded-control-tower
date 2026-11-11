@@ -21,7 +21,7 @@ import pytest
 
 from tools.gate.commit_check import check_commit_message
 from tools.gate.gates.deps import is_expired, parse_audit
-from tools.gate.gates.hygiene import run_hygiene
+from tools.gate.gates.hygiene import drop_merge_messages, run_hygiene
 from tools.gate.gates.license import check_licenses
 from tools.gate.runner import GateEntry, default_env, run_selftest
 
@@ -794,6 +794,33 @@ def test_license_transitive_bad_license() -> None:
     ]
     violations = check_licenses(packages)
     assert any("LGPL" in v for v in violations)
+
+
+# ---------------------------------------------------------------------------
+# T-GATE-0045 - merge commit messages are not checked again
+# ---------------------------------------------------------------------------
+# id: T-GATE-0045
+# title: merge commit messages are dropped before the commit checks
+# purpose: Verify that the messages of merge commits are removed from the list
+#          that the hygiene gate checks, and that task commits are kept.
+# level: fast
+# requirement ids: Part 4 section 4.12, Part 1 section 4.9
+# scenario ids: S-GATE-HYGIENE-MERGE
+# input: three messages, two of them merge commit messages
+# expected result: only the task commit message is kept
+# risk covered: the gate fails on every merge commit of a pull request
+# owning capability: gate-hygiene
+
+
+@pytest.mark.fast
+def test_drop_merge_messages() -> None:
+    """Merge commit messages are dropped and task commit messages are kept."""
+    messages = [
+        "Merge pull request #2 from owner/phase/00-bootstrap",
+        "feat(auth): add login page [P00-T01]",
+        "Merge abc123 into def456",
+    ]
+    assert drop_merge_messages(messages) == ["feat(auth): add login page [P00-T01]"]
 
 
 # ---------------------------------------------------------------------------

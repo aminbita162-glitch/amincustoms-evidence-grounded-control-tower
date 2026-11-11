@@ -13,6 +13,9 @@ concurrency:
 jobs:
   nightly:
     runs-on: ubuntu-latest
+    env:
+      HYGIENE_PATTERNS: ${{ secrets.HYGIENE_PATTERNS }}
+      HYGIENE_PATTERNS_VENDOR: ${{ secrets.HYGIENE_PATTERNS_VENDOR }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - run: pip install uv
