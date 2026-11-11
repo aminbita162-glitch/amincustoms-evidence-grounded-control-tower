@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Threat record",
+  "type": "object",
+  "required": ["id", "title", "area", "description", "trust_boundary", "controls", "source"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^THR-" },
+    "title": { "type": "string" },
+    "area": { "type": "string" },
+    "description": { "type": "string" },
+    "trust_boundary": { "type": "string" },
+    "controls": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": "string" }
+  },
+  "additionalProperties": false
+}

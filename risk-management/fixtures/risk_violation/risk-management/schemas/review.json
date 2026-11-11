@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Review record",
+  "type": "object",
+  "required": ["id", "phase", "review_date"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^REV-" },
+    "phase": { "type": "string" },
+    "risks_new_or_changed": { "type": "array", "items": { "type": "string" } },
+    "controls_added": { "type": "array", "items": { "type": "string" } },
+    "controls_verified": { "type": "array", "items": { "type": "string" } },
+    "residual_risks_above_threshold": { "type": "array", "items": { "type": "string" } },
+    "v_items_opened_or_closed": { "type": "array", "items": { "type": "string" } },
+    "register_diff": { "type": "string" },
+    "review_date": { "type": "string" }
+  },
+  "additionalProperties": false
+}

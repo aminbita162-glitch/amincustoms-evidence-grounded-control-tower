@@ -1,0 +1,11 @@
+likelihood:
+  scale:
+    - value: 1
+      label: rare
+      anchor: "once a year"
+    - value: 2
+      label: unlikely
+      anchor: "every few months"
+score:
+  rule: wrong_rule
+  range: [1, 10]

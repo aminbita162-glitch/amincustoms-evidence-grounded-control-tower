@@ -155,11 +155,11 @@ clean_fixture = "fixtures/index_clean"
 
 [gate.risk]
 cadence = "P"
-command = "echo NOT_ACTIVE"
+command = "python -c \"import yaml,sys; d=yaml.safe_load(open('risk-management/methodology/SCALES.yaml')); sys.exit(0 if isinstance(d,dict) and d.get('score',{}).get('rule')=='likelihood_times_severity' else 1)\""
 timeout = 60
 activates_in = "P01"
-violation_fixture = ""
-clean_fixture = ""
+violation_fixture = "../risk-management/fixtures/risk_violation"
+clean_fixture = "../risk-management/fixtures/risk_clean"
 
 [gate.data]
 cadence = "P"

@@ -188,6 +188,21 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"check-phrases: forbidden phrase '{phrase}' in {path}", file=sys.stderr)
             return 1
         return 0
+    if command == "report":
+        import report  # noqa: E402
+
+        return report.generate_all(_REPO_ROOT)
+    if command == "review":
+        import review  # noqa: E402
+
+        if len(argv) < 3 or argv[1] != "--phase":
+            print("usage: risk review --phase NN", file=sys.stderr)
+            return 2
+        return review.run_review(argv[2], _REPO_ROOT)
+    if command == "health":
+        import health  # noqa: E402
+
+        return health.run_health(_REPO_ROOT)
     print(f"risk: unknown command '{command}'", file=sys.stderr)
     return 2
 

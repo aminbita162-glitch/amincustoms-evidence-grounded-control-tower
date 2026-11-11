@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Incident record",
+  "type": "object",
+  "required": ["id", "title", "date", "area", "description", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^INC-" },
+    "title": { "type": "string" },
+    "date": { "type": "string" },
+    "area": { "type": "string" },
+    "description": { "type": "string" },
+    "status": { "type": "string", "enum": ["open", "resolved"] },
+    "resolution": { "type": "string" },
+    "ledger_record": { "type": "string" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,299 @@
+# Project risk register (seed) — P01-T04.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 5.
+# Label: ASSUMPTION (inherent scores are design parameters; not measured).
+# Each risk links controls by id; controls are PLANNED with a target phase.
+
+records:
+  - id: RSK-J-01
+    title: Dev-agent drift or hallucinated fact
+    area: project
+    description: >-
+      The development agent drifts from the directive or produces a
+      hallucinated fact. Mitigated by phase gates, scope check and directive
+      lint (Part 6 §6.14, §6.15), and the self-review of Part 1 §9.3.
+    cause: >-
+      A directive instruction misread; a fact asserted without evidence;
+      a scope violation not caught by the scope gate.
+    consequence: >-
+      A wrong implementation; a file outside scope; a gate bypass.
+    inherent_likelihood: 4
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROJ-01]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-02
+    title: Gate tampering
+    area: project
+    description: >-
+      A gate or its protected paths are tampered with. Mitigated by protected
+      paths and owner-held baseline hashes (P00, PF-06).
+    cause: >-
+      A protected file is modified without a task that names it; a baseline
+      hash is altered outside the protect gate.
+    consequence: >-
+      A gate that should fail passes; a security check is bypassed; a wrong
+      ALLOW is not caught.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-02]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-03
+    title: Token budget overrun
+    area: project
+    description: >-
+      The phase token budget is exhausted before the phase is complete.
+      Mitigated by budget classes (Part 6 §6.8) and cost telemetry (§6.18).
+    cause: >-
+      Too many tool calls; too much context; a phase that is larger than
+      budgeted.
+    consequence: >-
+      The phase is truncated; tasks are left incomplete; the agent is
+      interrupted mid-task.
+    inherent_likelihood: 4
+    inherent_severity: 2
+    residual_likelihood: 2
+    residual_severity: 2
+    treatment: reduce
+    controls: [CTL-PROJ-03]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-04
+    title: Dependency compromise
+    area: project
+    description: >-
+      A dependency is compromised through its supply chain. Mitigated by the
+      deps gate, SBOM, and supply-chain audit (P29).
+    cause: >-
+      A malicious package; a compromised registry; a transitive dependency
+      with a vulnerability.
+    consequence: >-
+      Malicious code in the build; a supply-chain attack; a wrong ALLOW from
+      tampered tooling.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-04]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-05
+    title: External terms not matching licence or data conditions
+    area: project
+    description: >-
+      External terms (licence or data conditions) do not match the intended use
+      (V-01). Mitigated by the owner check PF-08 and RC-05.
+    cause: >-
+      A licence that does not permit the intended use; a data condition that
+      conflicts with the product terms; an unverified external term.
+    consequence: >-
+      A licence violation; a data misuse; a compliance breach; a wrong ALLOW
+      based on mislicensed data.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-05]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-06
+    title: Unverified source used
+    area: project
+    description: >-
+      An unverified source is used as if it were verified. Mitigated by the
+      Source Registry and label rules (P02).
+    cause: >-
+      A source is used without a label; an UNVERIFIED source is treated as
+      OFFICIAL; a source is not registered.
+    consequence: >-
+      A wrong ALLOW based on unverified data; a claim that overstates the
+      label; a source that cannot be traced.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROJ-06]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-07
+    title: Directive integrity
+    area: project
+    description: >-
+      The directive is modified or its hash does not match. Mitigated by the
+      hash check at every run (Part 1 §1.4) and the directive lint (P7-LINT).
+    cause: >-
+      The directive is edited outside an owner decision; the hash is not
+      checked; a maintenance directive is not recorded.
+    consequence: >-
+      An agent runs against a wrong directive; a phase is executed with
+      outdated instructions; a scope fence is bypassed.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-07]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-08
+    title: Single-owner dependency
+    area: project
+    description: >-
+      The project depends on a single owner who may become unavailable.
+      Mitigated by runbooks and decision records (P31).
+    cause: >-
+      No second reviewer; no documented runbook; a decision that is not
+      recorded; knowledge that is not written down.
+    consequence: >-
+      The project stalls; a decision cannot be reversed; a runbook is
+      missing when needed.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROJ-08]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-09
+    title: Loss of repository
+    area: project
+    description: >-
+      The repository is lost or becomes inaccessible. Mitigated by RC-08
+      (a copy outside the hosting service) and the exit drill (P28).
+    cause: >-
+      A hosting service outage; a deleted account; a corrupted git history;
+      no backup outside the host.
+    consequence: >-
+      Total loss of the codebase; inability to continue; loss of the
+      evidence ledger.
+    inherent_likelihood: 1
+    inherent_severity: 5
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-09]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-10
+    title: Release differs from audited code
+    area: project
+    description: >-
+      The released code differs from the audited code. Mitigated by the
+      tree-hash binding (P29-T01, P32-T04).
+    cause: >-
+      A build that is not reproducible; a release that includes uncommitted
+      changes; a tree hash that does not match the audit.
+    consequence: >-
+      A release that contains unaudited code; a security finding that is
+      not fixed in the release; a wrong ALLOW from unverified code.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROJ-10]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-11
+    title: Audit blind spot from an old checklist edition
+    area: project
+    description: >-
+      An audit uses an outdated checklist edition, missing new threats.
+      Mitigated by the edition record and V-30 (P7-SEC-AUDIT section 4).
+    cause: >-
+      A checklist that is not updated; an edition that is not recorded; a
+      V-30 that is not verified.
+    consequence: >-
+      A threat class that is not audited; a vulnerability that is missed;
+      a false sense of security.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROJ-11]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5
+
+  - id: RSK-J-12
+    title: Reduced analysis coverage from excluded tools
+    area: project
+    description: >-
+      Analysis tools (Semgrep, hadolint, ffmpeg, psycopg) are excluded on
+      licence grounds, reducing coverage. Mitigated by Bandit, the Ruff
+      security rules, the Trivy configuration checks, and the manual areas
+      of the security and architecture audits (P29, P30). The residual risk
+      is listed in the residual-risk report, and lifting an exclusion needs an
+      owner decision record that also records the licence check.
+    cause: >-
+      A tool licence that does not permit the intended use; a tool that is
+      excluded without a compensating control; a coverage gap that is not
+      documented.
+    consequence: >-
+      A vulnerability class that is not checked; a finding that is missed;
+      a false sense of coverage.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROJ-12]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 5

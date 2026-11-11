@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Drill record",
+  "type": "object",
+  "required": ["id", "title", "type", "planned_date", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^DRL-" },
+    "title": { "type": "string" },
+    "type": { "type": "string", "enum": ["restore", "crypto-erasure", "exit"] },
+    "planned_date": { "type": "string" },
+    "result": { "type": "string" },
+    "status": { "type": "string", "enum": ["planned", "completed", "failed"] }
+  },
+  "additionalProperties": false
+}
