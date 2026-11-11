@@ -281,3 +281,219 @@ records:
     lifecycle_status: PLANNED
     target_phase: P29
     source: P7-RISK section 11
+
+  # Hazard controls (P01-T05).
+
+  - id: CTL-HZD-01
+    title: Detective control for wrong release decision
+    type: detective
+    mechanism: >-
+      Gate-enforced label and lattice checks detect a wrong ALLOW before
+      release; the decision lattice catches a wrong ALLOW (P03, P06).
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-01
+    title: Corrective control for wrong release decision
+    type: corrective
+    mechanism: >-
+      The Human Gate rejects a wrong ALLOW and the case is returned to
+      BLOCKED; the reviewer can override with justification (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-02
+    title: Detective control for missed hold
+    type: detective
+    mechanism: >-
+      The case state machine rejects a release when the decision is HOLD;
+      the ledger records the HOLD (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-02
+    title: Corrective control for missed hold
+    type: corrective
+    mechanism: >-
+      The Human Gate enforces the HOLD; the case is returned to BLOCKED;
+      the reviewer can escalate (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-03
+    title: Detective control for wrong cost
+    type: detective
+    mechanism: >-
+      The cost computation is deterministic and verified by the solver;
+      a wrong cost is detected by the independent checker (P13).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-03
+    title: Corrective control for wrong cost
+    type: corrective
+    mechanism: >-
+      The cost is recomputed with the correct tariff and currency; the case
+      is returned for correction (P13).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-04
+    title: Detective control for wrong deadline
+    type: detective
+    mechanism: >-
+      The deadline computation uses a versioned calendar pack; a wrong
+      deadline is detected by the calendar rules (P06).
+    lifecycle_status: PLANNED
+    target_phase: P06
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-04
+    title: Corrective control for wrong deadline
+    type: corrective
+    mechanism: >-
+      The deadline is recomputed with the correct calendar pack; the case
+      is returned for correction (P06).
+    lifecycle_status: PLANNED
+    target_phase: P06
+    source: P7-RISK section 6
+
+  # Model risk controls (P01-T05).
+
+  - id: CTL-MR-01
+    title: Source grounding verification
+    type: preventive
+    mechanism: >-
+      Every extracted field carries a source span; the verifier checks the
+      span exists and supports the value (S1).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S1
+
+  - id: CTL-MR-02
+    title: Dual extraction for high-stakes fields
+    type: preventive
+    mechanism: >-
+      Two independent models extract high-stakes fields; disagreement yields
+      HOLD (S2).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S2
+
+  - id: CTL-MR-03
+    title: Evaluation gate for model changes
+    type: detective
+    mechanism: >-
+      Golden SYNTHETIC set per document type; a model or prompt change that
+      lowers a metric beyond tolerance fails the gate (S3).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S3
+
+  - id: CTL-MR-04
+    title: Per-tier budget enforcement
+    type: preventive
+    mechanism: >-
+      Per-case limits apply per tier; the Gateway refuses calls beyond them
+      (S4).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S4
+
+  - id: CTL-MR-05
+    title: Tenant policy check for data handling
+    type: preventive
+    mechanism: >-
+      No case data sent to a provider unless the tenant policy allows it;
+      retention and training-use terms recorded in the Source Registry (S5).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S5
+
+  - id: CTL-MR-06
+    title: Resilience controls for provider outage
+    type: corrective
+    mechanism: >-
+      Timeout, bounded retry, circuit breaker, automatic fallback to the
+      second adapter with the fallback recorded in the ledger (S6).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S6
+
+  - id: CTL-MR-07
+    title: Prompt-injection containment
+    type: preventive
+    mechanism: >-
+      Documents are data (I3); model output never carries tool authority;
+      the containment boundary is enforced (S7).
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: decision-d06 safeguard S7
+
+  # Data and legal risk controls (P01-T05).
+
+  - id: CTL-DLR-01
+    title: External terms check
+    type: preventive
+    mechanism: >-
+      Owner check PF-08 and RC-05 verify external terms match the intended
+      use (V-01).
+    lifecycle_status: PLANNED
+    target_phase: P32
+    source: P7-RISK section 8, V-01
+
+  - id: CTL-DLR-02
+    title: Dataset licence verification
+    type: preventive
+    mechanism: >-
+      The data gate checks every dataset has a verified licence; the Source
+      Registry records the licence summary (V-04).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-04
+
+  - id: CTL-DLR-03
+    title: Public-domain status verification
+    type: detective
+    mechanism: >-
+      The data gate verifies the public-domain status of list data; the
+      Source Registry records the status (V-05).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-05
+
+  - id: CTL-DLR-04
+    title: Official text validity check
+    type: detective
+    mechanism: >-
+      The data gate checks the validity of official text; the source is
+      verified as authoritative (V-07).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-07
+
+  - id: CTL-DLR-05
+    title: Secondary legal claims verification
+    type: detective
+    mechanism: >-
+      The data gate verifies secondary legal claims against the primary
+      source (V-08).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-08
+
+  - id: CTL-DLR-06
+    title: Privacy check for public list data
+    type: preventive
+    mechanism: >-
+      The data gate checks the privacy of public list data; personal data is
+      redacted before use (V-16).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-16

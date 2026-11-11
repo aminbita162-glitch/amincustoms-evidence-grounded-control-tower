@@ -1,0 +1,148 @@
+# Data and legal risk register (seed) — P01-T05.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 8.
+# One risk per verification item cited.
+
+records:
+  - id: RSK-DL-01
+    title: External terms not matching intended use
+    area: data-legal
+    description: >-
+      External terms (licence or data conditions) do not match the intended
+      use (V-01). Relates to verification item V-01.
+    cause: >-
+      A licence that does not permit the intended use; a data condition that
+      conflicts with the product terms; an unverified external term.
+    consequence: >-
+      A licence violation; a data misuse; a compliance breach.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-DLR-01]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-01
+
+  - id: RSK-DL-02
+    title: Dataset licence not verified
+    area: data-legal
+    description: >-
+      A dataset licence is not verified (V-04). Relates to verification item
+      V-04.
+    cause: >-
+      A dataset is used without verifying its licence; a licence summary is
+      not recorded; the redistribution terms are not checked.
+    consequence: >-
+      A licence violation; redistribution of data without permission; a
+      compliance breach.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-DLR-02]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-04
+
+  - id: RSK-DL-03
+    title: Public-domain status of list data not verified
+    area: data-legal
+    description: >-
+      The public-domain status of list data is not verified (V-05). Relates
+      to verification item V-05.
+    cause: >-
+      List data is assumed to be public domain without verification; the
+      public-domain status is not recorded; the source is not checked.
+    consequence: >-
+      A copyright claim; use of data that is not public domain; a
+      compliance breach.
+    inherent_likelihood: 2
+    inherent_severity: 3
+    residual_likelihood: 1
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-DLR-03]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-05
+
+  - id: RSK-DL-04
+    title: Official text validity not verified
+    area: data-legal
+    description: >-
+      The validity of official text (e.g. regulatory text) is not verified
+      (V-07). Relates to verification item V-07.
+    cause: >-
+      Official text is used without verifying its validity; the source is
+      not authoritative; the text is outdated.
+    consequence: >-
+      A wrong advisory output based on invalid official text; a compliance
+      breach; a wrong ALLOW from stale regulatory text.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-DLR-04]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-07
+
+  - id: RSK-DL-05
+    title: Secondary legal claims not verified
+    area: data-legal
+    description: >-
+      Secondary legal claims are not verified (V-08). Relates to verification
+      item V-08.
+    cause: >-
+      A secondary source makes a legal claim that is not verified; the claim
+      is treated as authoritative; the primary source is not checked.
+    consequence: >-
+      A wrong advisory output based on an unverified legal claim; a
+      compliance breach.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-DLR-05]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-08
+
+  - id: RSK-DL-06
+    title: Privacy of public list data not verified
+    area: data-legal
+    description: >-
+      The privacy of public list data is not verified (V-16). Relates to
+      verification item V-16.
+    cause: >-
+      Public list data contains personal data that is not redacted; the
+      privacy status is not checked; the data is used without verification.
+    consequence: >-
+      A privacy breach; personal data exposed in outputs; a compliance
+      violation.
+    inherent_likelihood: 2
+    inherent_severity: 3
+    residual_likelihood: 1
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-DLR-06]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 8, V-16

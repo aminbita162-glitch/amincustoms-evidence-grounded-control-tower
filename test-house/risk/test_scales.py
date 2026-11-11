@@ -40,7 +40,7 @@ def test_validate_scales_passes() -> None:
 
 @pytest.mark.fast
 def test_validate_scales_fails_on_bad_scales(tmp_path: Path) -> None:
-    """id: T-RISK-0018
+    """id: T-RISK-0034
     title: risk validate scales fails on invalid scales
     purpose: Verify that a malformed scales file is rejected.
     level: fast

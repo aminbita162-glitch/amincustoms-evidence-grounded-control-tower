@@ -41,7 +41,7 @@ def test_policy_has_no_forbidden_phrases() -> None:
 
 @pytest.mark.fast
 def test_forbidden_phrase_detection_finds_violation(tmp_path: Path) -> None:
-    """id: T-RISK-0019
+    """id: T-RISK-0035
     title: check-phrases catches a known compliance-claim violation
     purpose: Verify the phrase checker detects forbidden phrases in a file.
     level: fast

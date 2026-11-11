@@ -187,8 +187,8 @@
 | T-RISK-0015 | VERIFIED control with known test id passes | fast | risk/test_validator.py | test_verified_with_known_test_id |
 | T-RISK-0016 | risk with area and accountable passes | fast | risk/test_validator.py | test_risk_fields_pass |
 | T-RISK-0017 | every invariant and requirement is referenced by a risk or control | fast | risk/test_coverage.py | test_invariant_requirement_coverage |
-| T-RISK-0018 | risk validate scales fails on invalid scales | fast | risk/test_scales.py | test_validate_scales_fails_on_bad_scales |
-| T-RISK-0019 | check-phrases catches a known compliance-claim violation | fast | risk/test_policy.py | test_forbidden_phrase_detection_finds_violation |
+| T-RISK-0018 | every threat of Part 3 section 3.15 has an entry | fast | risk/test_threat_coverage.py | test_threat_coverage_p3_s15 |
+| T-RISK-0019 | every safeguard S1 to S7 of decision-d06 maps to a model risk and a | fast | risk/test_threat_coverage.py | test_safeguard_coverage_d06 |
 | T-RISK-0020 | invalid risk record fails schema validation | fast | risk/test_validator.py | test_risk_schema_invalid |
 | T-RISK-0021 | invalid control record fails schema validation | fast | risk/test_validator.py | test_control_schema_invalid |
 | T-RISK-0022 | invalid hazard record fails schema validation | fast | risk/test_validator.py | test_hazard_schema_invalid |
@@ -203,3 +203,5 @@
 | T-RISK-0031 | PLANNED control with reached target_phase fails as overdue | fast | risk/test_validator.py | test_control_overdue_fail |
 | T-RISK-0032 | VERIFIED control with unknown test id fails | fast | risk/test_validator.py | test_verified_with_unknown_test_id |
 | T-RISK-0033 | risk without area or accountable fails | fast | risk/test_validator.py | test_risk_fields_fail |
+| T-RISK-0034 | risk validate scales fails on invalid scales | fast | risk/test_scales.py | test_validate_scales_fails_on_bad_scales |
+| T-RISK-0035 | check-phrases catches a known compliance-claim violation | fast | risk/test_policy.py | test_forbidden_phrase_detection_finds_violation |
