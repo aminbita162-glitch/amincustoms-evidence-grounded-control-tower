@@ -178,8 +178,8 @@ records:
     mechanism: >-
       Phase gates, scope check and directive lint (Part 6 §6.14, §6.15);
       self-review (Part 1 §9.3).
-    lifecycle_status: PLANNED
-    target_phase: P01
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-GATE-0005, T-GATE-0025, T-GATE-0028]
     source: P7-RISK section 11
 
   - id: CTL-PROJ-02
@@ -281,6 +281,39 @@ records:
     lifecycle_status: PLANNED
     target_phase: P29
     source: P7-RISK section 11
+
+  # P01-created controls (P01-RISK).
+
+  - id: CTL-RISK-01
+    title: Risk validator
+    type: detective
+    mechanism: >-
+      The risk validator checks schema validity, unique ids, lifecycle
+      status, cross-references, orphan controls and risk-without-control
+      for every register, control and acceptance record.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001, T-RISK-0003, T-RISK-0011, T-RISK-0012]
+    source: P01-RISK
+
+  - id: CTL-RISK-02
+    title: Report generator
+    type: detective
+    mechanism: >-
+      The report generator produces RESIDUAL.md, HEALTH.md and INDEX.md
+      byte-identically on regeneration; a handwritten edit fails the gate.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001]
+    source: P01-RISK
+
+  - id: CTL-RISK-03
+    title: Risk gate
+    type: preventive
+    mechanism: >-
+      The risk gate validates the risk-management system at phase end;
+      it exits 0 when all registers, controls and acceptances validate.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001]
+    source: P01-RISK
 
   # Hazard controls (P01-T05).
 

@@ -46,7 +46,7 @@ records:
     residual_likelihood: 1
     residual_severity: 4
     treatment: reduce
-    controls: [CTL-PROJ-02]
+    controls: [CTL-PROJ-02, CTL-RISK-01, CTL-RISK-02, CTL-RISK-03]
     owner_area: core
     accountable: OWNER
     status: open
