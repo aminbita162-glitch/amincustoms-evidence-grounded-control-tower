@@ -8,6 +8,7 @@ fields, cross-references).
 
 from __future__ import annotations
 
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -230,6 +231,34 @@ def validate_risk_has_controls(
     return errors
 
 
+def validate_acceptance(
+    acceptances: list[dict[str, object]],
+    decisions_dir: Path,
+    now_month: str | None = None,
+) -> list[str]:
+    """Check that acceptance records reference existing decisions and are not expired.
+
+    - Each acceptance's decision_id must correspond to a file in *decisions_dir*.
+    - Each acceptance's expiry_date must not be in the past (month-level).
+    """
+    if now_month is None:
+        now_month = datetime.datetime.now(datetime.UTC).strftime("%Y-%m")
+    errors: list[str] = []
+    for acc in acceptances:
+        aid = acc.get("id", "?")
+        if not isinstance(aid, str):
+            aid = "?"
+        decision_id = acc.get("decision_id")
+        if isinstance(decision_id, str) and decision_id:
+            decision_path = decisions_dir / f"{decision_id}.md"
+            if not decision_path.exists():
+                errors.append(f"{aid}: decision file not found: {decision_id}.md")
+        expiry = acc.get("expiry_date")
+        if isinstance(expiry, str) and expiry and expiry < now_month:
+            errors.append(f"{aid}: acceptance expired (expiry {expiry})")
+    return errors
+
+
 def validate_all(repo_root: Path | None = None) -> int:
     """Run all validations on the risk-management directory.
 
@@ -304,6 +333,20 @@ def validate_all(repo_root: Path | None = None) -> int:
         drills = loader.load_register(drills_path)
         for drl in drills:
             errors.extend(validate_record(drl, drill_schema))
+
+    acceptance_dir = risk_dir / "acceptance"
+    if acceptance_dir.exists():
+        acceptance_schema = loader.load_schema("acceptance")
+        all_acceptances: list[dict[str, object]] = []
+        for acc_file in sorted(acceptance_dir.glob("*.yaml")):
+            records = loader.load_register(acc_file)
+            for record in records:
+                errors.extend(validate_record(record, acceptance_schema))
+            all_acceptances.extend(records)
+        if all_acceptances:
+            errors.extend(validate_unique_ids(all_acceptances))
+            decisions_dir = repo_root / "docs" / "decisions"
+            errors.extend(validate_acceptance(all_acceptances, decisions_dir))
 
     if errors:
         for e in errors:
