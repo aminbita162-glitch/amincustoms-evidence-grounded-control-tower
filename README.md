@@ -17,14 +17,7 @@ Enterprise Production-Grade Tier 5
 
 Level labels describe an engineering target, not a present claim.
 
-## 3 Author
-
-AI Architect Amin Azimi - End to End System Development & Business Challenge
-Azimi Innovation Lab
-Project: Evidence-Grounded Control Tower
-Version 1, November 2026
-
-## 4 What it is and is not
+## 3 What it is and is not
 
 | Aspect | Description |
 |---|---|
@@ -35,7 +28,7 @@ Version 1, November 2026
 
 The product does not provide legal advice or customs advice.
 
-## 5 Problem and outcome
+## 4 Problem and outcome
 
 The problem: customs and transit cases involve many rules, sources and labels, and a wrong advisory output can reach a reviewer or user.
 
@@ -43,19 +36,19 @@ The outcome: each fact is recorded with its source and label, each Decision cite
 
 Outputs are advisory pre-checks based on the listed sources and labels.
 
-## 6 Architecture at a glance
+## 5 Architecture at a glance
 
 The system reads case documents, extracts facts with sources and labels, applies rule packs, and returns Decisions with reason codes and cited facts. Every Decision is recorded in a hash-chained ledger.
 
-## 7 Capabilities
+## 6 Capabilities
 
 Each capability returns one Decision (ALLOW, ABSTAIN, HOLD, ESCALATE) with reason codes and cited facts.
 
-## 8 Trust model
+## 7 Trust model
 
 A person decides before any irreversible action. The system does not take an irreversible action without a human gate.
 
-## 9 Build Progress
+## 8 Build Progress
 
 | Phase | Name | Status |
 |---|---|---|
@@ -93,15 +86,15 @@ A person decides before any irreversible action. The system does not take an irr
 | P31 | Documentation | ☐ |
 | P32 | Release | ☐ |
 
-## 10 Quality gates
+## 9 Quality gates
 
 The quality gates run format, lint, type and unit checks at quick cadence, and structural gates at phase cadence. Each gate has a violation fixture and a clean fixture exercised by the selftest gate.
 
-## 11 Requirements and standards conformance
+## 10 Requirements and standards conformance
 
 The system uses as a process reference the listed sources and labels. It addresses the requirements of each capability through rule packs and evidence records.
 
-## 12 Data, security and licence
+## 11 Data, security and licence
 
 Test data is SYNTHETIC unless a record states another origin. The product does not provide legal advice or customs advice.
 
@@ -109,6 +102,13 @@ Residual risks are listed in the register with their scores, controls and accept
 
 Licence: proprietary, all rights reserved.
 
-## 13 Usage guide and version
+## 12 Usage guide and version
 
 Version 1, November 2026.
+
+## 13 Author
+
+AI Architect Amin Azimi - End to End System Development & Business Challenge
+Azimi Innovation Lab
+Project: Evidence-Grounded Control Tower
+Version 1, November 2026
