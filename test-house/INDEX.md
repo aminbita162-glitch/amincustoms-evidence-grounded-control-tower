@@ -172,3 +172,17 @@
 | T-PHASE-0118 | State consistency with matching ledger passes | fast | gate/test_phase.py | test_state_consistency_passes |
 | T-RISK-0001 | risk validate scales exits 0 on valid SCALES.yaml | fast | risk/test_scales.py | test_validate_scales_passes |
 | T-RISK-0002 | RISK-POLICY.md contains no compliance-claim phrases | fast | risk/test_policy.py | test_policy_has_no_forbidden_phrases |
+| T-RISK-0003 | risk record validates against risk schema | fast | risk/test_validator.py | test_risk_schema_valid |
+| T-RISK-0004 | control record validates against control schema | fast | risk/test_validator.py | test_control_schema_valid |
+| T-RISK-0005 | hazard record validates against hazard schema | fast | risk/test_validator.py | test_hazard_schema_valid |
+| T-RISK-0006 | threat record validates against threat schema | fast | risk/test_validator.py | test_threat_schema_valid |
+| T-RISK-0007 | acceptance record validates against acceptance schema | fast | risk/test_validator.py | test_acceptance_schema_valid |
+| T-RISK-0008 | review record validates against review schema | fast | risk/test_validator.py | test_review_schema_valid |
+| T-RISK-0009 | incident record validates against incident schema | fast | risk/test_validator.py | test_incident_schema_valid |
+| T-RISK-0010 | drill record validates against drill schema | fast | risk/test_validator.py | test_drill_schema_valid |
+| T-RISK-0011 | unique ids pass validation | fast | risk/test_validator.py | test_unique_ids_pass |
+| T-RISK-0012 | valid control references pass | fast | risk/test_validator.py | test_references_pass |
+| T-RISK-0013 | PLANNED control with target_phase passes | fast | risk/test_validator.py | test_lifecycle_planned_with_target |
+| T-RISK-0014 | PLANNED control with unreached target_phase passes | fast | risk/test_validator.py | test_control_overdue_pass |
+| T-RISK-0015 | VERIFIED control with known test id passes | fast | risk/test_validator.py | test_verified_with_known_test_id |
+| T-RISK-0016 | risk with area and accountable passes | fast | risk/test_validator.py | test_risk_fields_pass |

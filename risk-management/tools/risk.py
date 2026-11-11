@@ -16,12 +16,17 @@ Exit codes: 0 success, 1 validation failure, 2 misconfiguration.
 
 from __future__ import annotations
 
-import json
 import os
 import sys
 from pathlib import Path
 
 import yaml
+
+_TOOLS_DIR = Path(__file__).resolve().parent
+if str(_TOOLS_DIR) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_DIR))
+
+import validator  # noqa: E402
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _RISK_DIR = Path(__file__).resolve().parents[1]
@@ -31,12 +36,6 @@ def _load_yaml(path: Path) -> object:
     """Load a YAML file and return its contents."""
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
-
-def _load_json(path: Path) -> object:
-    """Load a JSON file and return its contents."""
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
 
 
 def validate_scales(scales_path: Path | None = None) -> int:
@@ -162,6 +161,16 @@ def main(argv: list[str] | None = None) -> int:
         what = argv[1]
         if what == "scales":
             return validate_scales()
+        if what == "all":
+            rc_scales = validate_scales()
+            rc_all = validator.validate_all(_REPO_ROOT)
+            return rc_scales if rc_scales else rc_all
+        if what == "registers":
+            return validator.validate_all(_REPO_ROOT)
+        if what == "controls":
+            return validator.validate_all(_REPO_ROOT)
+        if what == "reviews":
+            return validator.validate_all(_REPO_ROOT)
         print(f"validate: unknown target '{what}'", file=sys.stderr)
         return 2
     if command == "check-phrases":

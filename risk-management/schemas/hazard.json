@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hazard record",
+  "type": "object",
+  "required": ["id", "title", "area", "cause", "hazardous_situation", "harm", "controls", "source"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^HZ-" },
+    "title": { "type": "string" },
+    "area": { "type": "string" },
+    "cause": { "type": "string" },
+    "hazardous_situation": { "type": "string" },
+    "harm": { "type": "string" },
+    "controls": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": "string" }
+  },
+  "additionalProperties": false
+}
