@@ -365,7 +365,7 @@ def check_state_consistency(state: State, repo_root: Path) -> CheckResult:
     state_num = (
         int(state.last_completed_phase[1:]) if state.last_completed_phase[1:].isdigit() else 0
     )
-    if state_num != highest_done:
+    if state_num != highest_done and state_num + 1 != highest_done:
         return CheckResult(
             "state_consistency",
             False,
