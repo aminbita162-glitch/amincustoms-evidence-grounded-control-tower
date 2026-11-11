@@ -171,6 +171,65 @@ def validate_risk_fields(records: list[dict[str, object]]) -> list[str]:
     return errors
 
 
+def collect_referenced_controls(
+    register_records: list[list[dict[str, object]]],
+) -> set[str]:
+    """Collect every control id referenced by the given register record lists."""
+    referenced: set[str] = set()
+    for records in register_records:
+        for record in records:
+            controls = record.get("controls", [])
+            if not isinstance(controls, list):
+                continue
+            for cid in controls:
+                if isinstance(cid, str):
+                    referenced.add(cid)
+    return referenced
+
+
+def validate_orphan_controls(
+    controls: list[dict[str, object]],
+    referenced_ids: set[str],
+) -> list[str]:
+    """Check that every control in the catalogue is used by a register record.
+
+    A control that no risk, hazard, threat or model risk references is orphan.
+    """
+    errors: list[str] = []
+    for ctrl in controls:
+        cid = ctrl.get("id", "?")
+        if not isinstance(cid, str):
+            cid = "?"
+        if cid not in referenced_ids:
+            errors.append(f"{cid}: orphan control (not used by any register record)")
+    return errors
+
+
+def validate_risk_has_controls(
+    risk_records: list[dict[str, object]],
+    acceptance_risk_ids: set[str] | None = None,
+) -> list[str]:
+    """Check that every risk has at least one control or an explicit acceptance.
+
+    A risk with an empty controls list is accepted only if it has an acceptance
+    record (identified by *acceptance_risk_ids*); otherwise it is a violation.
+    """
+    if acceptance_risk_ids is None:
+        acceptance_risk_ids = set()
+    errors: list[str] = []
+    for record in risk_records:
+        rid = record.get("id", "?")
+        if not isinstance(rid, str):
+            rid = "?"
+        controls = record.get("controls", [])
+        if isinstance(controls, list) and len(controls) > 0:
+            continue
+        if rid in acceptance_risk_ids:
+            continue
+        errors.append(f"{rid}: risk without a control or an acceptance request")
+    return errors
+
+
 def validate_all(repo_root: Path | None = None) -> int:
     """Run all validations on the risk-management directory.
 
@@ -192,6 +251,8 @@ def validate_all(repo_root: Path | None = None) -> int:
         ("registers/ai-model-risks.yaml", "risk"),
         ("registers/data-legal-risks.yaml", "risk"),
     ]
+    all_register_records: list[list[dict[str, object]]] = []
+    all_risk_records: list[dict[str, object]] = []
     for rel_path, schema_name in register_map:
         path = risk_dir / rel_path
         if not path.exists():
@@ -199,12 +260,14 @@ def validate_all(repo_root: Path | None = None) -> int:
         records = loader.load_register(path)
         if not records:
             continue
+        all_register_records.append(records)
         schema = loader.load_schema(schema_name)
         for record in records:
             errors.extend(validate_record(record, schema))
         errors.extend(validate_unique_ids(records))
         if schema_name == "risk":
             errors.extend(validate_risk_fields(records))
+            all_risk_records.extend(records)
         errors.extend(link_checker.check_references(records, all_control_ids))
 
     if controls:
@@ -213,6 +276,12 @@ def validate_all(repo_root: Path | None = None) -> int:
             errors.extend(validate_record(ctrl, control_schema))
         errors.extend(validate_unique_ids(controls))
         errors.extend(validate_control_lifecycle(controls, test_ids))
+        referenced_ids = collect_referenced_controls(all_register_records)
+        errors.extend(validate_orphan_controls(controls, referenced_ids))
+
+    if all_risk_records:
+        acceptance_risk_ids = loader.load_acceptance_risk_ids(risk_dir)
+        errors.extend(validate_risk_has_controls(all_risk_records, acceptance_risk_ids))
 
     reviews_dir = risk_dir / "reviews"
     if reviews_dir.exists():

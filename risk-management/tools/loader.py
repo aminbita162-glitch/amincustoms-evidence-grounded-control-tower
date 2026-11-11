@@ -89,3 +89,24 @@ def load_all_control_ids() -> set[str]:
         if isinstance(rid, str) and rid:
             ids.add(rid)
     return ids
+
+
+def load_acceptance_risk_ids(risk_dir: Path | None = None) -> set[str]:
+    """Load risk ids that have an acceptance record.
+
+    Scans the acceptance directory for YAML files and collects the risk_id
+    field from each record.
+    """
+    if risk_dir is None:
+        risk_dir = _RISK_DIR
+    acceptance_dir = risk_dir / "acceptance"
+    if not acceptance_dir.exists():
+        return set()
+    ids: set[str] = set()
+    for path in sorted(acceptance_dir.glob("*.yaml")):
+        records = load_register(path)
+        for record in records:
+            risk_id = record.get("risk_id")
+            if isinstance(risk_id, str) and risk_id:
+                ids.add(risk_id)
+    return ids
