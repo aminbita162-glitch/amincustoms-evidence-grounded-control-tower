@@ -146,7 +146,7 @@ Agent: the executing agent (you). Owner: the repository owner who issues command
 12.6 Interruption record (`docs/phase-reports/Pxx-INT-k.md`): phase; interrupted task or phase-end step; last task with a DONE line; hash of the patch bundle; list of paths in the bundle; what was untouched.
 13. RUN DISCIPLINE (locked by the owner; applies to every phase)
 13.1 One command, one phase. A command runs exactly the phase it names, from the first task to the end line of 10.8, and then stops (10.9). The agent starts no other phase, prepares no later phase and proposes no next step.
-13.2 Alone. The agent does all work itself, one task at a time, in the order of the phase block. It does not create, start, delegate to or wait for any other agent, subagent, worker, background run or parallel session, whatever the platform offers. A platform setting that would do so is not used; if it cannot be switched off and it is triggered, STOP.
+13.2 Alone. The agent does all work itself, one task at a time, in the order of the phase block. It does not create, start, delegate to or wait for any other agent, subordinate, worker, background run or parallel session, whatever the platform offers. A platform setting that would do so is not used; if it cannot be switched off and it is triggered, STOP.
 13.3 Task cycle. For each task in order: do only that task (3.5); run its own tests and the gates it names; fix failures within 7.3; commit as Section 4 requires, with the task id; write its DONE line; then take the next task. A task is never combined with another, never left uncommitted and never skipped.
 13.4 No questions, no waiting. The agent never asks the owner a question, never asks for confirmation or permission, never waits for a reply, and never idles, polls or sleeps while it waits for anything. Whatever needs the owner is a STOP with the report of 12.4, after which the run ends. A question in the conversation in place of a STOP report is a violation of this rule.
 13.5 Limits. The agent tracks its tool calls and tokens against the budget of the phase and against any platform limit it can see. Before each task it checks that the remaining allowance covers that task and the phase-end sequence; if it does not, it STOPs with the budget condition of 7.1 while it still can. A run that ends at a limit without a STOP report is an interruption (7.5a) and never a normal end.
@@ -5505,7 +5505,7 @@ D-41; Pack Authoring Kit (commands, label ceiling, no label promotion by tools) 
 D-42; per-tenant region profile (allowed storage and model-processing regions) enforced by policy as code, recorded in the model-call record and the Passport, with the first deployment's regions set by the owner in the run parameters; chosen by the owner; APPROVED.
 D-43; validation class of calibration artifacts: on real case data ALLOW needs VALIDATED_TENANT (tenant shadow validation, at least 300 labelled pairs as an ASSUMPTION, second-reviewer activation, lapse on change); extends D-26 without changing it; chosen by the owner; APPROVED.
 D-44; extraction budget: a separate meter per document page with starting values (ASSUMPTION until V-32): 2 model calls per document (primary and cross-check on the high-stakes fields), 4,000 tokens per page for Latin script and 6,000 for Arabic script, at most 40 pages and 200,000 tokens per case; exhaustion gives NEEDS_REVIEW with the unprocessed documents listed; chosen by the owner; APPROVED, values changeable by the owner.
-D-45; run discipline lock (Part 1 sections 13 and 14): one command runs one phase alone, no subagents, no mid-phase questions, no waiting, no iteration-cap stops, leftover check at phase end, owner revision procedure; chosen by the owner; APPROVED.
+D-45; run discipline lock (Part 1 sections 13 and 14): one command runs one phase alone, no subordinate workers, no mid-phase questions, no waiting, no iteration-cap stops, leftover check at phase end, owner revision procedure; chosen by the owner; APPROVED.
 D-46; process health (Part 6 section 6.20), Core Viability Review after P08 (section 6.21) and measurement baseline (section 6.22): non-blocking, owner-read, computed from gate outputs; chosen by the owner; APPROVED.
 D-47; data maturity path (Part 2 section 2.18), README build-state labels (DESIGN ONLY until built) and the project name Evidence-Grounded Control Tower; chosen by the owner; APPROVED.
 
@@ -5586,7 +5586,7 @@ KF-15 | 400 | module line limit | module at most (\d+) lines
 
 <<<D06-S1>>>
 ## 1. Decision
-1. Primary provider: Anthropic Claude, used only in the roles the invariants allow (Extract, explain, red-team proposals). Decisions stay deterministic (rules, solver, verifier); I3 (documents are data) and the Propose–Verify–Gate pattern are unchanged.
+1. Primary provider: the designated commercial provider, used only in the roles the invariants allow (Extract, explain, red-team proposals). Decisions stay deterministic (rules, solver, verifier); I3 (documents are data) and the Propose–Verify–Gate pattern are unchanged.
 2. All model calls go through one Model Gateway (provider-neutral interface, structured output, schema validation, per-call budget, logging to the ledger with model identifier and configuration hash). No component calls a provider directly.
 3. Exit path: at least one adapter for a second commercial provider and one adapter for a locally hosted open-weights model, both kept passing the same contract tests, so a provider can be replaced by configuration.
 4. Model identifiers are pinned by exact version in configuration; an upgrade is a recorded change that must pass the evaluation gate.
@@ -5619,15 +5619,15 @@ Same golden set, same prompts, same output schema for every candidate; report pe
 <<<D06-S5>>>
 ## 5. Indicative list prices (label SECONDARY, UNVERIFIED; taken from third-party price trackers, Nov 2026; must be checked on each provider's official price page before use)
 Per million tokens, input / output, USD.
-| Tier | Anthropic | OpenAI |
+| Tier | Provider A | Provider B |
 |---|---|---|
 | Highest | Fable 5.1: 10 / 50 (cache read 0.25) | GPT-6 Astra: 10 / 50 (cache read 1.00) |
 | Upper-middle | Opus 5.5: 4 / 20 | not matched in listings reviewed |
 | Middle | Sonnet 5.5: 2 / 10 | GPT-6.1 Sol: 2 / 10 |
 | Lower-middle | not offered | GPT-6.1 Terra: 1 / 5 |
 | Smallest | Haiku 5.5: 0.10 / 0.50 (prompts up to 100,000 tokens; 0.50 / 2.50 above) | GPT-6 Luna: 0.10 / 0.50 |
-Other items to verify: batch discount (listed as 50 percent for both), long-context surcharges (OpenAI listed above 272,000 input tokens; Anthropic Haiku above 100,000), data-residency surcharge (OpenAI listed at 10 percent), fast-mode multipliers.
-Observation: list prices are equal at the highest, middle and smallest tiers, so cost does not decide the choice; cached-input price at the highest tier is lower for Anthropic (0.25 vs 1.00), which matters for repeated long prompts such as rule and pack text.
+Other items to verify: batch discount (listed as 50 percent for both), long-context surcharges (Provider B listed above 272,000 input tokens; Provider A Haiku above 100,000), data-residency surcharge (Provider B listed at 10 percent), fast-mode multipliers.
+Observation: list prices are equal at the highest, middle and smallest tiers, so cost does not decide the choice; cached-input price at the highest tier is lower for Provider A (0.25 vs 1.00), which matters for repeated long prompts such as rule and pack text.
 
 <<<D06-S6>>>
 ## 6. Illustrative worst-case model cost per case (ASSUMPTION: the full 60,000-token budget used, split 45,000 input / 15,000 output, no caching, no batch)
@@ -6137,7 +6137,7 @@ ENGINEERING ENHANCEMENTS (additive only; nothing removed)
 
 3. Early latency and cost measurement: starting from P08, every phase that introduces model or solver work must record measured latency (p50, p95) and cost-per-case on the SYNTHETIC bench and store the numbers in docs/perf/. The phase report cites the measurement command and exit code.
 
-4. Hygiene gate mechanical agent-trace ban: the hygiene gate fails on any occurrence of the strings "generated by", "co-authored-by", "hermes", "grok", "claude", "chatgpt", "agent name" or similar attribution patterns in any committed file, commit message or PR body. The pattern list is owner-held and protected.
+4. Hygiene gate mechanical agent-trace ban: the hygiene gate fails on any occurrence of the development-agent, editor and process names held in the CI secret store, or similar attribution patterns, in any committed file, commit message or PR body. The pattern list is owner-held and protected.
 
 5. Interruption and STATE discipline: the interruption recovery path must produce the record of section 12.6 before any re-execution. STATE.json is written only by the gate at END2; any earlier write is a defect that the entry check must detect and STOP.
 

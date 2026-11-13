@@ -677,7 +677,7 @@ def test_commit_check_bad_format() -> None:
 @pytest.mark.fast
 def test_commit_check_trailer_co_authored() -> None:
     """A Co-Authored-By trailer fails commit-check."""
-    msg = "feat(api): add endpoint [P00-T01]\n\nCo-Authored-By: Claude\n"
+    msg = "feat(api): add endpoint [P00-T01]\n\nCo-Authored-By: Someone\n"
     violations = check_commit_message(msg)
     assert any("trailer" in v.lower() for v in violations)
 
