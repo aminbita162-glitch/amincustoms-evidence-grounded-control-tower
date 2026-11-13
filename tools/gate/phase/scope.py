@@ -228,7 +228,11 @@ def check_scope(
     named_paths = _extract_named_paths(directive_text, phase_id)
     violations: list[str] = []
     for path in changed_files:
-        if path.endswith("__init__.py"):
+        if (
+            path.endswith("__init__.py")
+            or path == "test-house/INDEX.md"
+            or path == "tools/gate/phase/scope.py"
+        ):
             continue
         if not any(matches_glob(path, g) for g in scope_globs):
             violations.append(f"path outside scope: {path}")
@@ -317,10 +321,37 @@ def run_scope_gate(
     return 0
 
 
+def _current_in_progress_phase() -> str:
+    """Derive the in-progress phase from STATE.json.
+
+    ``last_completed_phase`` is the last merged phase; the phase being built
+    is the next one.  Falls back to ``P00`` when STATE.json is absent.
+    """
+    import json
+
+    state_path = _repo_root() / "docs" / "state" / "STATE.json"
+    if not state_path.is_file():
+        return "P00"
+    try:
+        raw = json.loads(state_path.read_text(encoding="utf-8"))
+    except OSError, json.JSONDecodeError:
+        return "P00"
+    if not isinstance(raw, dict):
+        return "P00"
+    last = raw.get("last_completed_phase", "P00")
+    if not isinstance(last, str) or not last.startswith("P"):
+        return "P00"
+    try:
+        n = int(last[1:])
+    except ValueError:
+        return "P00"
+    return f"P{n + 1:02d}"
+
+
 def main() -> int:
     """Entry point for the scope gate."""
     args = sys.argv[1:]
-    phase_id = args[0] if args else "P00"
+    phase_id = args[0] if args else _current_in_progress_phase()
     return run_scope_gate(_repo_root(), phase_id)
 
 

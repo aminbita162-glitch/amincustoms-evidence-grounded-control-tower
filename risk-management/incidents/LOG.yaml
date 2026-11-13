@@ -1,0 +1,7 @@
+# Incident log (seed) — P01-T07.
+#
+# Empty valid incident log.  Incidents are recorded as they occur;
+# at P01 no incidents have occurred.
+# Schema: risk-management/schemas/incident.json
+
+records: []

@@ -1,0 +1,532 @@
+# Control catalogue (seed) — P01-T03.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 11 (seed control targets).
+# Each control is PLANNED with a target phase; the lifecycle status moves to
+# IMPLEMENTED and then VERIFIED as the target phase completes and the
+# verifying test ids are recorded. T06 completes the catalogue with controls
+# for project risks, hazards, threats, model risks and data-legal risks.
+
+records:
+  - id: CTL-PROD-01
+    title: Label and lattice validation gate
+    type: preventive
+    mechanism: >-
+      Gate-enforced label and lattice checks (P03, P06); reference combiner and
+      fail-closed matrix (P28); honesty sweep (P28); ARC-03 to ARC-05 (P30);
+      scenario basis and review status (P09).
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-02
+    title: Propose-Verify-Gate and model cross-check
+    type: preventive
+    mechanism: >-
+      Propose-Verify-Gate and model cross-check (P08, P14); extraction quality
+      re-run (P28).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-03
+    title: Containment and corpus quarantine
+    type: preventive
+    mechanism: >-
+      Containment and corpus (P07, P08); hostile model stub (P29); SEC-22 to
+      SEC-26.
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-04
+    title: Pack validity windows
+    type: preventive
+    mechanism: >-
+      Pack validity windows (P02, P06); freshness check (P30, P32);
+      maintenance rule M-4.
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-05
+    title: Classification pack tests and scenarios
+    type: detective
+    mechanism: >-
+      Classification pack tests and scenarios (P17 and the owning capability
+      phases); claim wording scan.
+    lifecycle_status: PLANNED
+    target_phase: P17
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-06
+    title: Re-screening on list change
+    type: detective
+    mechanism: >-
+      K01 scenarios and protective matching (P17); re-screening on list change.
+    lifecycle_status: PLANNED
+    target_phase: P17
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-07
+    title: Row-level security and leakage gate
+    type: preventive
+    mechanism: >-
+      Row-level security and leakage gate (P04, P11); canary audit (P29).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-08
+    title: Append-only guard and ledger verifiers
+    type: preventive
+    mechanism: >-
+      Append-only guard (P04); ledger and verifiers (P05); whole-ledger replay
+      (P28); restore drill (P28).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-09
+    title: Budgets and kill switches
+    type: preventive
+    mechanism: >-
+      Budgets and kill switches (P07, P10); soak (P28).
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-10
+    title: Budget Governor and cost telemetry
+    type: preventive
+    mechanism: >-
+      Budget Governor (P10); cost telemetry (Part 6 section 6.18).
+    lifecycle_status: PLANNED
+    target_phase: P10
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-11
+    title: Model Gateway with local model fallback
+    type: corrective
+    mechanism: >-
+      Model Gateway with local model and fallbacks (P08); chaos (P28);
+      V-25 cadence.
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-12
+    title: Solver harness and independent checker
+    type: detective
+    mechanism: >-
+      Solver harness and independent checker (P13); plan scenarios (P21, P22).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-13
+    title: Redaction and log tests
+    type: preventive
+    mechanism: >-
+      Redaction and log tests (P10, P11); SEC-44.
+    lifecycle_status: PLANNED
+    target_phase: P10
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-14
+    title: Data origin stamp
+    type: preventive
+    mechanism: >-
+      Data_origin stamp (P03, P27); honesty sweep.
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-15
+    title: Advisory footer and fixed explanation templates
+    type: preventive
+    mechanism: >-
+      Advisory footer and fixed explanation templates (P27); claims scan.
+    lifecycle_status: PLANNED
+    target_phase: P27
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-16
+    title: Signer isolation and rotation
+    type: preventive
+    mechanism: >-
+      Signer isolation and rotation (P05, P11); key rotation drill (P28);
+      SEC-17 to SEC-19.
+    lifecycle_status: PLANNED
+    target_phase: P05
+    source: P7-RISK section 11
+
+  - id: CTL-PROD-17
+    title: Freshness check for reference data
+    type: detective
+    mechanism: >-
+      Freshness check (P30, P32); pack validity windows (P02, P06);
+      maintenance rule M-4.
+    lifecycle_status: PLANNED
+    target_phase: P30
+    source: P7-RISK section 11
+
+  # Project risk controls (P01-T04).
+
+  - id: CTL-PROJ-01
+    title: Phase gates, scope check and directive lint
+    type: preventive
+    mechanism: >-
+      Phase gates, scope check and directive lint (Part 6 §6.14, §6.15);
+      self-review (Part 1 §9.3).
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-GATE-0005, T-GATE-0025, T-GATE-0028]
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-02
+    title: Protected paths and owner-held baseline hashes
+    type: preventive
+    mechanism: >-
+      Protected paths and owner-held baseline hashes (P00, PF-06).
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-GATE-0025, T-GATE-0028]
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-03
+    title: Budget classes and cost telemetry
+    type: preventive
+    mechanism: >-
+      Budget classes (Part 6 §6.8) and cost telemetry (§6.18).
+    lifecycle_status: PLANNED
+    target_phase: P10
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-04
+    title: Deps gate, SBOM and supply-chain audit
+    type: detective
+    mechanism: >-
+      Deps gate, SBOM, supply-chain audit (P29).
+    lifecycle_status: PLANNED
+    target_phase: P29
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-05
+    title: Owner check for external terms
+    type: preventive
+    mechanism: >-
+      Owner check PF-08 and RC-05.
+    lifecycle_status: PLANNED
+    target_phase: P32
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-06
+    title: Source Registry and label rules
+    type: preventive
+    mechanism: >-
+      Source Registry and label rules (P02).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-07
+    title: Directive hash check and lint
+    type: preventive
+    mechanism: >-
+      Hash check at every run (Part 1 §1.4); directive lint (P7-LINT).
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-GATE-0005]
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-08
+    title: Runbooks and decision records
+    type: preventive
+    mechanism: >-
+      Runbooks and decision records (P31).
+    lifecycle_status: PLANNED
+    target_phase: P31
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-09
+    title: Repository backup and exit drill
+    type: corrective
+    mechanism: >-
+      RC-08 copy outside the host; exit drill (P28).
+    lifecycle_status: PLANNED
+    target_phase: P28
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-10
+    title: Tree-hash binding for release integrity
+    type: detective
+    mechanism: >-
+      Tree-hash binding (P29-T01, P32-T04).
+    lifecycle_status: PLANNED
+    target_phase: P29
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-11
+    title: Audit edition record and V-30
+    type: detective
+    mechanism: >-
+      Edition record and V-30 (P7-SEC-AUDIT section 4).
+    lifecycle_status: PLANNED
+    target_phase: P29
+    source: P7-RISK section 11
+
+  - id: CTL-PROJ-12
+    title: Compensating security and architecture audits
+    type: detective
+    mechanism: >-
+      Bandit, Ruff security rules, Trivy configuration checks, and the
+      manual areas of the security and architecture audits (P29, P30).
+    lifecycle_status: PLANNED
+    target_phase: P29
+    source: P7-RISK section 11
+
+  # P01-created controls (P01-RISK).
+
+  - id: CTL-RISK-01
+    title: Risk validator
+    type: detective
+    mechanism: >-
+      The risk validator checks schema validity, unique ids, lifecycle
+      status, cross-references, orphan controls and risk-without-control
+      for every register, control and acceptance record.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001, T-RISK-0003, T-RISK-0011, T-RISK-0012]
+    source: P01-RISK
+
+  - id: CTL-RISK-02
+    title: Report generator
+    type: detective
+    mechanism: >-
+      The report generator produces RESIDUAL.md, HEALTH.md and INDEX.md
+      byte-identically on regeneration; a handwritten edit fails the gate.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001]
+    source: P01-RISK
+
+  - id: CTL-RISK-03
+    title: Risk gate
+    type: preventive
+    mechanism: >-
+      The risk gate validates the risk-management system at phase end;
+      it exits 0 when all registers, controls and acceptances validate.
+    lifecycle_status: VERIFIED
+    verifying_test_ids: [T-RISK-0001]
+    source: P01-RISK
+
+  # Hazard controls (P01-T05).
+
+  - id: CTL-HZD-01
+    title: Detective control for wrong release decision
+    type: detective
+    mechanism: >-
+      Gate-enforced label and lattice checks detect a wrong ALLOW before
+      release; the decision lattice catches a wrong ALLOW (P03, P06).
+    lifecycle_status: PLANNED
+    target_phase: P03
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-01
+    title: Corrective control for wrong release decision
+    type: corrective
+    mechanism: >-
+      The Human Gate rejects a wrong ALLOW and the case is returned to
+      BLOCKED; the reviewer can override with justification (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-02
+    title: Detective control for missed hold
+    type: detective
+    mechanism: >-
+      The case state machine rejects a release when the decision is HOLD;
+      the ledger records the HOLD (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-02
+    title: Corrective control for missed hold
+    type: corrective
+    mechanism: >-
+      The Human Gate enforces the HOLD; the case is returned to BLOCKED;
+      the reviewer can escalate (P04).
+    lifecycle_status: PLANNED
+    target_phase: P04
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-03
+    title: Detective control for wrong cost
+    type: detective
+    mechanism: >-
+      The cost computation is deterministic and verified by the solver;
+      a wrong cost is detected by the independent checker (P13).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-03
+    title: Corrective control for wrong cost
+    type: corrective
+    mechanism: >-
+      The cost is recomputed with the correct tariff and currency; the case
+      is returned for correction (P13).
+    lifecycle_status: PLANNED
+    target_phase: P13
+    source: P7-RISK section 6
+
+  - id: CTL-HZD-04
+    title: Detective control for wrong deadline
+    type: detective
+    mechanism: >-
+      The deadline computation uses a versioned calendar pack; a wrong
+      deadline is detected by the calendar rules (P06).
+    lifecycle_status: PLANNED
+    target_phase: P06
+    source: P7-RISK section 6
+
+  - id: CTL-HZC-04
+    title: Corrective control for wrong deadline
+    type: corrective
+    mechanism: >-
+      The deadline is recomputed with the correct calendar pack; the case
+      is returned for correction (P06).
+    lifecycle_status: PLANNED
+    target_phase: P06
+    source: P7-RISK section 6
+
+  # Model risk controls (P01-T05).
+
+  - id: CTL-MR-01
+    title: Source grounding verification
+    type: preventive
+    mechanism: >-
+      Every extracted field carries a source span; the verifier checks the
+      span exists and supports the value (S1).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S1
+
+  - id: CTL-MR-02
+    title: Dual extraction for high-stakes fields
+    type: preventive
+    mechanism: >-
+      Two independent models extract high-stakes fields; disagreement yields
+      HOLD (S2).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S2
+
+  - id: CTL-MR-03
+    title: Evaluation gate for model changes
+    type: detective
+    mechanism: >-
+      Golden SYNTHETIC set per document type; a model or prompt change that
+      lowers a metric beyond tolerance fails the gate (S3).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S3
+
+  - id: CTL-MR-04
+    title: Per-tier budget enforcement
+    type: preventive
+    mechanism: >-
+      Per-case limits apply per tier; the Gateway refuses calls beyond them
+      (S4).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S4
+
+  - id: CTL-MR-05
+    title: Tenant policy check for data handling
+    type: preventive
+    mechanism: >-
+      No case data sent to a provider unless the tenant policy allows it;
+      retention and training-use terms recorded in the Source Registry (S5).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S5
+
+  - id: CTL-MR-06
+    title: Resilience controls for provider outage
+    type: corrective
+    mechanism: >-
+      Timeout, bounded retry, circuit breaker, automatic fallback to the
+      second adapter with the fallback recorded in the ledger (S6).
+    lifecycle_status: PLANNED
+    target_phase: P08
+    source: decision-d06 safeguard S6
+
+  - id: CTL-MR-07
+    title: Prompt-injection containment
+    type: preventive
+    mechanism: >-
+      Documents are data (I3); model output never carries tool authority;
+      the containment boundary is enforced (S7).
+    lifecycle_status: PLANNED
+    target_phase: P07
+    source: decision-d06 safeguard S7
+
+  # Data and legal risk controls (P01-T05).
+
+  - id: CTL-DLR-01
+    title: External terms check
+    type: preventive
+    mechanism: >-
+      Owner check PF-08 and RC-05 verify external terms match the intended
+      use (V-01).
+    lifecycle_status: PLANNED
+    target_phase: P32
+    source: P7-RISK section 8, V-01
+
+  - id: CTL-DLR-02
+    title: Dataset licence verification
+    type: preventive
+    mechanism: >-
+      The data gate checks every dataset has a verified licence; the Source
+      Registry records the licence summary (V-04).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-04
+
+  - id: CTL-DLR-03
+    title: Public-domain status verification
+    type: detective
+    mechanism: >-
+      The data gate verifies the public-domain status of list data; the
+      Source Registry records the status (V-05).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-05
+
+  - id: CTL-DLR-04
+    title: Official text validity check
+    type: detective
+    mechanism: >-
+      The data gate checks the validity of official text; the source is
+      verified as authoritative (V-07).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-07
+
+  - id: CTL-DLR-05
+    title: Secondary legal claims verification
+    type: detective
+    mechanism: >-
+      The data gate verifies secondary legal claims against the primary
+      source (V-08).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-08
+
+  - id: CTL-DLR-06
+    title: Privacy check for public list data
+    type: preventive
+    mechanism: >-
+      The data gate checks the privacy of public list data; personal data is
+      redacted before use (V-16).
+    lifecycle_status: PLANNED
+    target_phase: P02
+    source: P7-RISK section 8, V-16

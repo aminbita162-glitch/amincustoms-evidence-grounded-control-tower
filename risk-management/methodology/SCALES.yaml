@@ -1,0 +1,97 @@
+# Risk scales and thresholds (decision D-35; ASSUMPTION until the owner approves P01).
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>).
+# Label: ASSUMPTION (design parameters; not measured values).
+
+likelihood:
+  description: Likelihood over one year of operation.
+  scale:
+    - value: 1
+      label: rare
+      anchor: Not expected to happen.
+    - value: 2
+      label: unlikely
+      anchor: Could happen once.
+    - value: 3
+      label: possible
+      anchor: Could happen several times.
+    - value: 4
+      label: likely
+      anchor: Expected at least once.
+    - value: 5
+      label: almost certain
+      anchor: Expected repeatedly.
+
+severity:
+  description: Severity of impact on a case, tenant or the deployment.
+  scale:
+    - value: 1
+      label: negligible
+      anchor: Cosmetic; no decision or record affected.
+    - value: 2
+      label: minor
+      anchor: A reviewer catches it before any use; no wrong outcome.
+    - value: 3
+      label: moderate
+      anchor: A wrong advisory output reaches a reviewer or user; recoverable by correction.
+    - value: 4
+      label: major
+      anchor: A wrong ALLOW on a case, one tenant's data exposed, or integrity of one case's evidence lost.
+    - value: 5
+      label: critical
+      anchor: Systematic wrong ALLOW, cross-tenant exposure, key compromise, or loss of the ledger.
+
+score:
+  rule: likelihood_times_severity
+  range: [1, 25]
+
+bands:
+  - name: low
+    range: [1, 4]
+  - name: medium
+    range: [5, 9]
+  - name: high
+    range: [10, 14]
+  - name: critical
+    range: [15, 25]
+
+register_threshold:
+  description: >-
+    A residual score of 10 or more, or any residual severity of 5, needs a
+    written owner acceptance.
+  min_residual_score: 10
+  max_residual_severity_requiring_acceptance: 5
+
+acceptance_expiry:
+  description: >-
+    Acceptance expires after 6 months of operation and 3 phases of build,
+    whichever comes first, and is then reviewed.
+  max_months: 6
+  max_phases: 3
+
+review_cadence:
+  description: >-
+    Risk review runs at every phase exit, at every incident, at every new
+    dependency, model change or pack change, at every closure of a
+    verification item that affects a label, and at least every 3 months
+    in operation (month-level).
+  triggers:
+    - phase_exit
+    - incident
+    - new_dependency
+    - model_change
+    - pack_change
+    - v_item_closure_affecting_label
+  min_interval_months: 3
+
+treatment_order:
+  - eliminate
+  - reduce
+  - detect
+  - transfer
+  - accept
+
+control_lifecycle:
+  - PLANNED
+  - IMPLEMENTED
+  - VERIFIED

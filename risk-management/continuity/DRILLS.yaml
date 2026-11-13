@@ -1,0 +1,25 @@
+# Drills register (seed) — P01-T07.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 13 (drills).
+# Three continuity drills: restore, crypto-erasure, and exit.
+# Planned dates are month-level; results are empty until the drill runs
+# (P28).  Schema: risk-management/schemas/drill.json
+
+records:
+  - id: DRL-001
+    title: Restore drill
+    type: restore
+    planned_date: "2027-01"
+    status: planned
+
+  - id: DRL-002
+    title: Crypto-erasure drill
+    type: crypto-erasure
+    planned_date: "2027-03"
+    status: planned
+
+  - id: DRL-003
+    title: Exit drill
+    type: exit
+    planned_date: "2027-06"
+    status: planned

@@ -1,0 +1,57 @@
+# Hazard register (seed) — P01-T05.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 6.
+# Each hazard is a chain: hazard → cause → hazardous situation → harm → control.
+# Each links at least one detective and one corrective control.
+
+records:
+  - id: HZ-01
+    title: Wrong release decision
+    area: product
+    cause: >-
+      A wrong ALLOW releases goods without correct clearance.
+    hazardous_situation: >-
+      Goods are released when they should be held or refused.
+    harm: >-
+      Regulatory penalty; confiscation; a wrong advisory output that reaches
+      a user without correction.
+    controls: [CTL-HZD-01, CTL-HZC-01]
+    source: P7-RISK section 6
+
+  - id: HZ-02
+    title: Missed hold
+    area: product
+    cause: >-
+      A HOLD decision is not enforced or is overridden without authorisation.
+    hazardous_situation: >-
+      Goods that should be held are released.
+    harm: >-
+      Regulatory violation; a prohibited item cleared; a compliance breach.
+    controls: [CTL-HZD-02, CTL-HZC-02]
+    source: P7-RISK section 6
+
+  - id: HZ-03
+    title: Wrong cost
+    area: product
+    cause: >-
+      A wrong tariff rate, calculation, or currency conversion produces an
+      incorrect cost.
+    hazardous_situation: >-
+      A wrong cost is reported to the operator.
+    harm: >-
+      Financial loss; demurrage or detention charges; a wrong advisory output.
+    controls: [CTL-HZD-03, CTL-HZC-03]
+    source: P7-RISK section 6
+
+  - id: HZ-04
+    title: Wrong deadline
+    area: product
+    cause: >-
+      A wrong free-time calculation or calendar rule produces an incorrect
+      deadline.
+    hazardous_situation: >-
+      A wrong deadline is reported; the operator misses the real deadline.
+    harm: >-
+      Demurrage or detention charges; a missed regulatory deadline.
+    controls: [CTL-HZD-04, CTL-HZC-04]
+    source: P7-RISK section 6

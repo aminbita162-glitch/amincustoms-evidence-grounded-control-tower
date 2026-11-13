@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Acceptance record",
+  "type": "object",
+  "required": ["id", "risk_id", "residual_score", "reason", "decision_id", "expiry_date", "review_date", "accountable"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^ACC-" },
+    "risk_id": { "type": "string" },
+    "residual_score": { "type": "integer", "minimum": 1, "maximum": 25 },
+    "reason": { "type": "string" },
+    "decision_id": { "type": "string" },
+    "expiry_date": { "type": "string" },
+    "review_date": { "type": "string" },
+    "accountable": { "type": "string", "const": "OWNER" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,457 @@
+# Product risk register (seed) — P01-T03.
+#
+# Source: Part 7 section 7.2 (<<<P7-RISK>>>) section 4.
+# Label: ASSUMPTION (inherent scores are design parameters; not measured).
+# Each risk links controls by id; controls are PLANNED with a target phase.
+# Invariant and requirement identifiers (I1–I14, PR-01 to PR-17) are cited in
+# the description and cause fields so the coverage test (T-RISK-0017) can
+# verify that every invariant and requirement is addressed by at least one
+# risk or control.
+
+records:
+  - id: RSK-P-01
+    title: Wrong ALLOW
+    area: product
+    description: >-
+      A Decision yields ALLOW when it should not. Violates invariant I1 (no
+      decision without evidence) and I2 (determinism); requirement PR-01
+      (every Decision cites verified facts with labels) and PR-02 (insufficient
+      evidence yields ABSTAIN, HOLD or ESCALATE, never a guess). Probabilistic
+      outputs that state their basis (PR-10) prevent a wrong ALLOW from
+      unstated assumptions. Relates to I4 (the model proposes, never decides)
+      and I5 (fail closed).
+    cause: >-
+      Unverified or conflicting facts treated as sufficient; a non-deterministic
+      evaluation path; a model output treated as a decision (I4); a missing
+      fail-closed path (I5).
+    consequence: >-
+      Goods released without correct clearance; regulatory penalty; a wrong
+      advisory output that reaches a user without correction.
+    inherent_likelihood: 3
+    inherent_severity: 5
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-01]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-02
+    title: Wrong or invented extraction
+    area: product
+    description: >-
+      The extraction stage produces a field that is wrong or fabricated. A
+      guessed field is a defect (Part 3 §3.2). Violates I1 (no decision without
+      evidence) and I4 (the model proposes, never decides). Requirement PR-11
+      (Arabic and English inputs produce equal normalized facts) is directly
+      affected; PR-12 (the API matches its OpenAPI contract) is affected when
+      the extraction schema drifts from the contract.
+    cause: >-
+      Model hallucination; extraction without a locator or method; a schema
+      mismatch between the API contract and the extraction target (PR-12).
+    consequence: >-
+      A wrong advisory output; a fact that looks verified but is invented;
+      a wrong classification downstream.
+    inherent_likelihood: 4
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-02]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-03
+    title: Document-borne prompt injection
+    area: product
+    description: >-
+      Adversarial content in an input document becomes an instruction, a tool
+      call or a policy. Violates I3 (documents are data) and I12 (memory is
+      governed). The model may propose, but a proposal takes effect only after
+      deterministic verification and human approval (I4, I6).
+    cause: >-
+      Document text read outside a sandbox; model output treated as a decision;
+      a model-proposed action written to memory without a governed write path.
+    consequence: >-
+      A tampered extraction; a tool call triggered by document content; a
+      memory entry that persists injected content.
+    inherent_likelihood: 4
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-03]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-04
+    title: Rule pack stale or expired
+    area: product
+    description: >-
+      A rule pack is used past its validity window. Violates I8 (every datum
+      carries a label) and I10 (capabilities are packs). Requirement PR-16
+      (every Decision records its as-of date and the exact pack, source and
+      capability versions used) is directly affected.
+    cause: >-
+      A pack is not refreshed; the validity window is not checked; the
+      as-of date is not recorded (PR-16).
+    consequence: >-
+      A Decision based on outdated rules; a wrong ALLOW or HOLD from stale
+      reference data.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-04]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-05
+    title: Wrong classification
+    area: product
+    description: >-
+      A document or shipment is classified under the wrong HS code or regime.
+      Relates to requirement PR-12 (views meet the accessibility gate and the
+      API matches its OpenAPI contract) when the classification schema does
+      not match the contract.
+    cause: >-
+      An extraction error upstream; a rule pack that maps to the wrong code;
+      a classification schema that drifts from the API contract (PR-12).
+    consequence: >-
+      Wrong duties; wrong regime (free zone vs mainland); a wrong advisory
+      output.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-05]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-06
+    title: Missed screening hit
+    area: product
+    description: >-
+      A screening check misses a hit that should have been caught. Relates to
+      I5 (fail closed) and the screening and re-screening controls.
+    cause: >-
+      A list change is not followed by re-screening; a matching rule is too
+      narrow; the screening step is skipped.
+    consequence: >-
+      A prohibited or restricted item cleared; a regulatory violation; a
+      wrong ALLOW.
+    inherent_likelihood: 2
+    inherent_severity: 5
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-06]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-07
+    title: Cross-tenant leakage
+    area: product
+    description: >-
+      One tenant can read, infer or affect another tenant's data. Violates
+      I13 (tenants are isolated) and requirement PR-06 (no tenant can read,
+      infer or affect another tenant's data).
+    cause: >-
+      Missing row-level security; a shared cache or connection that carries
+      tenant settings; a query without a tenant context.
+    consequence: >-
+      Tenant data exposed; a wrong ALLOW based on another tenant's facts;
+      a privacy breach.
+    inherent_likelihood: 2
+    inherent_severity: 5
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-07]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-08
+    title: Ledger tampering or loss
+    area: product
+    description: >-
+      The evidence ledger is tampered with or lost. Violates I7 (evidence is
+      append-only and tamper-evident) and I11 (a human never rewrites a
+      Decision). Requirements PR-03 (any Decision replays identically),
+      PR-04 (ledger chain, Merkle proofs and signed checkpoints verify),
+      PR-05 (a Passport verifies offline with public material only) and
+      PR-14 (the build is reproducible) are all affected.
+    cause: >-
+      An append-only guard is bypassed; a record is overwritten; the ledger
+      is lost without a backup; a replay produces a different result.
+    consequence: >-
+      A Decision that cannot be verified; a tampered evidence record; loss
+      of audit trail; a non-reproducible build (PR-14).
+    inherent_likelihood: 2
+    inherent_severity: 5
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-08]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-09
+    title: Agent runaway
+    area: product
+    description: >-
+      An agent exceeds its contract, budget or autonomy level. Violates I14
+      (agents are contained) and I6 (no external effect without a human gate).
+      Requirements PR-07 (no consequential action without human approval) and
+      PR-08 (agent actions stay inside their contract, budget and autonomy
+      level) are directly affected.
+    cause: >-
+      A kill switch is missing or not reachable; a budget is not enforced; an
+      autonomy level is not constrained; a consequential action proceeds
+      without a human gate (PR-07, PR-08).
+    consequence: >-
+      Unbounded tool calls; a consequential action without approval; cost
+      overrun; data exfiltration.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 1
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-09]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-10
+    title: Cost overrun
+    area: product
+    description: >-
+      The per-case cost exceeds the case budget. Violates I9 (per-case cost
+      never exceeds the case budget). Requirement PR-13 (performance and cost
+      stay within the budgets) is directly affected. Probabilistic outputs
+      that state their basis (PR-10) help diagnose the overrun.
+    cause: >-
+      The model is called when a deterministic path suffices (I9); a budget
+      is not enforced; a tool call loop is not bounded.
+    consequence: >-
+      The case budget is exceeded; the phase token budget is exhausted; a
+      case is aborted or a wrong ALLOW from a truncated evaluation.
+    inherent_likelihood: 3
+    inherent_severity: 2
+    residual_likelihood: 2
+    residual_severity: 2
+    treatment: reduce
+    controls: [CTL-PROD-10]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-11
+    title: Model provider outage or deprecation
+    area: product
+    description: >-
+      The model provider is unavailable or the model is deprecated. Violates
+      I5 (fail closed) and requirement PR-15 (degraded operation: when the
+      model provider is unavailable, outcomes move toward HOLD or ABSTAIN and
+      never toward ALLOW).
+    cause: >-
+      Provider downtime; a model version is removed; an API change breaks the
+      extraction call; a budget is exhausted (I9) and no fallback exists.
+    consequence: >-
+      Cases stuck in BLOCKED; a wrong ALLOW if the fail-closed path is
+      missing (I5); a degraded operation that moves toward ALLOW instead of
+      HOLD (PR-15).
+    inherent_likelihood: 4
+    inherent_severity: 2
+    residual_likelihood: 2
+    residual_severity: 2
+    treatment: reduce
+    controls: [CTL-PROD-11]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-12
+    title: Solver plan wrong
+    area: product
+    description: >-
+      A solver produces a plan that is wrong relative to the encoded model.
+      Relates to I2 (determinism) and the solver harness and independent
+      checker.
+    cause: >-
+      The solver model does not match the encoded model; a solver bug; a
+      plan that is not independently checked.
+    consequence: >-
+      A wrong advisory output; a plan that looks optimal but is not;
+      a wrong ALLOW.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-12]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-13
+    title: Personal data in logs
+    area: product
+    description: >-
+      Personal data appears in logs, traces or metric labels. Relates to I12
+      (memory is governed) and the redaction and log tests.
+    cause: >-
+      A log statement that writes a raw document or fact; a metric label that
+      carries a tenant identifier; a trace span that includes personal data.
+    consequence: >-
+      A privacy breach; a compliance violation; personal data exposed in
+      observability infrastructure.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 1
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-13]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-14
+    title: SYNTHETIC presented as real
+    area: product
+    description: >-
+      Synthetic, simulated or unverified data is presented as real. Violates
+      I8 (every datum carries a label and output labels never exceed the
+      weakest input label) and requirement PR-09 (synthetic, simulated and
+      unverified data are always labelled and never presented as real).
+    cause: >-
+      A data_origin stamp is missing (I8); a label is not propagated; a
+      synthetic result is shown without the SYNTHETIC banner.
+    consequence: >-
+      A user treats synthetic data as real; a wrong ALLOW based on
+      unverified data; a claim that overstates the label.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-14]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-15
+    title: Explanation misread as advice
+    area: product
+    description: >-
+      An explanation is misread as binding advice. Relates to requirement
+      PR-17 (explanations are built from reason codes and cited facts; any
+      free-text model wording is labelled as proposal-derived and is never
+      the sole basis of a Decision).
+    cause: >-
+      A missing advisory footer; an explanation template that does not
+      separate reason codes from model wording; a free-text explanation
+      treated as the decision basis.
+    consequence: >-
+      A user acts on an explanation as if it were advice; a wrong ALLOW
+      based on model wording rather than verified facts.
+    inherent_likelihood: 4
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-PROD-15]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-16
+    title: Key compromise
+    area: product
+    description: >-
+      A signing key is compromised. Relates to I7 (evidence is append-only and
+      tamper-evident) and the signer isolation and rotation controls.
+    cause: >-
+      A private key in the repository, history, image layers or logs; a signer
+      that is not isolated from the kernel; a key that is not rotated.
+    consequence: >-
+      Forged evidence accepted as genuine; a tampered Passport; a wrong ALLOW
+      from a forged approval.
+    inherent_likelihood: 2
+    inherent_severity: 5
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-16]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4
+
+  - id: RSK-P-17
+    title: Stale reference data treated as current
+    area: product
+    description: >-
+      Reference data past its maximum age is treated as current. Violates I8
+      (every datum carries a label) and requirement PR-16 (every Decision
+      records its as-of date and the exact pack, source and capability
+      versions used). Requirement PR-08 (reference data older than its maximum
+      age cannot support an ALLOW) is directly affected.
+    cause: >-
+      A freshness check is missing; the as-of date is not recorded (PR-16);
+      a source is not refreshed within its validity window.
+    consequence: >-
+      A wrong ALLOW based on stale data; a wrong classification; a missed
+      regulatory change.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-PROD-17]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: P7-RISK section 4

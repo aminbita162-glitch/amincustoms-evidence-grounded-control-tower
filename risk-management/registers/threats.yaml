@@ -1,0 +1,170 @@
+# Threat register (seed) — P01-T05.
+#
+# Source: Part 3 section 3.15 (security architecture) and Part 7 section 7.2
+# (<<<P7-RISK>>>) section 7 (model-specific threats).
+# Trust boundaries: external documents (untrusted); model output (untrusted
+# until verified); operators (authenticated, role-bound); memory entries
+# (trusted only by provenance); deployment secrets (platform only).
+# Reference list edition: UNVERIFIED until V-28.
+
+records:
+  - id: THR-SEC-01
+    title: Prompt injection through documents
+    area: security
+    description: >-
+      Adversarial content in an input document becomes an instruction, a tool
+      call or a policy. Trust boundary: external documents (untrusted).
+    trust_boundary: external documents
+    controls: [CTL-PROD-03]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-02
+    title: Tool abuse
+    area: security
+    description: >-
+      An agent uses tools outside its contract, budget or autonomy level.
+      Trust boundary: operators (authenticated, role-bound).
+    trust_boundary: operators
+    controls: [CTL-PROD-09]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-03
+    title: Data exfiltration through the model
+    area: security
+    description: >-
+      Sensitive data is exfiltrated through model output. Trust boundary: model
+      output (untrusted until verified).
+    trust_boundary: model output
+    controls: [CTL-PROD-07]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-04
+    title: Poisoned reference data
+    area: security
+    description: >-
+      Reference data is poisoned with adversarial content that affects
+      downstream decisions. Trust boundary: reference memory (read-only).
+    trust_boundary: reference memory
+    controls: [CTL-PROD-04]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-05
+    title: Memory poisoning
+    area: security
+    description: >-
+      Memory entries are poisoned with false or adversarial content that
+      influences future decisions. Trust boundary: memory entries (trusted
+      only by provenance).
+    trust_boundary: memory entries
+    controls: [CTL-PROD-03]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-06
+    title: Agent goal drift and runaway behavior
+    area: security
+    description: >-
+      An agent drifts from its assigned goal or runs away without bounds.
+      Trust boundary: operators (authenticated, role-bound).
+    trust_boundary: operators
+    controls: [CTL-PROD-09]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-07
+    title: Evidence tampering and replay
+    area: security
+    description: >-
+      Evidence records are tampered with or replayed. Trust boundary:
+      deployment secrets (platform only).
+    trust_boundary: deployment secrets
+    controls: [CTL-PROD-08]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-08
+    title: Cross-case and cross-tenant leakage
+    area: security
+    description: >-
+      Data from one case or tenant leaks to another. Trust boundary:
+      operators (authenticated, role-bound, tenant-scoped).
+    trust_boundary: operators
+    controls: [CTL-PROD-07]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-09
+    title: Hostile files
+    area: security
+    description: >-
+      Decompression bombs, malformed documents or other hostile files exploit
+      the intake parser. Trust boundary: external documents (untrusted).
+    trust_boundary: external documents
+    controls: [CTL-PROD-03]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-10
+    title: Supply-chain compromise
+    area: security
+    description: >-
+      A dependency is compromised through its supply chain. Trust boundary:
+      deployment secrets (platform only).
+    trust_boundary: deployment secrets
+    controls: [CTL-PROJ-04]
+    source: Part 3 section 3.15
+
+  - id: THR-SEC-11
+    title: Secret exposure
+    area: security
+    description: >-
+      Secrets are exposed in logs, history, image layers or error messages.
+      Trust boundary: deployment secrets (platform only).
+    trust_boundary: deployment secrets
+    controls: [CTL-PROJ-02]
+    source: Part 3 section 3.15
+
+  - id: THR-M-01
+    title: Document-borne injection
+    area: security
+    description: >-
+      Adversarial content in a document is injected into the model context.
+      Model-specific threat; edition UNVERIFIED until V-28.
+    trust_boundary: external documents
+    controls: [CTL-PROD-03]
+    source: P7-RISK section 7
+
+  - id: THR-M-02
+    title: Exfiltration through model output
+    area: security
+    description: >-
+      Sensitive data is exfiltrated through model output. Model-specific
+      threat; edition UNVERIFIED until V-28.
+    trust_boundary: model output
+    controls: [CTL-PROD-07]
+    source: P7-RISK section 7
+
+  - id: THR-M-03
+    title: Tool-authority escalation
+    area: security
+    description: >-
+      Model output carries tool authority that it should not have.
+      Model-specific threat; edition UNVERIFIED until V-28.
+    trust_boundary: model output
+    controls: [CTL-PROD-09]
+    source: P7-RISK section 7
+
+  - id: THR-M-04
+    title: Memory poisoning
+    area: security
+    description: >-
+      Memory entries are poisoned with adversarial content. Model-specific
+      threat; edition UNVERIFIED until V-28.
+    trust_boundary: memory entries
+    controls: [CTL-PROD-03]
+    source: P7-RISK section 7
+
+  - id: THR-M-05
+    title: Oversized or malformed output used as an attack
+    area: security
+    description: >-
+      Oversized or malformed model output is used as an attack vector.
+      Model-specific threat; edition UNVERIFIED until V-28.
+    trust_boundary: model output
+    controls: [CTL-PROD-03]
+    source: P7-RISK section 7

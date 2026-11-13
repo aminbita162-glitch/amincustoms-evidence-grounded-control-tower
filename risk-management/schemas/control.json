@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control record",
+  "type": "object",
+  "required": [
+    "id", "title", "type", "mechanism",
+    "lifecycle_status", "source"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^CTL-" },
+    "title": { "type": "string" },
+    "type": { "type": "string", "enum": ["preventive", "detective", "corrective"] },
+    "mechanism": { "type": "string" },
+    "implementing_path": { "type": "string" },
+    "target_phase": { "type": "string" },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["PLANNED", "IMPLEMENTED", "VERIFIED"]
+    },
+    "verifying_test_ids": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": "string" }
+  },
+  "additionalProperties": false
+}

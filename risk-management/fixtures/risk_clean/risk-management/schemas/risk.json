@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Risk record",
+  "type": "object",
+  "required": [
+    "id", "title", "area", "description",
+    "inherent_likelihood", "inherent_severity",
+    "residual_likelihood", "residual_severity",
+    "treatment", "controls", "owner_area",
+    "accountable", "status", "review_date", "source"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^RSK-" },
+    "title": { "type": "string" },
+    "area": { "type": "string" },
+    "description": { "type": "string" },
+    "cause": { "type": "string" },
+    "consequence": { "type": "string" },
+    "inherent_likelihood": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "inherent_severity": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "residual_likelihood": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "residual_severity": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "treatment": { "type": "string" },
+    "controls": { "type": "array", "items": { "type": "string" } },
+    "owner_area": { "type": "string" },
+    "accountable": { "type": "string" },
+    "status": { "type": "string" },
+    "review_date": { "type": "string" },
+    "source": { "type": "string" },
+    "labels": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

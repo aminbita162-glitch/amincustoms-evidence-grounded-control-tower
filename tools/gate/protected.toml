@@ -24,3 +24,5 @@
 "tools/gate/catalogue.toml" = true
 "docs/state/baselines.json" = true
 "docs/state/CHAIN.jsonl" = true
+"risk-management/acceptance/" = true
+"risk-management/methodology/SCALES.yaml" = true

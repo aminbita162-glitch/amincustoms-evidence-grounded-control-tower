@@ -170,3 +170,38 @@
 | T-PHASE-0116 | Overflow with correct counts passes | fast | gate/test_phase.py | test_overflow_correct_passes |
 | T-PHASE-0117 | Self-review constants match spec | fast | gate/test_phase.py | test_selfreview_constants |
 | T-PHASE-0118 | State consistency with matching ledger passes | fast | gate/test_phase.py | test_state_consistency_passes |
+| T-RISK-0001 | risk validate scales exits 0 on valid SCALES.yaml | fast | risk/test_scales.py | test_validate_scales_passes |
+| T-RISK-0002 | RISK-POLICY.md contains no compliance-claim phrases | fast | risk/test_policy.py | test_policy_has_no_forbidden_phrases |
+| T-RISK-0003 | risk record validates against risk schema | fast | risk/test_validator.py | test_risk_schema_valid |
+| T-RISK-0004 | control record validates against control schema | fast | risk/test_validator.py | test_control_schema_valid |
+| T-RISK-0005 | hazard record validates against hazard schema | fast | risk/test_validator.py | test_hazard_schema_valid |
+| T-RISK-0006 | threat record validates against threat schema | fast | risk/test_validator.py | test_threat_schema_valid |
+| T-RISK-0007 | acceptance record validates against acceptance schema | fast | risk/test_validator.py | test_acceptance_schema_valid |
+| T-RISK-0008 | review record validates against review schema | fast | risk/test_validator.py | test_review_schema_valid |
+| T-RISK-0009 | incident record validates against incident schema | fast | risk/test_validator.py | test_incident_schema_valid |
+| T-RISK-0010 | drill record validates against drill schema | fast | risk/test_validator.py | test_drill_schema_valid |
+| T-RISK-0011 | unique ids pass validation | fast | risk/test_validator.py | test_unique_ids_pass |
+| T-RISK-0012 | valid control references pass | fast | risk/test_validator.py | test_references_pass |
+| T-RISK-0013 | PLANNED control with target_phase passes | fast | risk/test_validator.py | test_lifecycle_planned_with_target |
+| T-RISK-0014 | PLANNED control with unreached target_phase passes | fast | risk/test_validator.py | test_control_overdue_pass |
+| T-RISK-0015 | VERIFIED control with known test id passes | fast | risk/test_validator.py | test_verified_with_known_test_id |
+| T-RISK-0016 | risk with area and accountable passes | fast | risk/test_validator.py | test_risk_fields_pass |
+| T-RISK-0017 | every invariant and requirement is referenced by a risk or control | fast | risk/test_coverage.py | test_invariant_requirement_coverage |
+| T-RISK-0018 | every threat of Part 3 section 3.15 has an entry | fast | risk/test_threat_coverage.py | test_threat_coverage_p3_s15 |
+| T-RISK-0019 | every safeguard S1 to S7 of decision-d06 maps to a model risk and a | fast | risk/test_threat_coverage.py | test_safeguard_coverage_d06 |
+| T-RISK-0020 | invalid risk record fails schema validation | fast | risk/test_validator.py | test_risk_schema_invalid |
+| T-RISK-0021 | invalid control record fails schema validation | fast | risk/test_validator.py | test_control_schema_invalid |
+| T-RISK-0022 | invalid hazard record fails schema validation | fast | risk/test_validator.py | test_hazard_schema_invalid |
+| T-RISK-0023 | invalid threat record fails schema validation | fast | risk/test_validator.py | test_threat_schema_invalid |
+| T-RISK-0024 | invalid acceptance record fails schema validation | fast | risk/test_validator.py | test_acceptance_schema_invalid |
+| T-RISK-0025 | invalid review record fails schema validation | fast | risk/test_validator.py | test_review_schema_invalid |
+| T-RISK-0026 | invalid incident record fails schema validation | fast | risk/test_validator.py | test_incident_schema_invalid |
+| T-RISK-0027 | invalid drill record fails schema validation | fast | risk/test_validator.py | test_drill_schema_invalid |
+| T-RISK-0028 | duplicate ids fail validation | fast | risk/test_validator.py | test_unique_ids_fail |
+| T-RISK-0029 | broken control references fail | fast | risk/test_validator.py | test_references_fail |
+| T-RISK-0030 | PLANNED control without target_phase fails | fast | risk/test_validator.py | test_lifecycle_planned_without_target |
+| T-RISK-0031 | PLANNED control with reached target_phase fails as overdue | fast | risk/test_validator.py | test_control_overdue_fail |
+| T-RISK-0032 | VERIFIED control with unknown test id fails | fast | risk/test_validator.py | test_verified_with_unknown_test_id |
+| T-RISK-0033 | risk without area or accountable fails | fast | risk/test_validator.py | test_risk_fields_fail |
+| T-RISK-0034 | risk validate scales fails on invalid scales | fast | risk/test_scales.py | test_validate_scales_fails_on_bad_scales |
+| T-RISK-0035 | check-phrases catches a known compliance-claim violation | fast | risk/test_policy.py | test_forbidden_phrase_detection_finds_violation |

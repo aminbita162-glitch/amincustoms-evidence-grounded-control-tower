@@ -1,0 +1,174 @@
+# AI model risk register (seed) — P01-T05.
+#
+# Source: decision-d06 safeguards S1 to S7 (<<<D06-S3>>>).
+# One model risk per safeguard; each links a control by id.
+
+records:
+  - id: RSK-M-01
+    title: Source grounding failure
+    area: model
+    description: >-
+      An extracted field lacks a source span or the span does not support
+      the value (S1). Relates to safeguard S1 of decision-d06.
+    cause: >-
+      The extraction does not record a source span; the span does not cover
+      the extracted value; the verifier does not check the span.
+    consequence: >-
+      An ungrounded field is treated as verified; a wrong ALLOW from
+      ungrounded extraction.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-MR-01]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S1
+
+  - id: RSK-M-02
+    title: High-stakes field extraction disagreement
+    area: model
+    description: >-
+      Two independent models disagree on a high-stakes field (S2) and the
+      disagreement is silently resolved instead of yielding HOLD.
+    cause: >-
+      The dual-extraction check is missing; the HIGH_STAKES_FIELDS list is
+      incomplete; a disagreement is resolved by picking one model.
+    consequence: >-
+      A wrong high-stakes value; a silent pick that hides uncertainty;
+      a wrong ALLOW.
+    inherent_likelihood: 3
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-MR-02]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S2
+
+  - id: RSK-M-03
+    title: Evaluation gate regression
+    area: model
+    description: >-
+      A model or prompt change lowers an extraction metric beyond the
+      registered tolerance (S3) and is not caught by the evaluation gate.
+    cause: >-
+      The golden SYNTHETIC set is stale; a metric drops beyond tolerance;
+      the evaluation gate is not run on the change.
+    consequence: >-
+      A regression in extraction quality; a wrong ALLOW from degraded
+      extraction.
+    inherent_likelihood: 3
+    inherent_severity: 3
+    residual_likelihood: 2
+    residual_severity: 3
+    treatment: reduce
+    controls: [CTL-MR-03]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S3
+
+  - id: RSK-M-04
+    title: Budget bypass per tier
+    area: model
+    description: >-
+      Per-case limits are not enforced per tier (S4) and a tier exceeds its
+      budget.
+    cause: >-
+      The Gateway does not check the tier budget; a tier is not configured;
+      the budget is not enforced.
+    consequence: >-
+      Cost overrun; a tier that is too expensive; a case that exceeds the
+      token budget.
+    inherent_likelihood: 3
+    inherent_severity: 2
+    residual_likelihood: 2
+    residual_severity: 2
+    treatment: reduce
+    controls: [CTL-MR-04]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S4
+
+  - id: RSK-M-05
+    title: Data handling without tenant policy
+    area: model
+    description: >-
+      Case data is sent to a provider without the tenant policy allowing it
+      (S5).
+    cause: >-
+      The tenant policy is not checked; the retention and training-use terms
+      are not recorded in the Source Registry; data is sent without
+      verification.
+    consequence: >-
+      A privacy breach; a data handling violation; data sent to a provider
+      that is not authorised by the tenant.
+    inherent_likelihood: 2
+    inherent_severity: 4
+    residual_likelihood: 1
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-MR-05]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S5
+
+  - id: RSK-M-06
+    title: Resilience failure
+    area: model
+    description: >-
+      A provider outage is not handled by timeout, retry, circuit breaker or
+      fallback (S6).
+    cause: >-
+      The circuit breaker is missing; the fallback adapter is not configured;
+      the retry is unbounded; the timeout is missing.
+    consequence: >-
+      Cases stuck in BLOCKED; a wrong ALLOW from a missing fail-closed path;
+      an unbounded retry that wastes budget.
+    inherent_likelihood: 4
+    inherent_severity: 2
+    residual_likelihood: 2
+    residual_severity: 2
+    treatment: reduce
+    controls: [CTL-MR-06]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S6
+
+  - id: RSK-M-07
+    title: Prompt-injection containment failure
+    area: model
+    description: >-
+      Model output carries tool authority that it should not have (S7);
+      documents are not treated as data (I3).
+    cause: >-
+      A tool call is triggered by document content; model output is treated
+      as a decision; the containment boundary is breached.
+    consequence: >-
+      A tool call from injected content; a memory write from adversarial
+      input; a wrong ALLOW from a tampered extraction.
+    inherent_likelihood: 4
+    inherent_severity: 4
+    residual_likelihood: 2
+    residual_severity: 4
+    treatment: reduce
+    controls: [CTL-MR-07]
+    owner_area: core
+    accountable: OWNER
+    status: open
+    review_date: "2026-11"
+    source: decision-d06 safeguard S7
