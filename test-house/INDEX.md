@@ -105,7 +105,7 @@
 | T-PHASE-0024 | Rename out of scope fails scope check | fast | gate/test_directive.py | test_scope_rename_out_of_scope_fails |
 | T-PHASE-0025 | No baseline decrease passes check | fast | gate/test_phase.py | test_no_baseline_decrease_passes |
 | T-PHASE-0026 | All DONE lines present passes check | fast | gate/test_phase.py | test_all_done_lines_pass |
-| T-PHASE-0027 | phases.toml loads with 33 phase entries | fast | gate/test_phase.py | test_phases_table_loads |
+| T-PHASE-0027 | phases.toml loads with 16 phase entries | fast | gate/test_phase.py | test_phases_table_loads |
 | T-PHASE-0028 | STOP report with all required fields passes | fast | gate/test_phase.py | test_stop_report_valid |
 | T-PHASE-0029 | State hash is deterministic | fast | gate/test_phase.py | test_state_hash_deterministic |
 | T-PHASE-0030 | Self-review with 10 findings and no overflow passes | fast | gate/test_phase.py | test_selfreview_10_findings_passes |

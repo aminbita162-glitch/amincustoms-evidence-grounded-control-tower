@@ -900,30 +900,30 @@ def test_all_done_lines_pass(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# T-PHASE-0027 — Phases table loads with 33 entries
+# T-PHASE-0027 — Phases table loads with 16 entries
 # ---------------------------------------------------------------------------
 # id: T-PHASE-0027
-# title: phases.toml loads with 33 phase entries
-# purpose: Verify that load_phases reads all 33 phases from phases.toml.
+# title: phases.toml loads with 16 phase entries
+# purpose: Verify that load_phases reads all 16 phases from phases.toml.
 # level: fast
 # requirement: P00-T05, Part 6 §6.2
 # input: the real phases.toml file
-# expected: 33 phases, P00 through P32
+# expected: 16 phases, P01 through P16
 # risk: the phase table is incomplete or wrong
 # capability: phase-machinery
 
 
 @pytest.mark.fast
 def test_phases_table_loads() -> None:
-    """phases.toml loads with 33 phase entries (P00 through P32)."""
+    """phases.toml loads with 16 phase entries (P01 through P16)."""
     phases = load_phases(REPO_ROOT / "tools" / "gate" / "phases.toml")
-    assert len(phases) == 33
-    for i in range(33):
+    assert len(phases) == 16
+    for i in range(1, 17):
         phase_id = f"P{i:02d}"
         assert phase_id in phases
-    assert phases["P00"].name == "Repository bootstrap"
-    assert phases["P32"].name == "Release"
-    assert phases["P32"].budget_class == "S"
+    assert phases["P01"].name == "Risk management system"
+    assert phases["P16"].name == "Clocks, charges and landed cost"
+    assert phases["P16"].budget_class == "L"
 
 
 # ---------------------------------------------------------------------------

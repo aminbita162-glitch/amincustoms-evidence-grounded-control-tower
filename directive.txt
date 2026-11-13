@@ -4722,7 +4722,6 @@ P11-END1, P11-END2: per Part 1 §10.
 
 10. Look-ahead.
 - P12 packages the system: the image runs as non-root with the secret store port bound to the platform and the drills of this phase become part of the operations kit.
-- P27 builds the views on the authenticated API; session handling here is complete for them.
 
 11. Budget: class L; retries 3; tool calls 700; token budget named in the owner's command.
 <<<END-PHASE-11>>>
@@ -4785,7 +4784,6 @@ P12-END1, P12-END2: per Part 1 §10.
 
 10. Look-ahead.
 - P13 starts the capability support library; no operations code is added there.
-- P28 repeats the restore and exit drills on the finished system; P32 uses the release scripts.
 
 11. Budget: class M; retries 3; tool calls 400; token budget named in the owner's command.
 <<<END-PHASE-12>>>
@@ -5023,7 +5021,6 @@ P15-END1, P15-END2: per Part 1 §10.
 
 10. Look-ahead.
 - P16 (L02) imports the valuation basis function from this phase; do not rename its interface without a change task.
-- P26 (K21, K16) reads K05 and F02 outputs and the calibration artifact ids.
 
 11. Budget: class M; retries 3; tool calls 400; token budget named in the owner's command.
 <<<END-PHASE-15>>>
@@ -5098,10 +5095,7 @@ P16-END1, P16-END2: per Part 1 §10.
 
 9. Exit conditions beyond Part 1 §9: all gates exit 0; no binary floating point in any money path (scan passes); the four capabilities meet the twelve Definition of Done items; the charge taxonomy mapping and the valuation basis function each have exactly one implementation; output schemas registered in `contracts.lock`; README capability marks ticked; risk review filed.
 
-10. Look-ahead.
-- P18 and P20 do not depend on this phase; P21 (K07) reads F03 free-time expiry and F07 payment holds; P22 (F05) reads F03 projections and L02 cost effects.
-- P23 (K08, L08) and P24 (L07) read the F03 clock; P24 (L09) imports the taxonomy mapping shipped here and must not fork it.
-- P25 (L10) reads L01, F07 and L02 variance records and relies on the match-record and variance schemas frozen here.
+10. Look-ahead. This is the last phase of the v1 split; there are no further phases to look ahead to.
 
 11. Budget: class L; retries 3; tool calls 700; token budget named in the owner's command.
 <<<END-PHASE-16>>>
