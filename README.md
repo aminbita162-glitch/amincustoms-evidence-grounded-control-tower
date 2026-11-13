@@ -52,7 +52,6 @@ A person decides before any irreversible action. The system does not take an irr
 
 | Phase | Name | Status |
 |---|---|---|
-| P00 | Repository bootstrap | ✓ November 2026 |
 | P01 | Risk management system | ✓ November 2026 |
 | P02 | Source Registry and data governance | ☐ |
 | P03 | Kernel contracts | ☐ |
@@ -69,22 +68,6 @@ A person decides before any irreversible action. The system does not take an irr
 | P14 | Intake | ☐ |
 | P15 | Valuation and classification | ☐ |
 | P16 | Clock, freight cost and charge control | ☐ |
-| P17 | Screening, credentials and transit | ☐ |
-| P18 | Rule change and simulation | ☐ |
-| P19 | Evidence reports | ☐ |
-| P20 | Reconciliation and readiness | ☐ |
-| P21 | Release planning | ☐ |
-| P22 | Disruption planning | ☐ |
-| P23 | Yard and priority | ☐ |
-| P24 | Cost and cover analysis | ☐ |
-| P25 | Risk, cash and cost ledger | ☐ |
-| P26 | Red-flags, confidence and adversarial review | ☐ |
-| P27 | Views and demonstration | ☐ |
-| P28 | Full-system verification | ☐ |
-| P29 | Security and supply-chain audit | ☐ |
-| P30 | Architecture-conformance and claims audit | ☐ |
-| P31 | Documentation | ☐ |
-| P32 | Release | ☐ |
 
 ## 9 Quality gates
 

@@ -25,7 +25,7 @@
   "tools/gate/fixtures/directive_clean/phases.toml": "c6d4d4b6077abb6e413054fa0c2844e8995ed7f7e504fac701b3691a54f1e2f1",
   "tools/gate/fixtures/directive_violation/directive.txt": "86ee74944d4814c35493670982275842e3f67544dc0264e1c0a16ff11f001b3e",
   "tools/gate/fixtures/directive_violation/phases.toml": "c6d4d4b6077abb6e413054fa0c2844e8995ed7f7e504fac701b3691a54f1e2f1",
-  "tools/gate/fixtures/docs_clean/README.md": "10abf1a43909ae8fb69f54fe4fa15fe8d2ab059b0a37e6f75e66b034cc17b1ce",
+  "tools/gate/fixtures/docs_clean/README.md": "3762371e78dd834c77c3cbe17950183ae4554bfdd263b5a100542b9e50a5c300",
   "tools/gate/fixtures/docs_violation/README.md": "c5d57c2d8fbc413cdbc16cf6d7fd511837c5434b33de8a0cf4718242146fd478",
   "tools/gate/fixtures/format_clean.py": "128c0b13af2fae93d7f8f6751dbdef9e66fb8e2060496032d02fa2c8827e449a",
   "tools/gate/fixtures/format_violation.py": "15aacc703506450a133c6d256cf31d24dc23e5cd82f5bfa14831864fa6167719",
