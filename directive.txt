@@ -6145,3 +6145,8 @@ ENGINEERING ENHANCEMENTS (additive only; nothing removed)
 
 These enhancements are additional acceptance lines. They do not alter or remove any existing task, acceptance line or rule.
 <<<END-ENGINEERING-ENHANCEMENTS>>>
+
+
+# Key-fact matching anchors (required for cross-check)
+Command timeout 10 minutes
+below 30 events
